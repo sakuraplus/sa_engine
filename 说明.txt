@@ -1,0 +1,176 @@
+脚本说明
+脚本文件在scenario文件夹下
+init.xml中
+<playingat>
+<scenario>main.txt</scenario>
+<readline>0</readline>
+</playingat>
+main.txt为直接加载的脚本文件,从行号0开始
+
+cg.xml中
+<cgpanel>
+    <cgDeat name="Leo..." show="true" img="eat1.jpg"/>
+</cgpanel>
+已经获得的cg中show="true",未获得show="false"
+
+---------------------------
+脚本说明
+脚本文件在scenario文件夹下
+脚本中可使用//注释
+忽略空行
+---------------------------
+△text
+[text 参数,x坐标,y坐标,宽度,文字,auto]
+[text add,0,20,100,文字]追加文本
+[text new,0,20,200,文字]重新出现文本
+末尾包含auto参数时,自动读取下一条脚本
+不包含auto参数时,需要点击对话框,按钮等方可继续下一条脚本
+[text clear]清空文本框,不需要点击直接进行下一条脚本
+
+△dialog
+[dialog 名字,台词,头像url,400,200,层标签] 图片在role/文件夹
+[dialog 名字,台词]无头像,之前有头则保持显示
+[dialog 名字,台词,auto] 末尾包含auto参数时,自动读取下一条脚本,否则,需要点击对话框,按钮等方可继续下一条脚本
+
+dialog和text可使用的标签:
+<i>斜体</i>
+<b>粗体</b>
+<br>换行
+ <font  color="#ffff00">字体颜色</font>
+可以设置超链接<A HREF="http://">啊啊啊啊啊</A>
+
+
+△askdialog
+[askdialog 名字,台词,头像url,400,200,层标签] 图片在role/文件夹,仅使用在选项出现时
+[askdialog 名字,台词]无头像,之前有头像则保持显示
+可使用部分html标签
+
+△img
+[img 图片路径,x坐标,y坐标,图层名称]
+[img 头像.jpg,500,500,M] 图片在role/文件夹,头像url为空时清除图片
+直接进行下一条脚本
+
+△clearimg
+[clearimg]清除所有头像立绘, 直接进行下一条脚本
+
+△clr
+[clr] 隐藏对话框，清除对话框内容 直接进行下一条脚本
+△msghide/msgshow
+[msghide]隐藏对话框
+[msgshow]如对话框包含文字,显示对话框
+
+△background
+[background 图片url] 更换背景图,图片在ui/文件夹
+[background clear] 清除背景图
+直接进行下一条脚本
+
+△label
+[label LL] 跳转标签,与goto搭配使用
+
+△ask
+[ask 文字,x坐标,y坐标,跳转标签,按钮背景图]
+[ask 文字,270,400,跳转标签,按钮背景图]
+[askdialog  名字,文字] 按钮图片在ui/文件夹
+不需要显示对话框时
+[ask 文字,500,400,跳转标签,按钮背景图]
+[ask 文字,720,400,跳转标签,按钮背景图]
+[waitclick]
+否则直接进行下一条脚本,直到出现waitclick,dialog,text, askdialog  等脚本
+点击选项后,全部按钮清除
+跳转标签可使用script:readnote
+△btn
+[btn 文字,x坐标,y坐标,跳转标签,按钮背景图]不影响dailog,text,waitclick
+[removebtn]清除btn
+点击选项后,全部按钮清除
+
+△goto
+[goto 跳转标签] 跳转标签,与label搭配使用
+
+△if
+[if (@变量名 >7)]
+解析if条件 (a>b&&c>b)||(a>b),支持变量,变量使用 @[变量名][空格]
+[end if] 判断未通过,跳转到这里, 直接进行下一条脚本
+运算符支持==,!=,>=,<=,>,<
+不支持多个[if][end if]嵌套
+
+△eval
+[eval @变量名 ,+,3]  变量赋值,使用 @[变量名][空格] 运算支持+-=
+变量支持数字和字符串
+
+△sound
+[sound 音频url] 文件在sound/
+△bgm
+[bgm 音频url] 文件在sound/
+[bgmstop] 停止背景音乐
+
+△call
+[call 文件名]在scenario\文件夹
+例如[call leo.txt]
+[call 文件名,label]跳转到新脚本标签处
+
+△wait
+[wait 数字]等待xx毫秒后继续，
+[waitclick]等待点击
+
+△save
+△[enablesave]允许存档
+△[disablesave]禁止存档
+
+△autosave
+[autosave]自动存档,存储在autosave.xml
+△load
+[load 文件名.xml]读档,在Documents文件夹下
+
+△cg
+[getcg 名字]
+结合cg.xml使用
+<名字 name="标题" show="true" img="BGstart.jpg"/>未收集到则show为false
+
+[showcg]进入cg欣赏画面
+cg和存档不关联
+
+△showtip
+[showtip 文字]画面左上角出现文字,文字中支持读取变量,显示时间5秒钟
+
+△[initsavefile]
+初始化所有cg和存档
+使用根目录下的默认存档文件覆盖Documents文件夹下的文件
+cg.xml autosave.xml save.xml staticvar.xml
+
+△[return]
+从script回到脚本,从脚本回到前一个脚本文件中call的位置
+
+△[script]
+script.txt
+<!
+[iscript aaaa]
+[dialog q11, 1qaswed]
+[dialog q22, 2aswadasa]
+[endiscript aaaa]
+>
+在脚本中[script aaaa]
+在按钮中[btn ,0,380,script:readnote,readnote.png]
+允许
+showtip
+showcg getcg
+enablesave disablesave load
+text dialog dialogadd
+img background
+clearimg
+clr msghide msgshow
+goto
+if end eval
+sound bgm bgmstop
+return call
+waitclick
+initsavefile
+
+不允许
+ask btn askdialog  removebtn
+label
+save
+wait
+
+
+
+-------------------------
