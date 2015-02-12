@@ -1,0 +1,14 @@
+<save>
+<svar t="变量">
+<callitem>0</callitem>
+<V1>0</V1>
+</svar>
+<playingat>
+  <scenario>main.txt</scenario>
+	<lastScenario>main.txt</lastScenario>
+	<lastreadline>0</lastreadline>
+	<readline>0</readline>
+  <bgm></bgm>
+  <bg></bg>
+</playingat>
+</save>
