@@ -17,5 +17,5 @@ http://pan.baidu.com/s/1bnnEUx5
 
 引擎使用的方法参见 “脚本说明”
 引擎开发于flash cs6
-download后直接使用flash等工具就可以发布测试，
-或者从以上俩游戏中复制版本匹配的 Adobe AIR 和 META-INF文件夹以及exe文件，
+download后直接使用flash等工具就可以发布测试
+
