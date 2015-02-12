@@ -280,7 +280,7 @@
 		function CGloadError(event:Event)
 		{
 			//cgLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,CGloadComplete);
-			cgLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,CGloadError);
+			//cgLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,CGloadError);
 			trace("CG ERROR");
 		}
 	}
