@@ -1,7 +1,7 @@
 # sa_engine
 engine of avg novel
 
-这是一个轻量级的简易文字冒险引擎,可以比较轻松的将游戏发布到ios和安卓平台
+文字冒险引擎
 
 http://pan.baidu.com/s/1ntJU3s1
 这里有之前版本的示例和教程
@@ -17,5 +17,5 @@ http://pan.baidu.com/s/1bnnEUx5
 
 引擎使用的方法参见 “脚本说明”
 引擎开发于flash cs6
-download后直接使用flash等工具就可以发布测试
+download后直接使用flash等工具就可以发布测试，可以发布到ios和安卓平台
 
