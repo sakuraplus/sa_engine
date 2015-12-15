@@ -96,7 +96,7 @@
 			
 			//绘制背景
 			var square:Sprite = new Sprite();
-			square.graphics.beginFill(uint("0x"+colorBG),0.4);//uint("0x"+colorB)
+			square.graphics.beginFill(uint("0x"+colorBG));//(uint("0x"+colorBG),0.4);//
 			square.graphics.drawRect(0, 0, 960, 640);
 			cglayer.addChildAt(square,0);
 			
