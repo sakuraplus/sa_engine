@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <application xmlns="http://ns.adobe.com/air/application/15.0">
-  <id>sasafont</id>
-  <versionNumber>11</versionNumber>
-  <filename>saEIOSfont</filename>
+  <id>mntgg.test.test</id>
+  <versionNumber>1.0</versionNumber>
+  <filename>MNTGG·实</filename>
   <description>引擎－flash·air·SaE
 脚本－sakuraplus</description>
   <!-- To localize the description, use the following format for the description element.<description><text xml:lang="en">English App description goes here</text><text xml:lang="fr">French App description goes here</text><text xml:lang="ja">Japanese App description goes here</text></description>-->
-  <name>saEIOSfont</name>
+  <name>MNTGG·实</name>
   <!-- To localize the name, use the following format for the name element.<name><text xml:lang="en">English App name goes here</text><text xml:lang="fr">French App name goes here</text><text xml:lang="ja">Japanese App name goes here</text></name>-->
   <copyright>sakuraplus</copyright>
   <initialWindow>
@@ -16,15 +16,13 @@
     <visible>true</visible>
     <fullScreen>true</fullScreen>
     <aspectRatio>landscape</aspectRatio>
-    <renderMode>gpu</renderMode>
+    <renderMode>auto</renderMode>
     <maximizable>false</maximizable>
     <minimizable>true</minimizable>
     <resizable>true</resizable>
     <autoOrients>false</autoOrients></initialWindow>
   <icon>
     <image48x48>48.png</image48x48>
-    <image114x114>114.png</image114x114>
-    <image512x512>512.png</image512x512>
   </icon>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>

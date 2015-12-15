@@ -1,32 +1,44 @@
 <cg>
   <cgpanel>
-	<CG1 name="异议请问企鹅啊！" show="true" img="black.jpg"/>
-    <CG2 name="打桩达人" show="true" img="white.jpg"/>
-	<CG3 name="居家为全额企鹅买个床" show="true" img="black.jpg"/>
-	<CG4 name="异三大议！" show="true" img="black.jpg"/>
-    <CG5 name="打桩奥斯丁功放管达人" show="false" img="DLnote.jpg"/>
-	<CG6 name="居家买个床" show="true" img="black.jpg"/>
-	<CG11 name="异挖挖哇哦议！" show="false" img="DLnote.jpg"/>
-    <CG12 name="打桩请阿阿四达人" show="true" img="DLnote.jpg"/>
-	<CG13 name="居家买未完全个床" show="false" img="DLnote.jpg"/>
-	<C11G14 name="异 放大议！" show="true" img="black.jpg"/>
-    <CG321 name="打桩功夫达人" show="true" img="tx.jpg"/>
-	<CG523 name="居家买个床" show="false" img="black.jpg"/>
-	<C7G31 name="异发给议！" show="false" img="tx.jpg"/>
-    <CG24 name="打桩╯╰达人" show="false" img="tx.jpg"/>
-	<CG34 name="居家诶诶诶买个床" show="true" img="black.jpg"/>
-	<CG36 name="居家2313买个床" show="true" img="tx.jpg"/>
-	<CG1是1 name="异3333议！" show="false" img="black.jpg"/>
-    <CG112 name="打444桩达人" show="true" img="tx.jpg"/>
-	<CG133 name="居家44哇哇哇买个床" show="false" img="black.jpg"/>
-	<CG1钱4 name="异44444议！" show="true" img="tx.jpg"/>
-    <CG241 name="打桩达人" show="true" img="white.jpg"/>
-	<CG223 name="居家买个床" show="false" img="black.jpg"/>
-	<CG311 name="异阿 额外额外哦萨议！" show="false" img="black.jpg"/>
-    <C1G24 name="打桩请问阿切尔达人" show="false" img="tx.jpg"/>
-	<C2G34 name="居家我额外额外哦买个床" show="true" img="black.jpg"/>
-	</cgpanel>
+    <BGstart name="标题画面" show="true" img="BGstart.jpg"/>
+	<Splinter1 name="老师" show="false" img="Splinter1.jpg"/>
+	<Splinter2 name="老师" show="false" img="Splinter2.jpg"/>
+	<Dlab04 name="手术" show="false" img="Dlab04.jpg"/>
+		<DLClonehide name="手术台后的小龟 by:饭团" show="false" img="DLClonehide.jpg"/>
+	<Dwindow name="窗前" show="false" img="Dwindow.jpg"/>
+    <DLmadend name="被诅咒吞噬 by:饭团" show="false" img="DLmadend.jpg"/>
+    <be01 name="惊诧绝望" show="false" img="be01.jpg"/>
+    <DLend2 name="记忆循环" show="false" img="DLend2.jpg"/>
+	<DLend1 name="锁" show="false" img="DLend1.jpg"/>
+		<DLkillpolice name="斩首" show="false" img="DLkillpolice.jpg"/>		
+	<DCend2 name="融合老师暴走" show="false" img="DCend2.jpg"/>
+		<Dlab05 name="融合手术" show="false" img="Dlab05.jpg"/>
+	<DCend21 name="老师暴走小L牺牲" show="false" img="DCend21.jpg"/>
+	<DCend1 name="带小L远行" show="false" img="DCend1.jpg"/>
+	<DRend73 name="现实" show="false" img="DRend73.jpg"/>
+		<DRend733 name="摘下眼镜" show="false" img="DRend733.jpg"/>
+	<DRdie name="保护小r而死" show="false" img="DRdie.jpg"/>
+		<labRenior5 name="潜入研究所" show="false" img="labRenior5.jpg"/>
+		<DRcry name="回忆的小马驹" show="false" img="DRcry.jpg"/>
+    <DMend3 name="兄贵鼠" show="false" img="DMend3.jpg"/>
+	<kill name="新的人生 by：紫菜" show="false" img="kill.jpg"/>
+    	<DCbye name="和d告别" show="false" img="DCbye.jpg"/>
+		<DL01 name="帮助" show="false" img="DL01.jpg"/>
+		<DChelp name="天才助理 by:饭团" show="false" img="DChelp.jpg"/>
+		<eat1 name="药" show="false" img="eat1.jpg"/>
+	<endbonus name="真实的新的人生" show="false" img="endbonus.jpg"/>
+    <DMendDlab03 name="小L杀三龟" show="false" img="DMendDlab03.jpg"/>
+    <DMend1 name="诅咒侵蚀" show="false" img="DMend1.jpg"/>
+		<DMbook name="签名" show="false" img="DMbook.jpg"/>
+	<trueend name="by:步搖·亂" show="false" img="trueend.jpg"/>
+  </cgpanel>
 </cg>
 <!-- 
--->
+诅咒    囚禁
+绝望    失忆
+牺牲    保护
+旅行    现实
+死亡    归来
+天堂    援救
+           兄弟 -->
 
