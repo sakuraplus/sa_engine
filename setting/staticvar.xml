@@ -1,5 +1,8 @@
 <sv>
 <staticVar>
+<speed t="">1</speed>
+<language t="">0</language>
+<!-- 结局 -->
 <eDLmad t="L杀害小L和d">0</eDLmad>
 <eBE t="L杀害d惊诧绝望"/>
 <eClone1 t="老师暴走小L牺牲"/>

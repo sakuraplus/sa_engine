@@ -872,6 +872,8 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
+							ti++;
+						analysisscript(ti);
 						return;
 					case "getcg" :
 						anGETCG(arr[i]);
@@ -923,6 +925,8 @@
 						return;
 					case "clr" :
 						anCLR();
+						//ti++;
+						//analysisscript(ti);
 						return;						
 					case "msghide" :
 						anMSGhide();
@@ -1100,6 +1104,8 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
+						ScrI++;
+						anIscript(arrS,ScrI);
 						return;
 					case "getcg" :
 						anGETCG(arrS[i]);
@@ -1142,6 +1148,8 @@
 						return;
 					case "clr" :
 						anCLR();
+						//ScrI++;
+						//anIscript(arrS,ScrI);
 						return;						
 					case "msghide" :
 						anMSGhide();
