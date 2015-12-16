@@ -47,7 +47,7 @@
 			var msgURLReq:URLRequest = new URLRequest(url);
 			msgLoader.load(msgURLReq);
 
-			Tformat.size = 36;
+			Tformat.size = 30;
 			
 			txtName.x=24;
 			txtName.y=6;

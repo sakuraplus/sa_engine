@@ -1,12 +1,12 @@
 <sv><staticVar>
   <speed t="">1</speed>
-  <language t="">1</language>
+  <language t="">3</language>
   <eDLmad t="L杀害小L和d">0</eDLmad>
   <eBE t="L杀害d惊诧绝望"/>
   <eClone1 t="老师暴走小L牺牲"/>
   <eClone2 t="d终止实验带小L远行"/>
   <eClone3 t="d虐待小L结局"/>
-  <eDCL t="一家三口"/>
+  <eDCL t="一家三口">1</eDCL>
   <eDCL2 t="一家三口隐藏"/>
   <eDL1 t="L黑化囚禁d"/>
   <eDL2 t="记忆循环"/>
