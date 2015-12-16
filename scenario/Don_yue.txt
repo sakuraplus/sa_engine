@@ -94,7 +94,7 @@
 [dialog Mikey,“车！”<br>佢抱住只熊仔，<br>“你个脑里面真系除左实验就乜都无架喇。”]
 [img effects_flower.swf,500,100,LayerB]
 
-[dialog Mikey,“呢个系个超级靓女黎架！她仲寄埋张相黎向我表白添喔！”]
+[dialog Mikey,“呢个系个超级靓女黎架！佢仲寄埋张相黎向我表白添喔！”]
 [dialog Donnie,睇住Mikey甘得戚既表情，我真系吾知道个个女Fan史知道自已既偶像系只甘样既龟之后会点淋。]
 [img ,500,100,LayerB]
 
@@ -135,17 +135,19 @@
 [getcg Dwindow]
 [waitclick]
 [clearimg]
-[dialog ,我走到窗边，抚摸着冰冷的玻璃。]
-[dialog ,如果我们的父亲还在的话，这里大概会更有家的感觉吧……]
-[dialogadd 还有……那个罪人……]
-[dialog ,呼，17年，<br>除了我，没有谁能坚持一直努力着把老师带回来，]
-[dialog ,我知道，他们没有足够的毅力，所以我并不会埋怨我的兄弟。]
-[dialog ,复活老师，注定是一条寂寞的路……]
+
+[dialog ,我行埋窗边，摸住冻冰冰既玻璃。]
+[dialog ,如果我们既爸爸仲系度既话，呢度应该会更加似个屋企……]
+[dialogadd 仲有……个个罪人……]
+[dialog ,呼，17年喇，<br>除左我，无边个能够坚持一直努力将老师带番黎，]
+[dialog ,我知道，佢地无足够既毅力，所以我吾会怪我D兄弟。]
+[dialog ,复活老师，注定系一条寂寞既路……]
 [sound sound_ding.mp3]
 
-[dialog ,窗前的哈气模糊了视线，黑夜中，似乎有一个身影。]
-[dialog ,“是谁！？”]
-[dialogadd 我推开窗户跃出，他明显发觉了我，转身就跑。]
+[dialog ,窗前面呼出既热气令我有D睇吾清野，系黑暗入面，似乎有一个身影。]
+[dialog ,“边个！？”]
+[dialogadd 我推开窗跳出去，佢明显发现左我，另转身就跑。]
+
 [background DLroof.jpg]
 [bgm Leo.mp3]
 [sound footstep.mp3]
