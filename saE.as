@@ -26,15 +26,7 @@
     import flash.display.Sprite;
 
 
-	//	import SaEBtnask;
-	//	import SaEImg;
-	//	import SaEText;
-	//	import SaEBg;
-	//	import SaEDialog;
-	//	import SaETrace;
-	//	import SaEPlayback;
-	//	import SaEMsgbox;
-	//	import SaECg;
+
 	///////////
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
@@ -201,6 +193,8 @@
 				showtrace("android or else,use back to escape "+Capabilities.os+"//"+Capabilities.cpuArchitecture);
 				FileP = new File(File.applicationStorageDirectory.nativePath);
 				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,handleDeactivate,false, 0, true);
+				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,onDeactivate);	//stage.addEventListener(Event.DEACTIVATE 也可以
+				NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,onActivate);	
 			}
 
 			waittimerBtn.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerBtnComplete);
@@ -257,7 +251,7 @@
 			{
 				return;
 			}
-			TweenLite.to(btnsound,durtime*4,{delay:2,alpha:0.1});
+			//TweenLite.to(btnsound,durtime*4,{delay:2,alpha:0.1});
 			if(BGtransform == null)
 			{
 				bgmvolume(0);
@@ -278,18 +272,52 @@
 
 		}
 
-		//按返回键退出
+		//按返回键退出，home键暂停音乐
 		function handleDeactivate(event:KeyboardEvent):void
 		{
 			if (event.keyCode == Keyboard.BACK)
 			{
 				//提示退出
-				//showtrace("退出");
+				event.preventDefault();//屏蔽默认事件  
+				showtrace("KEYBACKKKKKKK");
 				askmsg = "keyback";
 				SaeMsgbox.showmsg (askmsg, "要退出了么？");
-
+				
+				//NativeApplication.nativeApplication.exit();
 			}
+			else if(event.keyCode== Keyboard.MENU)  
+                            {  
+                             //menu 键
+			    // showtrace("MENU");			
+                            }  
+                            else if(event.keyCode == Keyboard.SEARCH)  
+                            {  
+			  //  showtrace("SERACHHHH ");
+                                //search      
+                            }  
+                            else  if (event.keyCode == Keyboard.HOME) {  
+                                //Handle Home button.  
+			
+                            }  
 		}
+		
+		var BGMposition:Number=0;
+		function onDeactivate(event:Event):void
+		{
+			showtrace("onDeactivateeeeeeee ");
+			BGMposition=bgmchannel.position;
+			bgmchannel.stop();			
+			//trace("stop-BGMPOSITION"+BGMposition);
+		}
+
+
+		
+		function onActivate(event:Event):void
+		{
+			showtrace("onActivateeeeeeee ");
+			bgmchannel = soundBGM.play(BGMposition);
+		}
+
 
 		//初次写入存档
 		function updatecgxml():void
@@ -500,7 +528,7 @@
 			var svXML = XML(svfileStream.readUTFBytes(svfileStream.bytesAvailable));
 			svfileStream.close();
 			sevallist = svXML.staticVar;
-			trace("evallist sv=" +sevallist);
+			//trace("evallist sv=" +sevallist);
 		}
 		//cgxml
 		function readCgXMLfile(event:Event):void
@@ -557,12 +585,12 @@
 			btnsoundurl=initXML.Sui.clicksound. @ url;
 
 			//////////初始化人物对话框msg;
-			SaeDialog=new SaEDialog(initXML.Sui.msgtalk. @ img,initXML.Sui.msgtalk. @ colorname, initXML.Sui.msgtalk. @ colordialog,Tformat);   //
+			SaeDialog=new SaEDialog(initXML.Sui.msgtalk. @ img,initXML.Sui.msgtalk. @ colorname, initXML.Sui.msgtalk. @ colordialog,Tformat,initXML.Sui.msgtalk. @ sizetxt);   //
 			msgTalk.addChild(SaeDialog);
 			msgTalk.x = initXML.Sui.msgtalk. @ x;
 			msgTalk.y = initXML.Sui.msgtalk. @ y;
 			////初始化text
-			SaeText=new SaEText( initXML.Sui.txtlayer. @colortxt,Tformat) ;
+			SaeText=new SaEText( initXML.Sui.txtlayer. @colortxt,Tformat,initXML.Sui.txtlayer. @sizetxt) ;
 			txtlayer.visible = false;
 			txtlayer.addChild(SaeText);
 			////初始化showtrace
@@ -645,11 +673,13 @@
 
 			//////////变量
 			evallist = initXML.svar;
-			trace("evallist=" +evallist);
+			//trace("evallist=" +evallist);
 			
 			//////////写入cg和存档，更新staticvar
 			trace("☆init-03 加载cg和存档");
 			writeInitSavefile();//写入cg和存档
+
+			 stageInit();///////////
 		}
 
 		/////////////////txt 读取script完成
@@ -676,7 +706,7 @@
 						i--;
 					}
 				}
-				trace(i + "SCT=" + scT);
+			//	trace(i + "SCT=" + scT);
 				if (scT.length > 1)
 				{
 				arrScript.push(scT);
@@ -872,8 +902,6 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
-							ti++;
-						analysisscript(ti);
 						return;
 					case "getcg" :
 						anGETCG(arr[i]);
@@ -925,8 +953,6 @@
 						return;
 					case "clr" :
 						anCLR();
-						//ti++;
-						//analysisscript(ti);
 						return;						
 					case "msghide" :
 						anMSGhide();
@@ -1104,8 +1130,6 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
-						ScrI++;
-						anIscript(arrS,ScrI);
 						return;
 					case "getcg" :
 						anGETCG(arrS[i]);
@@ -1148,8 +1172,6 @@
 						return;
 					case "clr" :
 						anCLR();
-						//ScrI++;
-						//anIscript(arrS,ScrI);
 						return;						
 					case "msghide" :
 						anMSGhide();
@@ -2117,6 +2139,8 @@
 
 		function stageInit()
 		{
+
+		trace(" stage Init");
 			ScrI = 0;
 			arrScrInd = -1;
 			inscript = false;
@@ -2247,7 +2271,7 @@
 					Load(StrAutosave);
 					return;
 				case "keyback" :
-					//trace("clickLoad");
+					
 					NativeApplication.nativeApplication.exit();
 					return;
 				default :
@@ -2262,7 +2286,7 @@
 			//自动播放
 			if ((readScenario == firstScenario))
 			{
-				trace("readScenario===" + readScenario + "//init=" + initXML.playingat.scenario);
+				//trace("readScenario===" + readScenario + "//init=" + initXML.playingat.scenario);
 				showtrace("you can not use skip here");
 				return;
 			}
@@ -2343,7 +2367,7 @@
 			
 			if (readScenario == firstScenario || !saveable||inscript)
 			{
-				trace(((("readScenario===" + readScenario) + "//init=") + initXML.playingat.scenario));
+				//trace(((("readScenario===" + readScenario) + "//init=") + initXML.playingat.scenario));
 				showtrace("you cannot save here");
 				//"main.txt"
 				return;

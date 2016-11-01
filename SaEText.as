@@ -14,13 +14,13 @@
 		//var Tformat:TextFormat = new TextFormat();
 		public var evtC:Event = new Event("NEXT",true);
 
-		public function SaEText(color:String,Tformat:TextFormat)
+		public function SaEText(color:String,Tformat:TextFormat,Tsize:String)
 		{			
 			trace("new SaEText"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
 			trace("new SaEText saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 36;
+			Tformat.size =parseInt(Tsize);// 36;
 			
 			
 			txt.textColor =uint("0x"+color);//ffcc66;

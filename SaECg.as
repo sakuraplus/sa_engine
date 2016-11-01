@@ -96,7 +96,7 @@
 			
 			//绘制背景
 			var square:Sprite = new Sprite();
-			square.graphics.beginFill(uint("0x"+colorBG));//(uint("0x"+colorBG),0.4);//
+			square.graphics.beginFill(uint("0x"+colorBG),0.4);//uint("0x"+colorB)
 			square.graphics.drawRect(0, 0, 960, 640);
 			cglayer.addChildAt(square,0);
 			
@@ -112,7 +112,7 @@
 			cgXML =cgxml;
 			///////////////////////////////;
 			cgArray = [];
-			
+			trace("cgXMLcgXML--"+ cgXML.cgpanel.children().length());
 			//将全部cg添加到列表
 			var i = 0;
 			for (i = 0; i < cgXML.cgpanel.children().length(); i++)
@@ -122,7 +122,7 @@
 				cgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,CGloadError);
 				cgArray.push(cgLoader);
 
-				trace(("cgXMLcgXML--" + cgXML.cgpanel.children()[i]. @ show));
+				trace(("cgXMLcgXML--" + cgXML.cgpanel.children()[i]. @ name));
 				var cgURLReq:URLRequest = new URLRequest(("ui/" + cgXML.cgpanel.children()[i]. @ img));
 
 				cgLoader.load(cgURLReq);
@@ -181,7 +181,7 @@
 				if (((i >= cgPage * 8) && i <= ((8 * cgPage) + 7)))
 				{
 					cgArray[i].visible = true;
-					trace("saeCG "+i);
+					trace("cg界面，显示当前页的saeCG "+i);
 				}
 				else
 				{

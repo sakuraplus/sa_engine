@@ -1,25 +1,8 @@
 <sv>
 <staticVar>
-<speed t="">1</speed>
-<language t="">0</language>
-<!-- 结局 -->
 <eDLmad t="L杀害小L和d">0</eDLmad>
 <eBE t="L杀害d惊诧绝望"/>
-<eClone1 t="老师暴走小L牺牲"/>
-<eClone2 t="d终止实验带小L远行"/>
-<eClone3 t="d虐待小L结局"/>
-<eDCL t="一家三口"/>
-<eDCL2 t="一家三口隐藏"/>
-<eDL1 t="L黑化囚禁d"/>
-<eDL2 t="记忆循环"/>
-<eDR1 t="d保护小r植物人"/>
-<eDR73 t="DR73集"/>
-<eDM3 t="兄贵草泥马">0</eDM3>
-<eDM2 t="小L杀三龟"/>
-<eDM1 t="d杀M"/>
-<eTRUE t="HE"/>
 </staticVar>
-
 </sv>
 
 <!--L杀害小L和D：魔鬼，罪人
