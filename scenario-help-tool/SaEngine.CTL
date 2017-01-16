@@ -7,12 +7,12 @@ New Cliptext library
 
 
 #T=img flash
-[img xxx.png,0,0,layer_name]
+[img IMG_FILE,0,0,LAYER_NAME]
 [wait 500]
-[img ,0,0,layer_name]
+[img ,0,0,LAYER_NAME]
 #T=funt color
  <font  color="#ffff00"></font>
- #T=<b>text</b>
+ #T=<b>TEXT_CONTENT</b>
 <b></b>
 #T=<br>
 <br>
@@ -20,9 +20,9 @@ New Cliptext library
 <i></i>
 
 #T=[ask ]selection
-[ask selection,720,400,label,btnIMG]
+[ask TEXT_CONTENT,720,400,LABEL,IMG_FILE]
 #T=[askdialog]
-[askdialog character_name,lines,img_file,400,200,layer_name] 
+[askdialog CHARACTER_NAME,TEXT_CONTENT,IMG_FILE,400,200,LAYER_NAME] 
 
 #T=[autosave]
 [autosave]
@@ -39,11 +39,11 @@ New Cliptext library
 #T=[clearimg]clear all layer
 [clearimg]
 #T=[dialog img]
-[dialog character_name,lines,img_file,400,200,layer_name]
+[dialog CHARACTER_NAME,TEXT_CONTENT,IMG_FILE,400,200,LAYER_NAME]
 #T=[text]text auto skip
 ,auto]
 #T=[text add]
-[text add,0,20,600,]
+[text add,0,20,600,TEXT_CONTENT]
 #T=[text clear]
 [text clear]
 #T=[text new]
@@ -52,9 +52,9 @@ New Cliptext library
 #T=[clr]hide msg
 [clr] 
 #T=[dialog]
-[dialog character_name,lines]
+[dialog CHARACTER_NAME,LINES_TEXT_CONTENT]
 #T=[dialogadd]
-[dialogadd lines]
+[dialogadd LINES_TEXT_CONTENT]
 #T=[eval]variable
 [eval @variable_name ,+,value]
 #T=[getcg]

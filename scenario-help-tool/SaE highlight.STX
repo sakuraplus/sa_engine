@@ -1,18 +1,17 @@
 #TITLE=mntgg
-; PHP syntax file written by ES-Computing. 2004-02-06
 ; This file is required for EditPlus to run correctly.
 
 #DELIMITER=,(){}[]-+*%/="'~!&|<>?:;.#@$¡°¡±
 #QUOTATION1='
 #QUOTATION2="
 #LINECOMMENT=//
-#LINECOMMENT2=#
 #COMMENTON=@
 #COMMENTOFF= 
 #HTML_EMBEDDED=n
-#SCRIPT_BEGIN=¡°
-#SCRIPT_END=¡±
+#string_BEGIN=¡°
+#string_END=¡±
 #SKIP_QUOTE=y
+#NUMBER_PATTERN=cpp
 
 
 
@@ -23,12 +22,13 @@ dialog
 dialogadd
 ask
 askdialog
-
+btn
+removebtn
 if
 end if
 clr
 sound
-
+bgm
 clearimg
 eval
 wait
@@ -40,17 +40,17 @@ showcg
 goto 
 call
 label
-bgm
 
 
-#KEYWORD=Variables
+
+#KEYWORD=text style
 clear
 add
 new
 auto
 ,
 
-#KEYWORD=Namespaces
+#KEYWORD=file
 background
 getcg
 img
