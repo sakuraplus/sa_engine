@@ -1765,21 +1765,22 @@ trace("GETCG  "+tt);
 		{
 			
 			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			var ArrT;
 			var operator:String;
 			if(tt.indexOf("=")>0)
 			{
-				var ArrT = tt.split("=");
+				 ArrT = tt.split("=");
 				operator="=";
 			}else if(tt.indexOf("+")>0)
 			{
-				var ArrT = tt.split("+");
+				 ArrT = tt.split("+");
 				operator="=";
 			}else if(tt.indexOf("-")>0)
 			{
-				var ArrT = tt.split("-");
+				 ArrT = tt.split("-");
 				operator="=";
 			}
-			
+			trace("anEVAL  1  "+ArrT[0]+"-"+ArrT[1]);
 			//var st=ArrT[0];//.substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
 			//trace(tt+"///"+st);
 			
@@ -1837,7 +1838,7 @@ trace("GETCG  "+tt);
 			if(!found)
 			{
 				//变量不存在，建立临时变量
-				var t="<"+ArrT[0]+">"+ArrT[2]+"</"+ArrT[0]+">";
+				var t="<"+ArrT[0]+">"+ArrT[1]+"</"+ArrT[0]+">";
 				if(tempevallist==null)
 				{					
 					t="<temp><temp>"+t+"</temp></temp>";

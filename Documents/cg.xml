@@ -1,0 +1,7 @@
+<cg>
+  <cgpanel>
+    <CG1 name="标题画面" show="true" img="DLnote.jpg"/>
+    <CG2 name="老师" show="true" img="black.jpg"/>
+    <CG3 name="老师" show="false" img="white.jpg"/>
+  </cgpanel>
+</cg>
