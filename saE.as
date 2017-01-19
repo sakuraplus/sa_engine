@@ -1288,7 +1288,7 @@
 		function anGETCG(scenario:String )
 		{
 			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-
+trace("GETCG  "+tt);
 			var ci = cgXML.cgpanel.elements(tt).childIndex();
 			if(cgXML.cgpanel.children()[ci]. @ show == "true")
 			{
@@ -1376,7 +1376,7 @@
 		{
 			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			tt = trim(replaceVar(tt));
-			var ArrT = tt.split(",");
+			var ArrT = tt.split("|");//ENGVER
 			var i = ArrT.length;
 			var strLayer = ArrT[3];
 			var ci =  initXML.Layer.child(strLayer).childIndex();
@@ -1457,7 +1457,7 @@
 		//显示背景
 		function anBG(tt:String)
 		{
-			var ArrT = tt.split(",");
+			var ArrT = tt.split("|");//ENGVER
 			trace("ANBG"+tt+"//"+ArrT);
 			ArrT[0]=trim(ArrT[0]);
 			bgdurtime=durtime;
@@ -1502,7 +1502,7 @@
 			for (var ishowask = 0; ishowask < i; ishowask++)
 			{
 				var t = arr[index].substring(arr[index].indexOf(" ") + 1,arr[index].indexOf("]"));
-				var arrT = t.split(",");
+				var arrT = t.split("|");//ENGVER
 				index++;
 				///////////////
 				askArray.push(arrT);
@@ -1560,7 +1560,7 @@
 				asking = true;
 				
 				var t = arr[index].substring(arr[index].indexOf(" ") + 1,arr[index].indexOf("]"));
-				var arrT = t.split(",");
+				var arrT = t.split("|");//ENGVER
 				index++;
 				
 				askArray.push(arrT);
@@ -1663,7 +1663,7 @@
 			loadtxt = false;//读取期间禁止点击
 			//
 			var tt=trim(scenario .substring(scenario .indexOf(" ") + 1,scenario .indexOf("]")));
-			var ArrT = tt.split(",");
+			var ArrT = tt.split("|");//ENGVER
 			readScenario = ArrT [0];// 脚本文件
 			trace(("CALL readScenario==" + readScenario));
 			req = new URLRequest(("scenario/" + readScenario));//加载路径
@@ -1760,14 +1760,30 @@
 
 		}
 
-	
-		//变量赋值
+			//变量赋值
 		function anEVAL(scenario:String )
 		{
+			
 			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-			var ArrT = tt.split(",");
-			var st = ArrT[0].substring(1,ArrT[0].length - 1);
-			ArrT[2]=replaceVar(ArrT[2]);
+			var operator:String;
+			if(tt.indexOf("=")>0)
+			{
+				var ArrT = tt.split("=");
+				operator="=";
+			}else if(tt.indexOf("+")>0)
+			{
+				var ArrT = tt.split("+");
+				operator="=";
+			}else if(tt.indexOf("-")>0)
+			{
+				var ArrT = tt.split("-");
+				operator="=";
+			}
+			
+			//var st=ArrT[0];//.substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
+			//trace(tt+"///"+st);
+			
+			///ArrT[2]=replaceVar(ArrT[2]);
 
 			var v ;//= evallist.elements(st);
 			var ci;// = evallist.elements(st).childIndex();
@@ -1777,12 +1793,12 @@
 			while (i<sevallist.children().length() )
 			{
 				//遍历静态变量列表
-				if(sevallist.children()[i].name()==st)
+				if(sevallist.children()[i].name()==ArrT[0])
 				{
 					found=true;
-					v = sevallist.elements(st);
-					ci= sevallist.elements(st).childIndex();
-					sevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
+					v = sevallist.elements(ArrT[0]);
+					ci= sevallist.elements(ArrT[0]).childIndex();
+					sevallist.children()[ci] =analysiseval(v,operator,ArrT[1]);//更新变量值
 					
 					//////////////////////////file写入存档
 
@@ -1806,12 +1822,12 @@
 			while (i<evallist.children().length())
 			{
 				//遍历变量列表
-				if(evallist.children()[i].name()==st)
+				if(evallist.children()[i].name()==ArrT[0])
 				{
 					found=true;
-					v = evallist.elements(st);
-					ci= evallist.elements(st).childIndex();
-					evallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
+					v = evallist.elements(ArrT[0]);
+					ci= evallist.elements(ArrT[0]).childIndex();
+					evallist.children()[ci] =analysiseval(v,operator,ArrT[1]);//更新变量值
 					break;
 				}
 				i++;
@@ -1821,7 +1837,7 @@
 			if(!found)
 			{
 				//变量不存在，建立临时变量
-				var t="<"+st+">"+ArrT[2]+"</"+st+">";
+				var t="<"+ArrT[0]+">"+ArrT[2]+"</"+ArrT[0]+">";
 				if(tempevallist==null)
 				{					
 					t="<temp><temp>"+t+"</temp></temp>";
@@ -1849,12 +1865,12 @@
 							trace("tempppp-add-"+tempevallist);
 							return;;
 						}
-						if(tempevallist.children()[i].name()==st)
+						if(tempevallist.children()[i].name()==ArrT[0])
 						{
 							//更新变量值
-							v = tempevallist.elements(st);
-							ci= tempevallist.elements(st).childIndex();
-							tempevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
+							v = tempevallist.elements(ArrT[0]);
+							ci= tempevallist.elements(ArrT[0]).childIndex();
+							tempevallist.children()[ci] =analysiseval(v,operator,ArrT[1]);
 							trace("eval-tempevallist-"+i);
 							return;;
 						}
@@ -1865,11 +1881,124 @@
 				}
 			}
 			
-			trace("evalll"+ArrT[2]);
+			trace("evalll"+ArrT[1]);
 			
 			return;
 		}
 		
+//		//变量赋值
+//		function anEVAL(scenario:String )
+//		{
+//			
+//			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+//			var ArrT = tt.split("|");//ENGVER
+//			//var st = ArrT[0].substring(1,ArrT[0].length - 1);//
+//			var st=ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
+//			trace(tt+"///"+st);
+//			
+//			///ArrT[2]=replaceVar(ArrT[2]);
+//
+//			var v ;//= evallist.elements(st);
+//			var ci;// = evallist.elements(st).childIndex();
+//			
+//			var found=false;
+//			var i=0;
+//			while (i<sevallist.children().length() )
+//			{
+//				//遍历静态变量列表
+//				if(sevallist.children()[i].name()==st)
+//				{
+//					found=true;
+//					v = sevallist.elements(st);
+//					ci= sevallist.elements(st).childIndex();
+//					sevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
+//					
+//					//////////////////////////file写入存档
+//
+//					var file = FileP.resolvePath("Documents/staticvar.xml");
+//
+//					var stream:FileStream = new FileStream  ;
+//					stream.open(file,FileMode.WRITE);
+//
+//					stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+//					stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");
+//					//stream.writeUTFBytes(sevallist.toString());
+//					stream.close();
+//					trace("static  xmlsave");
+//					////////////////////file
+//					break;
+//				}
+//				i++;
+//			}
+//
+//			i=0;
+//			while (i<evallist.children().length())
+//			{
+//				//遍历变量列表
+//				if(evallist.children()[i].name()==st)
+//				{
+//					found=true;
+//					v = evallist.elements(st);
+//					ci= evallist.elements(st).childIndex();
+//					evallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
+//					break;
+//				}
+//				i++;
+//			}
+//			i=0;
+//			
+//			if(!found)
+//			{
+//				//变量不存在，建立临时变量
+//				var t="<"+st+">"+ArrT[2]+"</"+st+">";
+//				if(tempevallist==null)
+//				{					
+//					t="<temp><temp>"+t+"</temp></temp>";
+//					var tx:XML = new XML(t);
+//					tempevallist=tx.temp;    
+//					trace("tempppp"+tempevallist);
+//				}else if(tempevallist.children().length()==0){
+//					
+//					t="<temp><temp>"+t+"</temp></temp>";
+//					var tx2:XML = new XML(t);
+//					
+//					tempevallist=tx2.temp;    
+//					trace("2tempppp"+tempevallist);
+//				}else{
+//					while (i<=tempevallist.children().length())
+//					{
+//						//增加
+//						trace("tempppp---"+tempevallist);
+//						
+//						if(i==tempevallist.children().length())
+//						{
+//							var txmls:XML = new XML(t);
+//							
+//							tempevallist.prependChild(txmls);    
+//							trace("tempppp-add-"+tempevallist);
+//							return;;
+//						}
+//						if(tempevallist.children()[i].name()==st)
+//						{
+//							//更新变量值
+//							v = tempevallist.elements(st);
+//							ci= tempevallist.elements(st).childIndex();
+//							tempevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
+//							trace("eval-tempevallist-"+i);
+//							return;;
+//						}
+//						
+//						i++;
+//					}
+//					
+//				}
+//			}
+//			
+//			trace("evalll"+ArrT[2]);
+//			
+//			return;
+//		}
+//		
 
 
 		function analysiseval(st0:String ,st1:String,st2:String)
@@ -2015,13 +2144,15 @@
 				//如果包含临时变量
 				tlist+=tempevallist;
 			}
-
-			while (str.indexOf("@") >= 0 && str.indexOf(" ") >= 0)
+			
+			
+			while (str.indexOf("@") >= 0 && str.indexOf(" ",str.indexOf("@")+1) >= 0)
 			{
 				//遍历 文字中包含的所有变量
 				sti = str.indexOf("@");
 				edi = str.indexOf(" ",sti + 1);
 				strT = str.substring((sti + 1),edi);
+				trace("replaceVar   "+strT);
 				//变量名称
 				t = "@" + strT + " ";
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2054,7 +2185,8 @@
 		{
 			while(str.indexOf (" ")>=0)
 			{
-				str=str.replace (" ","");
+				//str=str.replace (" ","");
+				str=str.replace (" " , "");//ENGVER
 			}
 				return str;
 			

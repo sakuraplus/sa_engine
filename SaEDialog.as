@@ -102,7 +102,7 @@
 		{
 			var replaytxt="";
 		
-			var ArrT = str.split(",");
+			var ArrT = str.split("|");//ENGVER
 			if (ArrT.length <2)
 			{
 				txtTalk.htmlText = ArrT[0];

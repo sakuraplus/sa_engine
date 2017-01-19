@@ -49,7 +49,7 @@
 		//返回文字用于回放记录
 		public function showText(scenario:String):String 
 		{
-			var ArrT = scenario.split(",");
+			var ArrT = scenario.split("|");//ENGVER
 			var replaytxt="";
 			_txtlayer.x = 0;// parseInt(ArrT[1]);
 			_txtlayer.y = 0;// parseInt( ArrT[2]);
