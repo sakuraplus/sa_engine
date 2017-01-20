@@ -224,7 +224,11 @@
 			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
 			TFloader.load(TFurl,loaderContext);
 			
+			
 		}
+		//////////////////////	
+		/////public  function xzzz(delimiter: String, ...limit)		
+		//////////////////////
 
 		//字体swf加载完成
 		function TextformatComplete(event:Event):void
@@ -1288,7 +1292,7 @@
 		function anGETCG(scenario:String )
 		{
 			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-trace("GETCG  "+tt);
+
 			var ci = cgXML.cgpanel.elements(tt).childIndex();
 			if(cgXML.cgpanel.children()[ci]. @ show == "true")
 			{
@@ -1774,18 +1778,18 @@ trace("GETCG  "+tt);
 			}else if(tt.indexOf("+")>0)
 			{
 				 ArrT = tt.split("+");
-				operator="=";
+				operator="+";
 			}else if(tt.indexOf("-")>0)
 			{
 				 ArrT = tt.split("-");
-				operator="=";
+				operator="-";
 			}
 			trace("anEVAL  1  "+ArrT[0]+"-"+ArrT[1]);
-			//var st=ArrT[0];//.substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
-			//trace(tt+"///"+st);
-			
-			///ArrT[2]=replaceVar(ArrT[2]);
-
+			ArrT[0]=replaceprefix(ArrT[0]);
+			//ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf(" ",ArrT[0].indexOf("@") + 1));
+			//trace(tt+"///"+st);			
+			ArrT[1]=replaceVar(ArrT[1]);//允许赋值为变量
+			trace("ArrT[1]= "+ArrT[1]);
 			var v ;//= evallist.elements(st);
 			var ci;// = evallist.elements(st).childIndex();
 			
@@ -2133,7 +2137,8 @@ trace("GETCG  "+tt);
 		//////////////////////////////////////////////////
 		//替换变量
 		function replaceVar(str:String):String
-		{
+		{	
+			trace("replaceVar--str="+str);
 			var strT:String;
 			var t:String;
 			var sti = 0;
@@ -2146,14 +2151,16 @@ trace("GETCG  "+tt);
 				tlist+=tempevallist;
 			}
 			
+
 			
-			while (str.indexOf("@") >= 0 && str.indexOf(" ",str.indexOf("@")+1) >= 0)
+			while (str.indexOf("@",edi) >= 0 && str.indexOf(" ",edi+1) > 0)
 			{
 				//遍历 文字中包含的所有变量
-				sti = str.indexOf("@");
+				sti = str.indexOf("@",edi);
 				edi = str.indexOf(" ",sti + 1);
 				strT = str.substring((sti + 1),edi);
-				trace("replaceVar   "+strT);
+				//strT=replaceprefix(strT);
+				trace("replaceVar   "+edi+"  "+strT);
 				//变量名称
 				t = "@" + strT + " ";
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2172,8 +2179,9 @@ trace("GETCG  "+tt);
 				}
 				if(!haselement)
 				{
-					//没有匹配
-					str = str.replace(t,"error");
+					//没有匹配,不替换
+					trace("没有匹配,不替换");
+					//str = t;//str.replace(t,"error");
 				}
 			}
 			
@@ -2192,6 +2200,25 @@ trace("GETCG  "+tt);
 				return str;
 			
 		}
+		
+		//去除变量名前缀后缀
+		function replaceprefix(str:String,...separater):String
+		{
+			var Strprefix="@";
+			var	Strsuffix=" "; 
+			if(separater.length==2)
+			{
+				Strprefix=separater[0];
+				Strsuffix=separater[1]; 
+			}
+			if(str.indexOf(Strprefix)>=0 &&str.indexOf(Strsuffix,str.indexOf(Strprefix) + 1)>0)
+			{
+				str=str.substring((str.indexOf(Strprefix) + 1),str.indexOf(Strsuffix,str.indexOf(Strprefix) + 1));
+			}
+			return str;
+		}
+		
+		
 		//去除首尾空格
 		function trim(str:String):String
 		{

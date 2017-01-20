@@ -1,12 +1,12 @@
 <save><svar t="变量">
   <savedisable>0</savedisable>
-  <V2>0</V2>
+  <V2>bbbb</V2>
 </svar>
 <playingat>
   <scenario>main.txt</scenario>
   <lastScenario/>
   <lastreadline>0</lastreadline>
-  <readline>76</readline>
+  <readline>26</readline>
   <bgm/>
-  <bg>white.jpg</bg>
+  <bg/>
 </playingat></save>
