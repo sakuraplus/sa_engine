@@ -1580,7 +1580,7 @@
 		}
 
 		//点击选项
-		function clickbtn(event:MouseEvent):void
+		function clickbtn(event:MouseEvent):void 
 		{
 			if (waiting)
 			{
@@ -1600,7 +1600,7 @@
 			btnSOUND();
 			var i = 0;
 			i = askbtnArray.indexOf(event.currentTarget);
-			var tt = askArray[i][3];
+			var tt = replaceVar( askArray[i][3]);
 			
 			anBTNremove();
 			

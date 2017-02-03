@@ -1,17 +1,12 @@
 <save><svar t="变量">
-  <LoveM>1</LoveM>
-  <LoveL>1</LoveL>
-  <LoveR>1</LoveR>
-  <LoveC>1</LoveC>
-  <LoveD>0</LoveD>
-  <Flag>LC</Flag>
-  <Temp>0</Temp>
+  <savedisable>0</savedisable>
+  <V2>0</V2>
 </svar>
 <playingat>
-  <scenario>Don_yue.txt</scenario>
-  <readline>1362</readline>
-  <bgm>Don.mp3</bgm>
-  <bg>Dlab01.jpg</bg>
-  <lastreadline>120</lastreadline>
-  <lastScenario>select.txt</lastScenario>
+  <scenario>main.txt</scenario>
+  <lastScenario/>
+  <lastreadline>0</lastreadline>
+  <readline>76</readline>
+  <bgm/>
+  <bg>white.jpg</bg>
 </playingat></save>

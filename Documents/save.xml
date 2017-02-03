@@ -1,17 +1,17 @@
 <save><svar t="变量">
-  <LoveM>1</LoveM>
-  <LoveL>0</LoveL>
-  <LoveR>0</LoveR>
-  <LoveC>0</LoveC>
-  <LoveD>0</LoveD>
-  <Flag></Flag>
-  <Temp>0</Temp>
+<LoveM>0</LoveM>
+<LoveL>0</LoveL>
+<LoveR>0</LoveR>
+<LoveC>0</LoveC>
+<LoveD>0</LoveD>
+<Flag></Flag>
+<Temp>0</Temp>
+
+
 </svar>
 <playingat>
-  <scenario>Don_yue.txt</scenario>
-  <readline>54</readline>
-  <bgm>Mikey.mp3</bgm>
-  <bg>Aprilhouse2.jpg</bg>
-  <lastreadline>120</lastreadline>
-  <lastScenario>select.txt</lastScenario>
+  <scenario>select.txt</scenario>
+  <readline>0</readline>
+  <bgm/>
+  <bg></bg>
 </playingat></save>
