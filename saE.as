@@ -1604,7 +1604,7 @@
 			btnSOUND();
 			var i = 0;
 			i = askbtnArray.indexOf(event.currentTarget);
-			var tt = askArray[i][3];
+			var tt =replaceVar( askArray[i][3]);
 			
 			anBTNremove();
 			
@@ -2121,7 +2121,7 @@
 		}
 		
 
-		//设置淡入淡出时间
+		//设置淡入淡出时间 倍率
 		function ansetdurtime()
 		{
 			var sp=parseInt(sevallist.elements("speed"));
