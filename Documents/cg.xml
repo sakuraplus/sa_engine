@@ -1,7 +1,16 @@
 <cg>
   <cgpanel>
     <CG1 name="标题画面" show="true" img="DLnote.jpg"/>
-    <CG2 name="老师" show="true" img="black.jpg"/>
-    <CG3 name="老师" show="false" img="white.jpg"/>
-  </cgpanel>
+	<CG2 name="老师" show="false" img="black.jpg"/>
+	<CG3 name="老师" show="false" img="white.jpg"/>
+	</cgpanel>
 </cg>
+<!-- 
+诅咒    囚禁
+绝望    失忆
+牺牲    保护
+旅行    现实
+死亡    归来
+天堂    援救
+           兄弟 -->
+
