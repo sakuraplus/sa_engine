@@ -1,10 +1,15 @@
 <cg>
-  <cgpanel>
-    <CG1 name="标题画面" show="true" img="DLnote.jpg"/>
-	<CG2 name="老师" show="false" img="black.jpg"/>
-	<CG3 name="老师" show="false" img="white.jpg"/>
+	<cgpanel>
+		<CG1 name="A red picture" show="true" img="red.jpg"/>
+		<CG2 name="A black picture" show="false" img="black.jpg"/>
+		<CG3 name="A white picture" show="false" img="white.jpg"/>
+		<CG4 name="The street" show="true" img="DMstreet1.jpg"/>
+		<CG5 name="A notebook" show="false" img="DLnote.jpg"/>
+		<CG6 name="Moon on the roof" show="false" img="DLroof.jpg"/>
 	</cgpanel>
 </cg>
+
+
 <!-- 
 诅咒    囚禁
 绝望    失忆
