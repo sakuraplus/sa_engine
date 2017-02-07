@@ -1,8 +1,10 @@
 <sv>
-<staticVar>
-<eDLmad t="L杀害小L和d">0</eDLmad>
-<eBE t="L杀害d惊诧绝望"/>
-</staticVar>
+	<staticVar>
+		<filecomplete t="">0</filecomplete>
+		<speed t="">1</speed>
+		<eDLmad>0</eDLmad>
+		<eBE/>
+	</staticVar>
 </sv>
 
 <!--L杀害小L和D：魔鬼，罪人
