@@ -17,7 +17,7 @@
 			//文字样式
 			trace("new saePB"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.size = 36;
+			//Tformat.size = 36;
 			txt.autoSize =TextFieldAutoSize.LEFT;			
 			txt.embedFonts=true;
 			txt.selectable =false;			

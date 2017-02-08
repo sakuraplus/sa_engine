@@ -73,12 +73,12 @@
 			
 			
 			
-			trace("new SaEMagbox"+Tformat+"//"+Tformat.font);
+			trace("new SaEcg"+Tformat+"//"+Tformat.size);
 			//文字
 			var fontArray:Array = Font.enumerateFonts(false);
 			trace("new SaEMagbox saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 26;
+			//Tformat.size = 26;
 			addChild(txt);			
 			txt.textColor =uint("0x"+colorT);
 			txt.backgroundColor=uint("0x"+colorTB);

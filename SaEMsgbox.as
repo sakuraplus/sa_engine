@@ -71,7 +71,8 @@
 			var fontArray:Array = Font.enumerateFonts(false);
 			trace("new SaEMagbox saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 30;
+			Tformat.align="center";
+			//Tformat.size = 30;
 			addChild(txt);			
 			txt.textColor =uint("0x"+colorT);
 			txt.autoSize =TextFieldAutoSize.CENTER;			
@@ -80,7 +81,7 @@
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;
 			txt.setTextFormat (Tformat);
-			txt.x=(960-bgLoader.width )/2;
+			txt.x=960/2;
 			trace("bgLoader.width ="+bgLoader.width );
 			//txt.y=parseInt(PosImg[6]);
 			txtcenterY=parseInt(PosImg[6]);
@@ -117,6 +118,8 @@
 					txt.scaleX=txtScale;
 					txt.scaleY=txtScale;		
 					trace("txtX="+txt.x);
+					txt.x=txtcenterX-txt.width/2;
+					trace("txtX2="+txt.x);
 					
 				}
 		}

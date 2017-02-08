@@ -42,7 +42,7 @@
 			trace("new SaETrace"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 22;
+		//	Tformat.size = 22;
 			txt.defaultTextFormat = Tformat;
 			txt.embedFonts = true;
 			txt.textColor =uint("0x"+colorT);//#333366;

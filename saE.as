@@ -104,8 +104,8 @@
 		var sysLoader:Loader = new Loader  ;//菜单背景
 		var btnSLoader:Loader = new Loader  ;//存档按钮
 		var btnLLoader:Loader = new Loader  ;//快速读档
-		var btnBLoader:Loader = new Loader  ;//imgback回菜单
-		var btnRLoader:Loader = new Loader  ;//imgreplay
+		var btnBLoader:Loader = new Loader  ;//imgreserve1回菜单
+		var btnRLoader:Loader = new Loader  ;//imgreserve2
 		var btnPLoader:Loader = new Loader  ;//回放按钮
 		var btnSkipLoader:Loader = new Loader  ;//自动播放
 		
@@ -589,28 +589,74 @@
 			btnsoundurl=initXML.Sui.clicksound. @ url;
 
 			//////////初始化人物对话框msg;
-			SaeDialog=new SaEDialog(initXML.Sui.msgtalk. @ img,initXML.Sui.msgtalk. @ colorname, initXML.Sui.msgtalk. @ colordialog,Tformat,initXML.Sui.msgtalk. @ sizetxt);   //
+			if(initXML.Sui.msgtalk. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.msgtalk. @ sizetxt);
+			}else{
+			Tformat.size=36;
+				trace("msgtalk Tformat size default 36");
+			}
+			SaeDialog=new SaEDialog(initXML.Sui.msgtalk. @ img,initXML.Sui.msgtalk. @ colorname, initXML.Sui.msgtalk. @ colordialog,Tformat);   //
 			msgTalk.addChild(SaeDialog);
 			msgTalk.x = initXML.Sui.msgtalk. @ x;
 			msgTalk.y = initXML.Sui.msgtalk. @ y;
+
 			////初始化text
-			SaeText=new SaEText( initXML.Sui.txtlayer. @colortxt,Tformat,initXML.Sui.txtlayer. @sizetxt) ;
+			if(initXML.Sui.txtlayer. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.txtlayer. @ sizetxt);
+			}else{
+			Tformat.size=36;
+				trace("txtlayer Tformat size default 36");
+			}
+			SaeText=new SaEText( initXML.Sui.txtlayer. @colortxt,Tformat) ;
 			txtlayer.visible = false;
 			txtlayer.addChild(SaeText);
+
 			////初始化showtrace
+			if(initXML.Sui.txttrace. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.txttrace. @ sizetxt);
+			}else{
+			Tformat.size=22;
+				trace("txttrace Tformat size default 22");
+			}
 			SaeTrace.init(initXML.Sui.txttrace. @ colortxt,initXML.Sui.txttrace. @ colorbg,parseInt(initXML.Sui.txttrace. @ durtime),Tformat);
 			
 			///初始化背景图
 			imgBG.addChild(SaeBg);
+
 			///初始化回放文字
-			trace("pb"+Tformat)
+			if(initXML.Sui.imgplayback. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.imgplayback. @ sizetxt);
+			}else{
+			Tformat.size=36;
+			trace("imgplayback Tformat size default 36");
+			}
 			SaePlayback=new SaEPlayback(initXML.Sui.imgplayback. @ colortxt,initXML.Sui.imgplayback. @ colorbg,Tformat);
 			txtplayback.addChild(SaePlayback);
+
 			///初始化对话框
+			if(initXML.Sui.msgbox. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.msgbox. @ sizetxt);
+			}else{
+			Tformat.size=30;
+				trace("msgbox Tformat size default 30");
+			}
 			SaeMsgbox=new SaEMsgbox( initXML.Sui.msgbox. @ colorbg,initXML.Sui.msgbox. @ colortxt,initXML.Sui.msgbox. @ img,initXML.Sui.msgbox. @ pos, Tformat);
 			msgbox.addChild(SaeMsgbox);
 			
 			//初始化CG
+			if(initXML.Sui.cgScreen. @ sizetxt.length()>0)
+			{
+				Tformat.size=parseInt(initXML.Sui.cgScreen. @ sizetxt);
+				trace("@ sizetxt cgScreen "+Tformat.size);
+			}else{
+			Tformat.size=26;
+				trace("cgScreen Tformat size default-26");
+			}
 			SaeCg=new SaECg(initXML.Sui.cgScreen.@img, initXML.Sui.cgScreen.@pos,initXML.Sui.cgScreen.@colortxt, initXML.Sui.cgScreen.@txtbg, initXML.Sui.cgScreen.@colorbg, Tformat);
 			cgSc.addChild(SaeCg);//cgScreen
 			
@@ -644,16 +690,16 @@
 			}
 				
 			//返回/自定义按钮，自定义提示文字
-			sysURLReq = new URLRequest(initXML.Sui.imgback. @ img);
+			sysURLReq = new URLRequest(initXML.Sui.imgreserve1. @ img);
 			btnBLoader.load(sysURLReq);
-			btnSystem.btnBack.x = initXML.Sui.imgback. @ x;
-			btnSystem.btnBack.y = initXML.Sui.imgback. @ y;
+			btnSystem.btnBack.x = initXML.Sui.imgreserve1. @ x;
+			btnSystem.btnBack.y = initXML.Sui.imgreserve1. @ y;
 
 			//重新开始/自定义按钮，自定义提示文字
-			sysURLReq = new URLRequest(initXML.Sui.imgreplay. @ img);
+			sysURLReq = new URLRequest(initXML.Sui.imgreserve2. @ img);
 			btnRLoader.load(sysURLReq);
-			btnSystem.btnReplay.x = initXML.Sui.imgreplay. @ x;
-			btnSystem.btnReplay.y = initXML.Sui.imgreplay. @ y;
+			btnSystem.btnReplay.x = initXML.Sui.imgreserve2. @ x;
+			btnSystem.btnReplay.y = initXML.Sui.imgreserve2. @ y;
 
 			//回顾
 			sysURLReq = new URLRequest(initXML.Sui.imgplayback. @ img);
@@ -2399,10 +2445,10 @@
 					
 					trace("clickBack");
 					stageInit();//清除按钮临时变量，清除等待状态
-					//anCALL( initXML.Sui.imgback. @ goto);
+					//anCALL( initXML.Sui.imgreserve1. @ goto);
 					/////////call;
 					loadtxt = false;
-					readScenario = initXML.Sui.imgback. @ goto;
+					readScenario = initXML.Sui.imgreserve1. @ goto;
 					ti = 0;//loadXML.playingat.readline;
 					req = new URLRequest("scenario/" + readScenario);//加载路径
 					loader = new URLLoader  ;
@@ -2413,11 +2459,11 @@
 					return;
 				case "clickReplay" :
 					stageInit();//清除按钮临时变量，清除等待状态
-					//anCALL( initXML.Sui.imgreplay. @ goto);
+					//anCALL( initXML.Sui.imgreserve2. @ goto);
 					
 					///////////call
 					loadtxt = false;
-					readScenario = initXML.Sui.imgreplay. @ goto;
+					readScenario = initXML.Sui.imgreserve2. @ goto;
 					ti = 0;
 					trace(((ti + "load```CALL") + readScenario));
 					req = new URLRequest(("scenario/" + readScenario));//加载路径
@@ -2479,11 +2525,11 @@
 			//跳转到replay设定的脚本
 			stopTimerSkip();
 
-			if (readScenario == firstScenario)
-			{
-				showtrace("you cannot use this");
-				return;
-			}
+//			if (readScenario == firstScenario)
+//			{
+//				showtrace("you cannot use this");
+//				return;
+//			}
 			if (! btnwaiting)
 			{
 				btnwaiting = true;
@@ -2495,9 +2541,9 @@
 			}
 			btnSOUND();
 			askmsg = "clickReplay";
-			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgload. @ txt);
+			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgreserve2. @ txt);
 
-			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgreplay. @ x1)});
+			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 
 		}
 		function clickBack(event:MouseEvent):void
@@ -2516,7 +2562,7 @@
 			}
 			btnSOUND();
 			askmsg = "clickBack";
-			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgback. @ txt);
+			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgreserve1. @ txt);
 			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
 

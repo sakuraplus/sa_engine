@@ -36,7 +36,8 @@
 	
 
 		
-		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat,Tsize:String)
+		//public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat,Tsize:String)
+		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat)
 		{
 			trace("new saemsg"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
@@ -47,7 +48,7 @@
 			var msgURLReq:URLRequest = new URLRequest(url);
 			msgLoader.load(msgURLReq);
 
-			Tformat.size =parseInt(Tsize);// 36;
+			//Tformat.size =parseInt(Tsize);// 36;
 			
 			txtName.x=24;
 			txtName.y=6;
