@@ -2151,18 +2151,21 @@
 		//跳转
 		function anGOTO(scenario:String, index:int):int
 		{
+			scenario=replaceVar(scenario);
+			trace("GOTO-"+scenario);
 			//如果没找到,则返回当前序号index
 			for each (var item in gotoArr)
 			{				
 				if (item[0] == scenario)
 				{
+					trace("gooo!!item[0]" + item);	
 					index= item[1];
 					trace("gooo!!" + index);					
 					//showtrace("gooo!!" + index);					
 					return index;
 				}
 			}
-			showtrace("goto label notfound"+scenario);
+			showtrace("goto label not found");
 			return index+1; 
 		}
 		
