@@ -153,6 +153,8 @@
 		
 		public function saE()
 		{
+
+			
 			bgurl = "";
 			bgmurl = "";
 			trace("☆saE开始01");
@@ -2277,17 +2279,24 @@
 		function trimFront(str:String,char:String):String
 		{
 			char = stringToCharacter(char);
-			if (str.charAt(0) == char)
+
+			var pattern:RegExp =/^ +/;
+			trace(str.replace(pattern, "##"));
+
+			//if (str.charAt(0) == char)
+			while (str.charAt(0) == char && str.length>0)
 			{
 				str = trimFront(str.substring(1),char);
 			}
+			
+
 			return str;
 		}
 
 		function trimBack(str:String,char:String):String
 		{
 			char = stringToCharacter(char);
-			if (str.charAt(str.length - 1) == char)
+			while(str.charAt(str.length - 1) == char  && str.length>0)
 			{
 				str = trimBack(str.substring(0,str.length - 1),char);
 			}
