@@ -1,21 +1,10 @@
 <cg>
-	<cgpanel>
-		<CG1 name="A red picture" show="true" img="red.jpg"/>
-		<CG2 name="A black picture" show="false" img="black.jpg"/>
-		<CG3 name="A white picture" show="false" img="white.jpg"/>
-		<CG4 name="The street" show="true" img="DMstreet1.jpg"/>
-		<CG5 name="A notebook" show="false" img="DLnote.jpg"/>
-		<CG6 name="Moon on the roof" show="false" img="DLroof.jpg"/>
-	</cgpanel>
+  <cgpanel>
+    <CG1 name="A red picture" show="true" img="red.jpg"/>
+    <CG2 name="A black picture" show="true" img="black.jpg"/>
+    <CG3 name="A white picture" show="false" img="white.jpg"/>
+    <CG4 name="The street" show="true" img="DMstreet1.jpg"/>
+    <CG5 name="A notebook" show="false" img="DLnote.jpg"/>
+    <CG6 name="Moon on the roof" show="false" img="DLroof.jpg"/>
+  </cgpanel>
 </cg>
-
-
-<!-- 
-诅咒    囚禁
-绝望    失忆
-牺牲    保护
-旅行    现实
-死亡    归来
-天堂    援救
-           兄弟 -->
-

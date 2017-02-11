@@ -1,17 +1,12 @@
-<save><svar t="变量">
-<LoveM>0</LoveM>
-<LoveL>0</LoveL>
-<LoveR>0</LoveR>
-<LoveC>0</LoveC>
-<LoveD>0</LoveD>
-<Flag></Flag>
-<Temp>0</Temp>
-
-
+<save><svar>
+  <somename>0</somename>
+  <V2>bbbb</V2>
 </svar>
 <playingat>
-  <scenario>select.txt</scenario>
-  <readline>0</readline>
+  <scenario>main.txt</scenario>
+  <lastScenario/>
+  <lastreadline>0</lastreadline>
+  <readline>100</readline>
   <bgm/>
-  <bg></bg>
+  <bg>white.jpg</bg>
 </playingat></save>

@@ -159,8 +159,9 @@
 			bgmurl = "";
 			trace("☆saE开始01");
 //			trace(analysisIF.analysis("3>2"));
-//			trace("ZZZZZZZZZZZZZZZZ");
-
+			//trace("ZZZZZZZZZZZZZZZZ"+trimspace("   asd  wer   "));
+			//trace("ZZZZZZZZZZZZZZZZ" + trimspace("asd wer   "));
+			//trace("ZZZZZrrrrrrZZZZZ" + replacespace("  a s d  w e   r   "));
 			loaderContext.allowCodeImport=true;//允许加载swf中脚本
 
 			tracetxt.addChild(SaeTrace);
@@ -285,7 +286,7 @@
 			{
 				//提示退出
 				event.preventDefault();//屏蔽默认事件  
-				showtrace("KEYBACKKKKKKK");
+				showtrace("KEY BACK ");
 				askmsg = "keyback";
 				SaeMsgbox.showmsg (askmsg, "要退出了么？");
 				
@@ -747,7 +748,7 @@
 				var i = 0;
 				for (i = 0; i < scT.length; i++)
 				{ 
-					scT[i] = trim(scT[i]);
+					scT[i] = trimspace(scT[i]);
 					var str = scT[i];
 					str = str.substring(0, str.indexOf("]") + 1);
 					scT[i]=str;
@@ -779,7 +780,7 @@
 			var i = 0;
 			for (i = 0; i < arr.length; i++)
 			{
-				arr[i] = trim(arr[i]);
+				arr[i] = trimspace(arr[i]);
 				if (arr[i].length <= 1 || arr[i].indexOf("//") == 0)
 				{
 					//去除空行和注释
@@ -791,13 +792,13 @@
 			gotoArr = new Array  ;
 			for (i = 0; i < arr.length; i++)
 			{
-				arr[i] = arr[i].substring(0,arr[i].indexOf("]") + 1);
-				var ts = arr[i].substring(1,arr[i].indexOf(" "));
+				arr[i] = arr[i].substring(arr[i].indexOf("["),arr[i].indexOf("]") + 1);
+				var stag = arr[i].substring(1,arr[i].indexOf(" "));
 				//建立索引
-				if ((ts == "label"))
+				if (stag == "label")
 				{
-					var tt = arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]"));
-					var ar = [tt,i];
+					var labelname = arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]"));
+					var ar = [trimspace(labelname),i];
 					gotoArr.push(ar);
 				}
 			}
@@ -909,6 +910,7 @@
 		function soundCompleteHandler(event:Event):void
 		{
 			bgm = new URLRequest("sound/" +bgmurl);
+			trace("soundCompleteHandler"+bgmurl);
 			soundBGM = new Sound  ;
 			soundBGM.addEventListener(Event.COMPLETE,completeHandler);
 			soundBGM.load(bgm);
@@ -938,17 +940,18 @@
 			
 			if (arr[i].indexOf("[") == 0)
 			{
-				var ts = arr[i].substring(1,arr[i].indexOf(" "));
+				var stag = arr[i].substring(1,arr[i].indexOf(" "));
 				if (arr[i].indexOf(" ") < 0)
 				{
-					ts = arr[i].substring(1,arr[i].length - 1);
-					//trace("A~~" + ts+"//"+arr[i].length);
+					stag = arr[i].substring(1,arr[i].length - 1);
+					//trace("A~~" + stag+"//"+arr[i].length);
 				}
 				trace("●"+i+arr[i] );
-				switch (ts)
+				var txttemp=arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]"));
+				switch (stag)
 				{
 					case "showtip" :
-						showtrace(arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")));
+						showtrace(txttemp);
 						ti++;
 						analysisscript(ti);
 						return;
@@ -956,7 +959,7 @@
 						anSHOWCG();
 						return;
 					case "getcg" :
-						anGETCG(arr[i]);
+						anGETCG(txttemp);
 						ti++;
 						analysisscript(ti);
 						return;
@@ -979,24 +982,24 @@
 						return;
 						
 					case "load" :
-						anLOAD(arr[i]);
+						anLOAD(txttemp);
 						return;
 
 					case "text" :
-						anTEXT(arr[i]);
+						anTEXT(txttemp);
 						return;
 					case "dialogadd" :
-						anDIALOGADD(arr[i]);
+						anDIALOGADD(txttemp);
 						return;
 					case "dialog" :
-						anDIALOG(arr[i]);
+						anDIALOG(txttemp);
 						return;
 					case "askdialog" :
-						anDIALOG(arr[i]);
+						anDIALOG(txttemp);
 						return;
 
 					case "img" :
-						anIMG(arr[i]);
+						anIMG(txttemp);
 						return;
 					case "clearimg" :
 						anCLEARIMG();
@@ -1013,7 +1016,7 @@
 						anMSGshow();
 						return;						
 					case "background" :
-						anBG(arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")));
+						anBG(txttemp);
 						ti++;
 						analysisscript(ti);
 						return;	
@@ -1039,12 +1042,12 @@
 						analysisscript(ti);
 						return;	
 					case "goto" :
-						ti=anGOTO(arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")),i);
+						ti=anGOTO(txttemp,i);
 						analysisscript(ti);
 						return;
 						
 					case "if" :
-						ti=anIF(arr[i],i);
+						ti=anIF(txttemp,i);
 						analysisscript(ti);
 						return;
 					case "end" :
@@ -1052,28 +1055,22 @@
 						analysisscript(ti);
 						return;
 					case "eval" :
-						anEVAL(arr[i]);
+						anEVAL(txttemp);
 						ti++;
 						analysisscript(ti);
 						return;
 					case "sound" :
-						anSOUND( arr[i]);
+						anSOUND( txttemp);
 						ti++;
 						analysisscript(ti);
 						return;
 					case "bgm" :
-						if(bgmurl != arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")))
-						{
-							//如果和正在播放的相同
-							bgmurl = arr[i].substring(arr[i].indexOf(" ") + 1, arr[i].indexOf("]"));
-							anBGM(bgmurl);
-							
-						}
+						anBGM(txttemp);				
 						ti++;
 						analysisscript(ti);
 						return;
 					case "bgmstop" :
-						bgmurl = "";
+						//bgmurl = "";
 						anBGM("bgmstop");
 						ti++;
 						analysisscript(ti);
@@ -1083,11 +1080,11 @@
 						stopTimerSkip();
 						return;	
 					case "call" :
-						anCALL(arr[i]);
+						anCALL(txttemp);
 						stopTimerSkip();
 						return;
 					case "wait" :
-						anWait(arr[i]);
+						anWait(txttemp);
 						return;
 					case "waitclick" :
 						return;
@@ -1095,8 +1092,8 @@
 						anInitSavefile();
 						return;
 					case "script" :
-						trace("scriptscript"+arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")));
-						findIscript(arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")));
+						trace("scriptscript"+ txttemp);
+						findIscript( txttemp);
 						return;
 					case "setdurtime" :
 						trace("setdurtime!!!!!");
@@ -1105,8 +1102,8 @@
 						analysisscript(ti);
 						return;
 					default :
-						trace((ts + "please update your saE"));
-						showtrace("please update your saE"+arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]")));
+						trace((stag + "please update your saE"));
+						showtrace("please update your saE"+txttemp);
 						ti++;
 						analysisscript(ti);
 
@@ -1123,9 +1120,12 @@
 		function findIscript(scriptname:String ):void
 		{
 			var ind = 0;
+			scriptname = trimspace(scriptname);
 			while (ind<arrScript.length)
 			{
-				var ttiscript = arrScript[ind][0].substring(arrScript[ind][0].indexOf(" ") + 1,arrScript[ind][0].indexOf("]"));
+				var ttiscript = arrScript[ind][0].substring(arrScript[ind][0].indexOf(" ") + 1, arrScript[ind][0].indexOf("]"));
+				ttiscript = trimspace(ttiscript);
+				
 				if(ttiscript==scriptname)
 				{	
 					arrScrInd = ind;
@@ -1161,14 +1161,15 @@
 			
 			if (arrS[i].indexOf("[") == 0)
 			{
-				var ts = arrS[i].substring(1,arrS[i].indexOf(" "));
+				var sstag = arrS[i].substring(1,arrS[i].indexOf(" "));
 				if (arrS[i].indexOf(" ") < 0)
 				{
-					ts = arrS[i].substring(1,arrS[i].indexOf("]"));
+					sstag = arrS[i].substring(1,arrS[i].indexOf("]"));
 				}
-				trace("S●"+i + arrS[i]);
+				trace("S●" + i + arrS[i]);
+				var txttemp=arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]"));
 
-				switch (ts)
+				switch (sstag)
 				{
 					case "iscript" :
 					case "endiscript" :
@@ -1176,7 +1177,7 @@
 						anIscript(arrS,ScrI);
 						return;
 					case "showtip" :
-						showtrace(arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]")));
+						showtrace(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
@@ -1184,7 +1185,7 @@
 						anSHOWCG();
 						return;
 					case "getcg" :
-						anGETCG(arrS[i]);
+						anGETCG(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
@@ -1201,21 +1202,21 @@
 //						return;
 						
 					case "load" :
-						anLOAD(arrS[i]);
+						anLOAD(txttemp);
 						return;
 
 					case "text" :
-						anTEXT(arrS[i]);
+						anTEXT(txttemp);
 						return;
 					case "dialogadd" :
-						anDIALOGADD(arrS[i]);
+						anDIALOGADD(txttemp);
 						return;
 					case "dialog" :
-						anDIALOG(arrS[i]);
+						anDIALOG(txttemp);
 						return;
 
 					case "img" :
-						anIMG(arrS[i]);
+						anIMG(txttemp);
 						return;
 					case "clearimg" :
 						anCLEARIMG();
@@ -1232,14 +1233,15 @@
 						anMSGshow();
 						return;						
 					case "background" :
-						anBG(arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]")));
+						anBG(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;	
 						
 
 					case "goto" :
-						ti = anGOTO(arrS[i].substring(arrS[i].indexOf(" ") + 1, arrS[i].indexOf("]")), i);
+						ti = anGOTO(txttemp, i);
+						
 						i = 0;
 						ScrI = 0;
 						arrScrInd = -1;
@@ -1250,7 +1252,7 @@
 						
 					case "if" :
 						trace("S-ifffff");
-						ScrI = aninscriptIF(arrS,arrS[i], i);
+						ScrI = aninscriptIF(arrS,txttemp, i);
 						anIscript(arrS,ScrI);
 						return;
 					case "end" :
@@ -1258,28 +1260,22 @@
 						anIscript(arrS,ScrI);
 						return;
 					case "eval" :
-						anEVAL(arrS[i]);
+						anEVAL(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
 					case "sound" :
-						anSOUND( arrS[i]);
+						anSOUND(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
 					case "bgm" :
-						if(bgmurl != arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]")))
-						{
-							//如果和正在播放的相同
-							bgmurl = arrS[i].substring(arrS[i].indexOf(" ") + 1, arrS[i].indexOf("]"));
-							anBGM(bgmurl);
-							
-						}
+						anBGM(txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
 					case "bgmstop" :
-						bgmurl = "";
+						//bgmurl = "";
 						anBGM("bgmstop");
 						ScrI++;
 						anIscript(arrS,ScrI);
@@ -1294,7 +1290,7 @@
 						analysisscript(ti);
 						return;	
 					case "call" :
-						anCALL(arrS[i]);
+						anCALL(txttemp);
 						stopTimerSkip();
 						i = 0;
 						ScrI = 0;
@@ -1314,8 +1310,8 @@
 						anIscript(arrS,ScrI);
 						return;
 					default :
-						trace(ts + "in script");
-						showtrace("in script "+arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]")));
+						trace(sstag + "in script");
+						showtrace("in script "+txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
 
@@ -1339,9 +1335,16 @@
 		//////////////////////////////////////////获得cg
 		function anGETCG(scenario:String )
 		{
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			scenario = trimspace(scenario);
 
-			var ci = cgXML.cgpanel.elements(tt).childIndex();
+			var ci = cgXML.cgpanel.elements(scenario).childIndex();
+			if (ci < 0)
+			{
+				trace("CG  ERROR");
+				showtrace ("CG not found-[getcg]");
+				return;
+			}
 			if(cgXML.cgpanel.children()[ci]. @ show == "true")
 			{
 				trace("已经获得了");
@@ -1373,8 +1376,9 @@
 		////////////////////////////////////////////////////////////////
 		function anLOAD(scenario:String )
 		{
-			var tt = trim(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
-			Load(tt);
+			scenario = trimspace(scenario);
+			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
+			Load(scenario);
 		}
 
 		//显示文字
@@ -1389,11 +1393,11 @@
 			linebreak.visible = false;
 
 			txtlayer.visible = true;
-			var tt = trim(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
-			tt=replaceVar(tt);
-
-
-			writePlaybackArr(SaeText.showText(tt));
+			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
+			//trace("antxt-scenario-"+scenario);
+			scenario=trimspaceFront(scenario);
+			scenario=replaceVar(scenario);
+			writePlaybackArr(SaeText.showText(scenario));
 		}
 		
 		function anDIALOGADD(scenario:String )
@@ -1403,10 +1407,12 @@
 			linebreak.stop();
 			linebreak.visible = false;
 
-			var tt = trim(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
-			tt = replaceVar(tt);
-			SaeDialog.DialogAdd(tt);
-			writePlaybackArr(tt);
+			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
+			//tt = replaceVar(tt);
+			//scenario=trimspaceFront(scenario);
+			scenario=replaceVar(scenario);
+			SaeDialog.DialogAdd(scenario);
+			writePlaybackArr(scenario);
 		}
 
 		function anDIALOG(scenario:String )
@@ -1417,20 +1423,21 @@
 			linebreak.visible = false;
 
 			
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-			tt = replaceVar(tt);
-			writePlaybackArr(SaeDialog.Dialog(tt,durtime));
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//tt = replaceVar(tt);
+			scenario=replaceVar(scenario);
+			writePlaybackArr(SaeDialog.Dialog(scenario,durtime));
 		}
 		
 		
 		//立绘
 		function anIMG(scenario:String )
 		{
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-			tt = trim(replaceVar(tt));
-			var ArrT = tt.split("|");//ENGVER
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			scenario = replaceVar(scenario);
+			var ArrT = scenario.split("|");//ENGVER
 			var i = ArrT.length;
-			var strLayer = ArrT[3];
+			var strLayer = trimspace (ArrT[3]);
 			var ci =  initXML.Layer.child(strLayer).childIndex();
 			var dur=durtime;
 			
@@ -1439,7 +1446,7 @@
 				dur=parseInt(ArrT[4])/1000;				
 			}
 						
-			craArray[ci].showImg(ArrT[0],ArrT[1],ArrT[2],dur);
+			craArray[ci].showImg(trimspace(ArrT[0]),ArrT[1],ArrT[2],dur);
 		
 		}
 		//IMGloadError
@@ -1511,7 +1518,7 @@
 		{
 			var ArrT = tt.split("|");//ENGVER
 			trace("ANBG"+tt+"//"+ArrT);
-			ArrT[0]=trim(ArrT[0]);
+			ArrT[0]=trimspace(replaceVar(ArrT[0]));
 			bgdurtime=durtime;
 			if(ArrT.length>1)
 			{
@@ -1617,7 +1624,7 @@
 				
 				askArray.push(arrT);
 				
-				var btnask:SaEBtnask =new SaEBtnask (replaceVar(arrT[0]),arrT[4],Tformat);
+				var btnask:SaEBtnask =new SaEBtnask (replaceVar(arrT[0]),trimspace(replaceVar(arrT[4])),Tformat);
 				
 				btnask.x = arrT[1];//
 				btnask.y = arrT[2];//
@@ -1652,14 +1659,14 @@
 			btnSOUND();
 			var i = 0;
 			i = askbtnArray.indexOf(event.currentTarget);
-			var tt =replaceVar( askArray[i][3]);
+			var labelname =trimspace (replaceVar( askArray[i][3]));
 			
 			anBTNremove();
 			
 			//查找script		
-			if (tt.substring(0,7)=="script:")
+			if (labelname.substring(0,7)=="script:")
 			{
-				findIscript(tt.slice(7, tt.length) );
+				findIscript(labelname.slice(7, labelname.length) );
 				return;
 			}
 			
@@ -1667,7 +1674,7 @@
 			
 			for (var ig=gotoArr.length-1;ig>=0;ig--)
 			{
-				if (gotoArr[ig][0] == tt)
+				if (gotoArr[ig][0] == labelname)
 				{
 					ti = gotoArr[ig][1] + 1;
 					analysisscript(ti);
@@ -1688,16 +1695,17 @@
 			MCwaiting.play();
 			waiting = true;
 			
-			var tt = trim(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
-			trace("wait "+parseInt(tt)+"~"+tt);
-			if(isNaN (parseInt(tt)))
+			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1, scenario.indexOf("]")));
+			scenario = trimspace(replaceVar(scenario));
+			trace("wait "+parseInt(scenario)+"~"+scenario);
+			if(isNaN (parseInt(scenario)))
 			{
 				//如果wait没有参数
-				tt=durtime;
+				scenario=durtime;
 			}
 			
 
-			waittimer = new Timer(parseInt(tt),1);
+			waittimer = new Timer(parseInt(scenario),1);
 			waittimer.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerComplete);
 			waittimer.start();
 			//trace("WWWWWWWWWWWait");
@@ -1714,9 +1722,10 @@
 			//记录跳转前段脚本位置
 			loadtxt = false;//读取期间禁止点击
 			//
-			var tt=trim(scenario .substring(scenario .indexOf(" ") + 1,scenario .indexOf("]")));
-			var ArrT = tt.split("|");//ENGVER
-			readScenario = ArrT [0];// 脚本文件
+			//var tt=trimspace(scenario .substring(scenario .indexOf(" ") + 1,scenario .indexOf("]")));
+			
+			var ArrT = scenario.split("|");//ENGVER
+			readScenario = trimspace(replaceVar( ArrT [0]));// 脚本文件
 			trace(("CALL readScenario==" + readScenario));
 			req = new URLRequest(("scenario/" + readScenario));//加载路径
 			loader = new URLLoader  ;
@@ -1725,7 +1734,7 @@
 			if (ArrT.length > 1) 
 			{
 				//如果包含跳转标签
-				calllabel = ArrT[1];
+				calllabel = trimspace(ArrT[1]);
 				trace("calllabel= " + calllabel);
 			}else{
 				ti = 0;
@@ -1771,17 +1780,19 @@
 		//音效
 		function anSOUND(scenario:String )
 		{
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			scenario = trimspace(replaceVar(scenario));
 			snd = new Sound  ;
-			snd.load(new URLRequest(("sound/" + tt)));
+			snd.load(new URLRequest(("sound/" + scenario)));
 			sndchannel = snd.play();
 
 			return;
 		}
 
 		//背景音乐
-		function anBGM(tt:String)
+		function anBGM(scenario:String)
 		{
+				
 			try
 			{
 				//关闭之前的bgm
@@ -1792,13 +1803,22 @@
 			{
 				trace("~~~~");
 			}
-
-			if (tt == "bgmstop")
+			
+			scenario = trimspace(replaceVar(scenario));
+			if (scenario == "bgmstop")
 			{
+				trace ("bgmstop");
+				bgmurl = "";
 				return;
 			}
+			if(bgmurl == scenario)
+			{
+				return;			//如果和正在播放的相同							
+			}
+			
+			bgmurl = scenario;		
 
-			bgm = new URLRequest("sound/" + tt);
+			bgm = new URLRequest("sound/" + scenario);
 			soundBGM = new Sound  ;
 		
 			soundBGM.load(bgm);
@@ -1816,27 +1836,27 @@
 		function anEVAL(scenario:String )
 		{
 			
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			var ArrT;
 			var operator:String;
-			if(tt.indexOf("=")>0)
+			if(scenario.indexOf("=")>0)
 			{
-				 ArrT = tt.split("=");
+				 ArrT = scenario.split("=");
 				operator="=";
-			}else if(tt.indexOf("+")>0)
+			}else if(scenario.indexOf("+")>0)
 			{
-				 ArrT = tt.split("+");
+				 ArrT = scenario.split("+");
 				operator="+";
-			}else if(tt.indexOf("-")>0)
+			}else if(scenario.indexOf("-")>0)
 			{
-				 ArrT = tt.split("-");
+				 ArrT = scenario.split("-");
 				operator="-";
 			}
 			trace("anEVAL  1  "+ArrT[0]+"-"+ArrT[1]);
-			ArrT[0]=replaceprefix(ArrT[0]);
+			ArrT[0]=trimspace(replaceprefix(ArrT[0]));
 			//ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf(" ",ArrT[0].indexOf("@") + 1));
-			//trace(tt+"///"+st);			
-			ArrT[1]=replaceVar(ArrT[1]);//允许赋值为变量
+			//trace(scenario+"///"+st);			
+			ArrT[1]=trimspace(replaceVar(ArrT[1]));//允许赋值为变量
 			trace("ArrT[1]= "+ArrT[1]);
 			var v ;//= evallist.elements(st);
 			var ci;// = evallist.elements(st).childIndex();
@@ -2095,12 +2115,13 @@
 		//判断
 		function anIF(scenario:String ,index:int):int
 		{
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-			tt = replaceVar(tt);
-			trace("1IFFFFFFFF"+tt);
-			tt=replacespace(tt);
-			trace("2IFFFFFFFF"+tt);
-			if (analysisIF.analysis(tt))
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//tt = replaceVar(tt);
+			scenario =replaceVar(scenario);
+			trace("1IFFFFFFFF"+scenario);
+			scenario=replacespace(scenario);
+			trace("2IFFFFFFFF"+scenario);
+			if (analysisIF.analysis(scenario))
 			{
 				return index+1;
 			}
@@ -2122,12 +2143,13 @@
 		}
 		function aninscriptIF(arrS:Array ,scenario:String ,index:int):int
 		{
-			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-			tt = replaceVar(tt);
-			trace("1sIFFFFFFFF"+tt);
-			tt=replacespace(tt);
-			trace("2sIFFFFFFFF"+tt);
-			if (analysisIF.analysis(tt))
+			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
+			//tt = replaceVar(tt);
+			scenario = replaceVar(scenario);
+			trace("1sIFFFFFFFF"+scenario);
+			scenario=replacespace(scenario);
+			trace("2sIFFFFFFFF"+scenario);
+			if (analysisIF.analysis(scenario))
 			{
 				trace("yesssssssssss///");
 				
@@ -2153,7 +2175,7 @@
 		//跳转
 		function anGOTO(scenario:String, index:int):int
 		{
-			scenario=replaceVar(scenario);
+			scenario=trimspace (replaceVar(scenario));
 			trace("GOTO-"+scenario);
 			//如果没找到,则返回当前序号index
 			for each (var item in gotoArr)
@@ -2201,19 +2223,22 @@
 				//如果包含临时变量
 				tlist+=tempevallist;
 			}
-			
 
-			
-			while (str.indexOf("@",edi) >= 0 && str.indexOf(" ",edi+1) > 0)
+			sti = str.indexOf("@");
+			//edi = str.indexOf(" ",sti + 1);
+			trace("replaceVar  sti=  "+sti+"  edi= "+edi);
+			while (str.indexOf("@",sti) >= 0 && str.indexOf(" ",edi+1) > 0)
 			{
 				//遍历 文字中包含的所有变量
 				sti = str.indexOf("@",edi);
 				edi = str.indexOf(" ",sti + 1);
 				strT = str.substring((sti + 1),edi);
+				sti++;
 				//strT=replaceprefix(strT);
-				trace("replaceVar   "+edi+"  "+strT);
+				
 				//变量名称
 				t = "@" + strT + " ";
+				trace("replaceVar   "+edi+"/"+t);
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				var haselement=false;
 				var i=0;
@@ -2223,6 +2248,7 @@
 					{
 						str = str.replace(t,tlist.elements(strT));
 						//替换，跳出循环
+						trace("replaceVar  ok! "+str);
 						i=-2;
 						haselement=true;
 					}
@@ -2243,11 +2269,12 @@
 		//替换变量后，去除多余空格replacespace
 		function replacespace(str:String):String
 		{
-			while(str.indexOf (" ")>=0)
-			{
-				//str=str.replace (" ","");
-				str=str.replace (" " , "");//ENGVER
-			}
+			var pattern:RegExp =/ /g;
+			str=str.replace(pattern, "");
+			//while(str.indexOf (" ")>=0)
+			//{
+			//	str=str.replace (" " , "");//ENGVER
+			//}
 				return str;
 			
 		}
@@ -2271,45 +2298,45 @@
 		
 		
 		//去除首尾空格
-		function trim(str:String):String
+		function trimspace(str:String):String
 		{
-			return trimBack(trimFront(str," ")," ");
-		}
-
-		function trimFront(str:String,char:String):String
-		{
-			char = stringToCharacter(char);
-
 			var pattern:RegExp =/^ +/;
-			trace(str.replace(pattern, "##"));
+			str=str.replace(pattern, "");
+			 pattern =/ +$/;
+			str=str.replace(pattern, "");	
+			//trace(str.replace(pattern, "@@@"));	
+			return str;// trimBack(trimFront(str," ")," ");
+		}
 
-			//if (str.charAt(0) == char)
-			while (str.charAt(0) == char && str.length>0)
-			{
-				str = trimFront(str.substring(1),char);
-			}
-			
-
+		function trimspaceFront(str:String):String
+		{
+			//char = stringToCharacter(char);			
+			//while (str.charAt(0) == char && str.length>0)
+			//{
+			//	str = trimFront(str.substring(1),char);
+			//}
+			var pattern:RegExp =/^ +/;
+			str=str.replace(pattern, "");
 			return str;
 		}
-
-		function trimBack(str:String,char:String):String
-		{
-			char = stringToCharacter(char);
-			while(str.charAt(str.length - 1) == char  && str.length>0)
-			{
-				str = trimBack(str.substring(0,str.length - 1),char);
-			}
-			return str;
-		}
-		function stringToCharacter(str:String):String
-		{
-			if (str.length == 1)
-			{
-				return str;
-			}
-			return str.slice(0,1);
-		}
+//
+//		function trimBack(str:String,char:String):String
+//		{
+//			char = stringToCharacter(char);
+//			while(str.charAt(str.length - 1) == char  && str.length>0)
+//			{
+//				str = trimBack(str.substring(0,str.length - 1),char);
+//			}
+//			return str;
+//		}
+//		function stringToCharacter(str:String):String
+//		{
+//			if (str.length == 1)
+//			{
+//				return str;
+//			}
+//			return str.slice(0,1);
+//		}
 		/////////////////////////////////////////////////////////////////////
 
 
