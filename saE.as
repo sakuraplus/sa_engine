@@ -162,6 +162,8 @@
 			//trace("ZZZZZZZZZZZZZZZZ"+trimspace("   asd  wer   "));
 			//trace("ZZZZZZZZZZZZZZZZ" + trimspace("asd wer   "));
 			//trace("ZZZZZrrrrrrZZZZZ" + replacespace("  a s d  w e   r   "));
+			trace("zzz"+(true||false&&true));
+			trace("zzz"+(true&&false||true));
 			loaderContext.allowCodeImport=true;//允许加载swf中脚本
 
 			tracetxt.addChild(SaeTrace);
@@ -2077,12 +2079,12 @@
 		function analysiseval(st0:String ,st1:String,st2:String)
 		{
 
-			if( st1=="=" && isNaN (parseInt(st2)))
+			if( st1=="=" && (isNaN (parseInt(st0))||isNaN (parseInt(st2))))
 			{
 				trace("string--"+evallist);
 				return st2.toString();
 			}
-			if( st1=="+" && isNaN (parseInt(st0)))
+			if( st1=="+" &&( isNaN (parseInt(st0))||isNaN (parseInt(st2))))
 			{
 				trace("string++"+evallist);
 				st0+=st2.toString();
@@ -2131,7 +2133,7 @@
 				/////判断错误
 				var i = index + 1;
 				
-				while (arr[i] != "[end if]" && (i < arr.length))
+				while (replacespace(arr[i]) != "[endif]" && (i < arr.length))
 				{
 					trace(i+"⊕"+arr[i] +"⊕");
 					i++;
