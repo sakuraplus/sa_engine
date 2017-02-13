@@ -58,11 +58,7 @@ $RECYCLE.BIN/
 *.lnk
 /Adobe AIR
 /~$脚本说明.doc
-~$.*
+~$*.*
 /saE2.app
-
-Documents/autosave.xml
-Documents/cg.xml
-/Documents
-Documents/autosave.xml
-Documents/autosave.xml
+/saE2.app/*
+Documents/*

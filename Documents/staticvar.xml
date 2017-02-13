@@ -1,20 +1,6 @@
-<sv>
-	<staticVar>
-		<filecomplete t="">0</filecomplete>
-		<speed t="">1</speed>
-		<eDLmad>0</eDLmad>
-		<eBE/>
-	</staticVar>
-</sv>
-
-<!--L杀害小L和D：魔鬼，罪人
-L杀害D惊诧绝望：虚伪的面具
-老师暴走小L牺牲：再一次的失去
-D虐待小L结局：老师的重生 意想不到的终结
-一家三口：重建现实 复制的人生
-一家三口隐藏：应受的惩罚 无法逃避之罪 罪
-L黑化囚禁D：反省吧，亲爱的弟弟
-记忆循环
-DR73集：真正的现实
-小L杀三龟：同盟
-D杀M：来自地狱的恶魔  侵蚀-->
+<sv><staticVar>
+  <filecomplete t="">0</filecomplete>
+  <speed t="">50</speed>
+  <eDLmad>0</eDLmad>
+  <eBE/>
+</staticVar></sv>

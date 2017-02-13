@@ -136,7 +136,7 @@
 			//加载完成的图片置于底层，旧图片在上层淡出
 			if(showloader)
 			{
-				if(craLoader0.alpha>0.3)		
+				if(craLoader0.alpha>0.2)		
 				{
 					trace("--craLoader1 show"+showloader);
 					craLoader1.alpha=1;
@@ -148,7 +148,7 @@
 					TweenLite.to(craLoader1,dur,{alpha:1});//,overwrite:2	
 				}
 			}else{
-				if(craLoader1.alpha>0.3)//							
+				if(craLoader1.alpha>0.2)//							
 				{
 					trace("++craLoader0 show"+showloader+"/"+dur);
 					craLoader0.alpha=1;

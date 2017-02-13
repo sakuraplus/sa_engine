@@ -537,6 +537,7 @@
 			var svXML = XML(svfileStream.readUTFBytes(svfileStream.bytesAvailable));
 			svfileStream.close();
 			sevallist = svXML.staticVar;
+			ansetdurtime();//uodate speed
 			//trace("evallist sv=" +sevallist);
 		}
 		//cgxml
