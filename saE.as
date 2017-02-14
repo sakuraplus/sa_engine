@@ -572,6 +572,7 @@
 			var loaderSc:URLLoader = new URLLoader ;
 			loaderSc.load(reqSc);
 			loaderSc.addEventListener(Event.COMPLETE,SccompleteHandler);
+			loaderSc.addEventListener(IOErrorEvent.IO_ERROR, LoadErrorHandler);
 
 			///////初始化淡入淡出时间
 			durtime = parseInt(initXML.durtime)/1000;
@@ -743,10 +744,11 @@
 		{
 			trace("☆读取script完成04");
 			arrScript = [];
-			var arrscT = e.target.data.split("<!");
+			var arrscT = e.target.data.split("[iscript ");//("<!");
 			trace("==SC======="+arrscT.length);
 			for each (var item in arrscT)
 			{
+				item="[iscript "+item;
 				var scT = item.split("\n");
 				var i = 0;
 				for (i = 0; i < scT.length; i++)
@@ -770,6 +772,11 @@
 			}			
 			trace("SC读取完成 "+arrScript[1]);
 		}
+		function LoadErrorHandler(e:Event)
+		{
+			//showtrace("file load error");
+		}
+
 		///////end txt script
 
 		////////////////txt脚本读取完成
@@ -1141,7 +1148,8 @@
 				showtrace ("script not found");
 				return;
 			}
-			inscript = true;			
+			inscript = true;		
+			btnSystem.btnSave.alpha=0.4;
 			anIscript(arrScript[ind],0);
 		}
 		function anIscript( arrS:Array ,i:int):void
@@ -1155,7 +1163,10 @@
 				ScrI = 0;
 				arrScrInd = -1;
 				inscript = false;
-				
+				if(saveable)
+				{
+						btnSystem.btnSave.alpha=1;
+				}
 				ti++;
 				analysisscript(ti);
 				
