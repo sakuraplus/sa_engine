@@ -148,6 +148,8 @@
 		var SaeDialog:SaEDialog;
 		var SaeTrace:SaETrace=new SaETrace;
 		var SaePlayback:SaEPlayback;//=new SaEPlayback;
+		var SaeDebug:SaEPlayback;//=new Debug;
+		var gamedebug=false;
 		var SaeMsgbox:SaEMsgbox;
 		var SaeCg:SaECg;
 		
@@ -641,8 +643,39 @@
 			Tformat.size=36;
 			trace("imgplayback Tformat size default 36");
 			}
-			SaePlayback=new SaEPlayback(initXML.Sui.imgplayback. @ colortxt,initXML.Sui.imgplayback. @ colorbg,Tformat);
+			var playbacklength;
+			if(initXML.Sui.imgplayback. @ lines.length()>0)
+			{
+				playbacklength=parseInt(initXML.Sui.imgplayback. @ lines);
+			}else{
+				playbacklength=8;
+			trace("imgplayback playbacklength default 8");
+			}
+			SaePlayback=new SaEPlayback(initXML.Sui.imgplayback. @ colortxt,initXML.Sui.imgplayback. @ colorbg,Tformat,playbacklength);
 			txtplayback.addChild(SaePlayback);
+
+			///初始化debug
+				//durtime = parseInt(initXML.durtime)/1000;
+			if(initXML.debug==true)
+			{
+				gamedebug=true;
+				Tformat.size=30;
+				SaeDebug=new SaEPlayback("000000","ffffff",Tformat,5);
+				stage.addChild(SaeDebug);//txtdebug
+				SaeDebug.showText ();
+				SaeDebug.mouseEnabled = false; 
+				SaeDebug.mouseChildren = false; 
+
+				SaeDebug.scaleX=0.5;
+				SaeDebug.scaleY=0.5;
+
+			}else{
+			//Tformat.size=36;
+			//trace("imgplayback Tformat size default 36");
+			}
+			
+			
+
 
 			///初始化对话框
 			if(initXML.Sui.msgbox. @ sizetxt.length()>0)
@@ -951,6 +984,10 @@
 			if (arr[i].indexOf("[") == 0)
 			{
 				var stag = arr[i].substring(1,arr[i].indexOf(" "));
+				if(gamedebug)
+				{
+					SaeDebug.write("»"+arr[i]);
+				}
 				if (arr[i].indexOf(" ") < 0)
 				{
 					stag = arr[i].substring(1,arr[i].length - 1);
@@ -1176,6 +1213,10 @@
 			if (arrS[i].indexOf("[") == 0)
 			{
 				var sstag = arrS[i].substring(1,arrS[i].indexOf(" "));
+				if(gamedebug)
+				{
+					SaeDebug.write("»»"+arrS[i]);
+				}
 				if (arrS[i].indexOf(" ") < 0)
 				{
 					sstag = arrS[i].substring(1,arrS[i].indexOf("]"));

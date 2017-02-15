@@ -42,6 +42,10 @@
 				str=str.substring(ed+1,str.length);
 				trace(str);
 			}
+			if(ifArr.length<1)
+			{
+				ifArr.push(str);
+			}
 			trace(ifArr);
 			var Tboolean:Array =new Array();
 			var i = 0;

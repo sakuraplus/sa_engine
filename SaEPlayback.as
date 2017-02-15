@@ -11,12 +11,16 @@
 		var txt:TextField = new TextField();
 		var _txtlayer:Sprite = new Sprite();
 		var playbackArray:Array = new Array  ;//回放记录
+		var Arraylength:int = 8;//回放记录
 
-		public function SaEPlayback(colorT:String,colorB:String,Tformat:TextFormat)
+
+		public function SaEPlayback(colorT:String,colorB:String,Tformat:TextFormat,arraylength:int)
 		{			
 			//文字样式
+
 			trace("new saePB"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
+			Arraylength=arraylength;
 			//Tformat.size = 36;
 			txt.autoSize =TextFieldAutoSize.LEFT;			
 			txt.embedFonts=true;
@@ -53,12 +57,13 @@
 		//写入记录
 		public function write(tt:String) 
 		{
+			trace(tt);
 			//加入回放数组textHeight : Number 
-			if(playbackArray.length>8)
+			if(playbackArray.length>Arraylength)
 			{
 				playbackArray.shift();
 			}
-			playbackArray.push(tt);//+"<br>"
+			playbackArray.push("  "+tt);//+"<br>"
 			  txt.htmlText="";
 			 for each (var item in playbackArray)
 			{

@@ -46,7 +46,8 @@ call
 return
 label
 script
-
+iscript
+endiscript
 
 #KEYWORD=text style
 clear

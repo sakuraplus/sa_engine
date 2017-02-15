@@ -6,16 +6,7 @@
 		<CG4 name="The street" show="true" img="DMstreet1.jpg"/>
 		<CG5 name="A notebook" show="false" img="DLnote.jpg"/>
 		<CG6 name="Moon on the roof" show="false" img="DLroof.jpg"/>
+		<CGdinner name="dinner" show="false" img="Ddinner.jpg"/>
 	</cgpanel>
 </cg>
-
-
-<!-- 
-诅咒    囚禁
-绝望    失忆
-牺牲    保护
-旅行    现实
-死亡    归来
-天堂    援救
-           兄弟 -->
 

@@ -1,7 +1,7 @@
 <sv>
 	<staticVar>
 		<filecomplete t="">0</filecomplete>
-		<speed t="">1</speed>
+		<speed t="">10</speed>
 		<eDLmad>0</eDLmad>
 		<eBE/>
 	</staticVar>
