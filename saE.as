@@ -359,7 +359,7 @@
 				stream.close();
 				trace("CG UpDATE  xmlsave");
 				needupdate ++;
-				writeSavexml();
+//				writeSavexml();
 			}
 		}
 		
@@ -396,38 +396,38 @@
 				trace("static update xmlsave");
 				
 				needupdate ++;
-				writeSavexml();
+				//writeSavexml();
 			}
 			
 		}
 		
-		function writeSavexml()
-		{
-			var file = FileP.resolvePath("Documents/cg.xml");
-			file = FileP.resolvePath("Documents/"+StrSave);
-			if (file.exists && needupdate<1)
-			{
-				trace("save存在存在"+needupdate);//文件存在
-			}
-			else
-			{
-				////////////文件不存在则从包中拷贝
-				//showtrace("save不存在不存在"+file.nativePath);
-				var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
-				trace(needupdate+"save 不存在  "+original2.nativePath);
-				var newFile2 = FileP.resolvePath("Documents/"+StrSave);
-				original2.copyTo(newFile2, true);
-				
-			
-				//showtrace("autosave不存在不存在"+file.nativePath);
-				var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
-				trace(needupdate+"autosave 不存在   "+original3.nativePath);
-				var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
-				original3.copyTo(newFile3, true);
-				needupdate = -2;
-			}
-			
-		}
+//		function writeSavexml()
+//		{
+//			var file = FileP.resolvePath("Documents/cg.xml");
+//			file = FileP.resolvePath("Documents/"+StrSave);
+//			if (file.exists && needupdate<1)
+//			{
+//				trace("save存在存在"+needupdate);//文件存在
+//			}
+//			else
+//			{
+//				////////////文件不存在则从包中拷贝
+//				//showtrace("save不存在不存在"+file.nativePath);
+//				var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
+//				trace(needupdate+"save 不存在  "+original2.nativePath);
+//				var newFile2 = FileP.resolvePath("Documents/"+StrSave);
+////				original2.copyTo(newFile2, true);
+//				
+//			
+//				//showtrace("autosave不存在不存在"+file.nativePath);
+//				var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
+//				trace(needupdate+"autosave 不存在   "+original3.nativePath);
+//				var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
+//				//original3.copyTo(newFile3, true);
+//				needupdate = -2;
+//			}
+//			
+//		}
 		
 		function writeInitSavefile()
 		{
@@ -470,7 +470,7 @@
 				loadstaticvarxml();
 			}
 			
-			writeSavexml();
+//			writeSavexml();
 			
 		}
 
@@ -493,15 +493,15 @@
 
 			loadstaticvarxml();
 
-			var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
-			trace("save1 覆盖  "+original2.nativePath);
-			var newFile2 = FileP.resolvePath("Documents/"+StrSave);
-			original2.copyTo(newFile2, true);
-
-			var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
-			trace("save2覆盖 "+original3.nativePath);
-			var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
-			original3.copyTo(newFile3, true);
+//			var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
+//			trace("save1 覆盖  "+original2.nativePath);
+//			var newFile2 = FileP.resolvePath("Documents/"+StrSave);
+//			original2.copyTo(newFile2, true);
+//
+//			var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
+//			trace("save2覆盖 "+original3.nativePath);
+//			var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
+//			original3.copyTo(newFile3, true);
 
 			ti++;
 			analysisscript(ti);
@@ -595,7 +595,11 @@
 			
 
 			//////////按钮选项按下音效btn sound;
-			btnsoundurl=initXML.Sui.clicksound. @ url;
+			if(initXML.Sui.clicksound. @ url.length()>0)
+			{
+				btnsoundurl=initXML.Sui.clicksound. @ url;
+			}
+			
 
 			//////////初始化人物对话框msg;
 			if(initXML.Sui.msgtalk. @ sizetxt.length()>0)
@@ -1341,6 +1345,7 @@
 						ScrI = 0;
 						arrScrInd = -1;
 						inscript = false;
+						btnSystem.btnSave.alpha=1;
 						ti++;
 						analysisscript(ti);
 						return;	
@@ -1715,7 +1720,7 @@
 			var i = 0;
 			i = askbtnArray.indexOf(event.currentTarget);
 			var labelname =trimspace (replaceVar( askArray[i][3]));
-			
+			writePlaybackArr("  →"+askArray[i][0]);
 			anBTNremove();
 			
 			//查找script		
@@ -2766,7 +2771,16 @@
 			trace("读取存档2"+loadXML);
 
 			//////////变量;
-			evallist = loadXML.svar;
+			var i=0;
+			trace("//////load/////"+evallist);
+			while (i<loadXML.svar.children().length() )
+			{	
+				var ci= evallist.elements(loadXML.svar.children()[i].name()).childIndex()
+				evallist.children()[ci]=loadXML.svar.children()[i];
+				i++;
+			}
+			trace("//////load/////"+evallist);
+			//evallist = loadXML.svar;
 			//////////变量
 
 			/////////call;

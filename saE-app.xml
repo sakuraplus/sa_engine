@@ -22,7 +22,6 @@
     <resizable>true</resizable>
     <autoOrients>false</autoOrients></initialWindow>
   <icon>
-    <image48x48>48.png</image48x48>
   </icon>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>

@@ -45,6 +45,7 @@
 			Tformat.font = fontArray[0].fontName;
 			
 			msgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR ,IMGloadError);
+			msgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE ,IMGloadcomplete);
 			var msgURLReq:URLRequest = new URLRequest(url);
 			msgLoader.load(msgURLReq);
 
@@ -157,7 +158,12 @@
 			container.visible=false;
 			container.dispatchEvent(evtC);
 		}
-		
+		//IMGloadok
+		function IMGloadcomplete(event:Event):void {
+		    trace("dialog IMG load complete: " + event.currentTarget.width);
+			txtTalk.width=event.currentTarget.width-24;
+
+		}
 		//IMGloadError
 		function IMGloadError(event:IOErrorEvent):void {
 		    trace("ioErrorHandler: " + event);
