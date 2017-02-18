@@ -2364,6 +2364,8 @@
 			str=str.replace(pattern, "");
 			 pattern =/ +$/;
 			str=str.replace(pattern, "");	
+			 pattern =/^\t+/;
+			str=str.replace(pattern, "");	
 			//trace(str.replace(pattern, "@@@"));	
 			return str;// trimBack(trimFront(str," ")," ");
 		}
