@@ -57,8 +57,6 @@
 			switch (url)
 			{
 				case "" :
-					//[img 头像.jpg,500,500,M] 图片在role/文件夹,头像url为空时清除图片，直接进行下一条脚本
-					trace("♂url="+url);
 					imgUrl="";
 					showloader=false;
 					TweenLite.to(craLoader0,dur,{alpha:0});
@@ -67,7 +65,6 @@
 					return;
 				case "unload" :
 					//[img unload,0,0,M] unloadandstop图层中的swf ，ios中不能使用带有as的swf，直接进行下一条脚本
-					trace("unload url="+url);
 					showloader=false;
 					craLoader0.unloadAndStop();
 					craLoader1.unloadAndStop();
@@ -76,8 +73,8 @@
 					return;
 				case imgUrl :
 					//与原图片相同时,移动图片，直接进行下一条脚本
-					trace("♂url,imgUrl="+url);
-					trace("move");
+//					trace("♂url,imgUrl="+url);
+//					trace("move");
 					moveCra();
 					container.dispatchEvent(evtC);
 					return;
@@ -106,14 +103,13 @@
 			if(showloader)
 			{
 				craLoader1.alpha=0;
-				trace("craloader1 load");
 				craLoader1.unloadAndStop();
 				craLoader1.load(craURLReq,loaderContext);
 				container.setChildIndex(craLoader1,0);///////////////置于底层				
 			}else{
 				//0=0up				
 				craLoader0.alpha=0;
-				trace("craloader0 load");
+//				trace("craloader0 load");
 				craLoader0.unloadAndStop();
 				craLoader0.load(craURLReq,loaderContext);
 				container.setChildIndex(craLoader0,0);///////////////置于底层

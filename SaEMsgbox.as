@@ -69,7 +69,6 @@
 			
 			
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new SaEMagbox saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
 			Tformat.align="center";
 			//Tformat.size = 30;
@@ -82,14 +81,11 @@
 			txt.defaultTextFormat = Tformat;
 			txt.setTextFormat (Tformat);
 			txt.x=960/2;
-			trace("bgLoader.width ="+bgLoader.width );
-			//txt.y=parseInt(PosImg[6]);
 			txtcenterY=parseInt(PosImg[6]);
 			if (PosImg.length > 7) 
 			{
 				txtwidth=parseInt(PosImg[7]);
 			}
-			//txt.htmlText="WWWxxx123[]-=";
 
 			msglayer.addChild(txt);				
 			addChild(msglayer);
@@ -109,18 +105,13 @@
 
 			txt.y=txtcenterY-txt.height/2;
 
-			trace(txtwidth+"txt.width= "+txt.width+"   txt.x"+txt.x+" txt.height= "+txt.height);
 			if(txt.width>txtwidth)
 				{
 
 					var txtScale=txtwidth/txt.width;
-					trace("txtScale="+txtScale);
 					txt.scaleX=txtScale;
 					txt.scaleY=txtScale;		
-					trace("txtX="+txt.x);
-					txt.x=txtcenterX-txt.width/2;
-					trace("txtX2="+txt.x);
-					
+					txt.x=txtcenterX-txt.width/2;					
 				}
 		}
 		
@@ -148,7 +139,6 @@
 					msglayer.dispatchEvent(evtK);
 					return;
 				default :
-					trace( "   msggggxxx");
 					break;
 			}
 		
@@ -161,9 +151,7 @@
 		}
 		function BGloadComplete(event:Event)
 		{
-			trace("BGloadComplete"+event.currentTarget.width+"///"+txtcenterX);
 			txtcenterX+=event.currentTarget.width/2;
-			trace("BGloadComplete--txtcenterX="+txtcenterX);
 			txt.x=txtcenterX;
 		}
 

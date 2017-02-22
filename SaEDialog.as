@@ -39,9 +39,9 @@
 		//public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat,Tsize:String)
 		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat)
 		{
-			trace("new saemsg"+Tformat+"//"+Tformat.font);
+//			trace("new saemsg"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new saemsg saefontArray"+fontArray);
+//			trace("new saemsg saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
 			
 			msgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR ,IMGloadError);
@@ -84,7 +84,7 @@
 		
 		public function init()
 		{
-			trace("DIALOG init");
+//			trace("DIALOG init");
 			txtTalk.htmlText = "";
 			txtName.htmlText = "";
 			container.alpha=0;
@@ -160,7 +160,7 @@
 		}
 		//IMGloadok
 		function IMGloadcomplete(event:Event):void {
-		    trace("dialog IMG load complete: " + event.currentTarget.width);
+//		    trace("dialog IMG load complete: " + event.currentTarget.width);
 			txtTalk.width=event.currentTarget.width-24;
 
 		}

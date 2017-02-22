@@ -16,9 +16,7 @@
 
 		public function SaEText(color:String,Tformat:TextFormat)
 		{			
-			trace("new SaEText"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new SaEText saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
 			//Tformat.size =parseInt(Tsize);// 36;
 			
@@ -43,8 +41,6 @@
 				_txtlayer.y = 640;
 				txt.htmlText = "";
 				txt.visible = false;
-				trace("saetxt-init"+txt.x+"/"+txt.y);
-			
 		}
 		//返回文字用于回放记录
 		public function showText(scenario:String):String 

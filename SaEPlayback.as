@@ -18,7 +18,6 @@
 		{			
 			//文字样式
 
-			trace("new saePB"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
 			Arraylength=arraylength;
 			//Tformat.size = 36;
@@ -57,7 +56,6 @@
 		//写入记录
 		public function write(tt:String) 
 		{
-			trace(tt);
 			//加入回放数组textHeight : Number 
 			if(playbackArray.length>Arraylength)
 			{

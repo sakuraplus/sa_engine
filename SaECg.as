@@ -40,8 +40,7 @@
 			
 			var ArrUrl = btnurl.split(",");//关闭，下页上页按钮图片
 			var posBtn = pos.split(",");//关闭，下页上页按钮坐标，文字坐标
-			trace("saeCG "+ArrUrl);
-			trace("saeCG "+posBtn);
+
 			
 			//关闭按钮
 			var exitURLReq:URLRequest = new URLRequest(ArrUrl[0]);
@@ -73,10 +72,10 @@
 			
 			
 			
-			trace("new SaEcg"+Tformat+"//"+Tformat.size);
+//			trace("new SaEcg"+Tformat+"//"+Tformat.size);
 			//文字
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new SaEMagbox saefontArray"+fontArray);
+//			trace("new SaEMagbox saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
 			//Tformat.size = 26;
 			addChild(txt);			
@@ -112,7 +111,7 @@
 			cgXML =cgxml;
 			///////////////////////////////;
 			cgArray = [];
-			trace("cgXMLcgXML--"+ cgXML.cgpanel.children().length());
+//			trace("cgXMLcgXML--"+ cgXML.cgpanel.children().length());
 			//将全部cg添加到列表
 			var i = 0;
 			for (i = 0; i < cgXML.cgpanel.children().length(); i++)
@@ -122,7 +121,7 @@
 				cgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,CGloadError);
 				cgArray.push(cgLoader);
 
-				trace(("cgXMLcgXML--" + cgXML.cgpanel.children()[i]. @ name));
+//				trace(("cgXMLcgXML--" + cgXML.cgpanel.children()[i]. @ name));
 				var cgURLReq:URLRequest = new URLRequest(("ui/" + cgXML.cgpanel.children()[i]. @ img));
 
 				cgLoader.load(cgURLReq);
@@ -151,7 +150,6 @@
 		public function getCG(ci:int,cgxml:XML)
 		{
 			cgXML=cgxml;
-			trace("saeCG getcg"+ci);
 			cgArray[ci].alpha = 1;
 			cgArray[ci].addEventListener(MouseEvent.CLICK,cgClick);
 		}
@@ -168,7 +166,7 @@
 		{
 			for each (var item in cgArray)
 			{
-				trace("removeChild<<"+item);
+//				trace("removeChild<<"+item);
 				cglayer.removeChild(item);
 			}
 		}
@@ -181,7 +179,6 @@
 				if (((i >= cgPage * 8) && i <= ((8 * cgPage) + 7)))
 				{
 					cgArray[i].visible = true;
-					trace("cg界面，显示当前页的saeCG "+i);
 				}
 				else
 				{
@@ -235,14 +232,14 @@
 		//点击放大图片
 		function cgClick(event:MouseEvent):void
 		{
-			trace(("cgclick" + event.currentTarget));
+//			trace(("cgclick" + event.currentTarget));
 			//显示文字
 			var i  = cgArray.indexOf(event.currentTarget);
 			txt.htmlText=cgXML.cgpanel.children()[i]. @ name;
 			txt.visible=true;
 			
 
-			trace(cgXML.cgpanel.children()[i]. @ name);
+//			trace(cgXML.cgpanel.children()[i]. @ name);
 			
 			//没放大则放大显示，已经放大则缩小回原位
 			if (event.currentTarget.scaleX < 0.4)

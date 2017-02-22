@@ -16,14 +16,19 @@
 	import com.greensock.plugins.*;
 
 
-	//
-//	import flash.filesystem.File;
-//	import flash.filesystem.FileMode;
-//	import flash.filesystem.FileStream;
-	//
+	
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	
 
-    import flash.display.Loader;
-    import flash.display.Sprite;
+	import flash.events.NetStatusEvent;
+	import flash.net.SharedObject;
+	//SharedObjectFlushStatus 类为通过调用 SharedObject.flush() 方法而返回的代码提供了值。 
+	import flash.net.SharedObjectFlushStatus;
+
+	import flash.display.Loader;
+	import flash.display.Sprite;
 
 
 
@@ -36,7 +41,7 @@
 	import flash.ui.Keyboard;
 
 
-	public class saE extends Sprite 
+	public class onlinetest extends Sprite 
 	{
 
 		
@@ -153,15 +158,13 @@
 		var SaeMsgbox:SaEMsgbox;
 		var SaeCg:SaECg;
 		
-		public function saE()
+		public function onlinetest()
 		{
 
 			
 			bgurl = "";
 			bgmurl = "";
-			trace("☆saE开始01");
-			trace("zzz"+(true||false&&true));
-			trace("zzz"+(true&&false||true));
+
 			loaderContext.allowCodeImport=true;//允许加载swf中脚本
 
 			tracetxt.addChild(SaeTrace);
@@ -174,7 +177,6 @@
 			addEventListener("keyback",msgBack);
 
 
-			trace("sae01-");
 			
 			if (Capabilities.os.toLowerCase().substring(0,6)=="iphone" ||Capabilities.os.toLowerCase().substring(0,3)=="mac")
 			{
@@ -202,9 +204,6 @@
 			////自动播放timer
 			mcskip.visible=false;
 			skiptimer.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerSkipComplete);
-			trace("1//////////");
-
-			trace("3//////////");
 
 			btnSystem.addChildAt(sysLoader,0);
 			btnSystem.btnSave.addChildAt(btnSLoader,0);
@@ -223,8 +222,84 @@
 			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
 			TFloader.load(TFurl,loaderContext);
 			
-			
+			/////////////////////////////////////////////////
+			mySo = SharedObject.getLocal("application-name");
+			 output.appendText("SharedObject loaded...\n");
+			//赋给对象的 data 属性 (property) 的属性 (attribute) 集合；可以共享和存储这些属性 (attribute)。 每个特性都可以是任何 ActionScript 或 JavaScript 类型的对象（数组、数字、布尔值、字节数组、XML，等等）。
+			 output.appendText("loaded value: " + mySo.data.savedValue + "\n\n");
+			 trace("mySo.data.savedValue"+mySo.data.savedValue);
+			 trace("mySo.data.savedValue"+mySo.data.savedValue.toString());
+//			 trace("mySo.data.savedValue"+mySo.data.savedValue.children()[0]);
+//			 trace("mySo.data.savedValue"+mySo.data.savedValue.children().length);
+//			 trace("mySo.data.savedValue"+mySo.data.savedValue.name);
+			 trace("mySo.data.savedValue"+mySo.data.savedValue.length);
+
+
+			btnsaveT.addEventListener(MouseEvent.CLICK, saveValue);
+			btnshowT.addEventListener(MouseEvent.CLICK, showValue);
+			btncleanT.addEventListener(MouseEvent.CLICK, clearValue);		
+			////////////////////////////////////////////////////
 		}
+//////////////////////////////////////////////////////
+	 private var mySo:SharedObject;
+	 private function saveValue(event:MouseEvent):void {
+            output.appendText("saving value...\n");
+           
+	    var tt=cgXML.toString()+evallist.toString()+sevallist.toString()+playingat.toString();
+	    trace(tt);
+	     mySo.data.savedValue = tt//"防不胜防防不胜防防不胜防";
+            
+            var flushStatus:String = null;
+            try {
+                //将本地永久共享对象立即写入本地文件。 如果不使用此方法，则 Flash Player 会在共享对象会话结束时（也就是说，在 SWF 文件关闭时，在由于不再有对共享对象的任何引用而将其作为垃圾回收时，或者在调用 SharedObject.clear() 或 SharedObject.close() 时），将共享对象写入文件。 
+               //参数：minDiskSpace: (default = 0) — 必须分配给此对象的最小磁盘空间（以字节为单位）。 
+                flushStatus = mySo.flush(10000);
+            } catch (error:Error) {
+                output.appendText("Error...Could not write SharedObject to disk\n");
+            }
+            if (flushStatus != null) {
+                switch (flushStatus) {
+                    //指示在可以刷新之前，提示用户增加共享对象的磁盘空间。 
+                    case SharedObjectFlushStatus.PENDING:
+                        output.appendText("Requesting permission to save object...\n");
+                        mySo.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+                        break;
+                    //指示成功完成了刷新。
+                    case SharedObjectFlushStatus.FLUSHED:
+                        output.appendText("Value flushed to disk.\n");
+                        break;
+                }
+            }
+            output.appendText("\n");
+        }
+        
+	private function clearValue(event:MouseEvent):void {
+            output.appendText("Cleared saved value...Reload SWF and the value should be \"undefined\".\n\n");         
+	    trace("clearValue");
+            delete mySo.data.savedValue;
+        }
+	private function showValue(event:MouseEvent):void {
+	    trace("showValue");
+            output.text=mySo.data.savedValue.toString();            
+        }
+
+	private function onFlushStatus(event:NetStatusEvent):void {
+            output.appendText("User closed permission dialog...\n");
+            //info:一个对象，具有描述对象的状态或错误情况的属性
+            switch (event.info.code) {
+                case "SharedObject.Flush.Success":
+                    output.appendText("User granted permission -- value saved.\n");
+                    break;
+                case "SharedObject.Flush.Failed":
+                    output.appendText("User denied permission -- value not saved.\n");
+                    break;
+            }
+            output.appendText("\n");
+
+            mySo.removeEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+        }
+///////////////////////////////////////////////////////////////////////
+
 
 		//字体swf加载完成
 		function TextformatComplete(event:Event):void
@@ -236,9 +311,7 @@
 			//加载init
 			var initURL:URLRequest = new URLRequest("setting/init.xml");
 			initLoader = new URLLoader(initURL);
-			initLoader.addEventListener(Event.COMPLETE,initxmlLoaded);		
-			//loaderContext.applicationDomain =null;
-			//loaderContext.allowCodeImport=false;
+			initLoader.addEventListener(Event.COMPLETE,initxmlLoaded);	
 		}
 		
 		
@@ -302,7 +375,7 @@
 		var BGMposition:Number=0;
 		function onDeactivate(event:Event):void
 		{
-			showtrace("onDeactivateeeeeeee ");
+			showtrace("on Deactivate ");
 			BGMposition=bgmchannel.position;
 			bgmchannel.stop();			
 		}
@@ -368,7 +441,6 @@
 				{
 				var cx=UpdStatXML.staticVar.children()[xi];
 				sevallist.appendChild(cx);
-				//trace(xi + "SCSCxx " + sevallist);
 				xi++;
 				}
 				
@@ -468,7 +540,7 @@
 		//固定变量
 		function loadstaticvarxml():void
 		{
-			trace(" staticvarxml");
+//			trace(" staticvarxml");
 			var file = FileP.resolvePath("Documents/staticvar.xml");
 			svfileStream = new FileStream();
 			svfileStream.addEventListener(Event.COMPLETE, staticvarXMLfile);
@@ -477,9 +549,9 @@
 		//固定变量
 		function staticvarXMLfile(event:Event):void
 		{
-			trace("svfileStreamsvfileStream" );
-			trace("svfileStream.readUTFBytes==" +svfileStream.readUTFBytes);
-			trace("svfileStream.bytesAvailable==="+svfileStream.bytesAvailable );
+//			trace("svfileStreamsvfileStream" );
+//			trace("svfileStream.readUTFBytes==" +svfileStream.readUTFBytes);
+//			trace("svfileStream.bytesAvailable==="+svfileStream.bytesAvailable );
 			var svXML = XML(svfileStream.readUTFBytes(svfileStream.bytesAvailable));
 			svfileStream.close();
 			sevallist = svXML.staticVar;
@@ -501,18 +573,16 @@
 			initXML = XML(initLoader.data);
 			firstScenario = initXML.playingat.scenario;
 			playingat = initXML.playingat;
-			trace(("playingat.scenario" + playingat.scenario));
+//			trace(("playingat.scenario" + playingat.scenario));
 			readScenario = playingat.scenario;
 			req = new URLRequest(("scenario/" + readScenario));//加载路径
 			ti = playingat.readline;
 			////////////txt
-			trace("☆init-03 加载txt");
 			loader.load(req);
 			loader.addEventListener(Event.COMPLETE,TXTcompleteHandler);
 			/////////////txt;
 			
 			////读取script
-			trace("☆init-03 加载txt script");
 			var reqSc = new URLRequest("scenario/script.txt");//加载路径
 			var loaderSc:URLLoader = new URLLoader ;
 			loaderSc.load(reqSc);
@@ -521,12 +591,10 @@
 
 			///////初始化淡入淡出时间
 			durtime = parseInt(initXML.durtime)/1000;
-			trace(durtime+"......................");
 			skiptimer.delay =parseInt(initXML.skiptime);// 
 			waittimerBtn.delay =parseInt(initXML.btntime);// /
 
 			////初始化立绘图层layer
-			trace("durtime" + durtime);
 			var i = 0;
 			for (i = 0; i <  initXML.Layer.children().length(); i++)
 			{
@@ -721,7 +789,7 @@
 			trace("☆读取script完成04");
 			arrScript = [];
 			var arrscT = e.target.data.split("[iscript ");//("<!");
-			trace("==SC======="+arrscT.length);
+//			trace("==SC======="+arrscT.length);
 			for each (var item in arrscT)
 			{
 				item="[iscript "+item;
@@ -746,7 +814,7 @@
 				arrScript.push(scT);
 				}
 			}			
-			trace("SC读取完成 "+arrScript[1]);
+//			trace("SC读取完成 "+arrScript[1]);
 		}
 		function LoadErrorHandler(e:Event)
 		{
@@ -762,7 +830,6 @@
 			arr = new Array  ;
 			loadtxt = true;//读取完成
 			arr = e.target.data.split("\n");
-			trace("=============================");
 			var i = 0;
 			for (i = 0; i < arr.length; i++)
 			{
@@ -794,7 +861,7 @@
 				ti = anGOTO(calllabel, 0);
 				
 			}
-			trace("read= ti" + ti);
+//			trace("read= ti" + ti);
 			analysisscript(ti);
 			txtlayer.addEventListener(MouseEvent.CLICK,clickNext);
 			msgTalk.addEventListener(MouseEvent.CLICK,clickNext);
@@ -816,11 +883,11 @@
 			linebreak.visible = true;
 			if (!inscript )
 			{	
-				trace("auto t");
+//				trace("auto t");
 				ti++;
 				analysisscript(ti);
 			}else {					
-				trace("auto S   ScrI="+ScrI+" arrScrInd= "+arrScrInd);
+//				trace("auto S   ScrI="+ScrI+" arrScrInd= "+arrScrInd);
 				ScrI++;
 				anIscript(arrScript[arrScrInd],ScrI);
 			}
@@ -896,7 +963,7 @@
 		function soundCompleteHandler(event:Event):void
 		{
 			bgm = new URLRequest("sound/" +bgmurl);
-			trace("soundCompleteHandler"+bgmurl);
+//			trace("soundCompleteHandler"+bgmurl);
 			soundBGM = new Sound  ;
 			soundBGM.addEventListener(Event.COMPLETE,completeHandler);
 			soundBGM.load(bgm);
@@ -917,7 +984,7 @@
 		{
 			if (ti >= arr.length)
 			{
-				trace(ti+"最后一条");
+//				trace(ti+"最后一条");
 				stopTimerSkip();
 				ti = 0;
 				i = 0;
@@ -936,7 +1003,7 @@
 					stag = arr[i].substring(1,arr[i].length - 1);
 					//trace("A~~" + stag+"//"+arr[i].length);
 				}
-				trace("●"+i+arr[i] );
+//				trace("●"+i+arr[i] );
 				var txttemp=arr[i].substring(arr[i].indexOf(" ") + 1,arr[i].indexOf("]"));
 				switch (stag)
 				{
@@ -1086,7 +1153,7 @@
 						findIscript( txttemp);
 						return;
 					case "setdurtime" :
-						trace("setdurtime!!!!!");
+//						trace("setdurtime!!!!!");
 						ansetdurtime();
 						ti++;
 						analysisscript(ti);
@@ -1164,7 +1231,7 @@
 				{
 					sstag = arrS[i].substring(1,arrS[i].indexOf("]"));
 				}
-				trace("S●" + i + arrS[i]);
+//				trace("S●" + i + arrS[i]);
 				var txttemp=arrS[i].substring(arrS[i].indexOf(" ") + 1,arrS[i].indexOf("]"));
 
 				switch (sstag)
@@ -1303,13 +1370,13 @@
 						anInitSavefile();
 						return;
 					case "setdurtime" :
-						trace("S-setdurtime!!!!!");
+//						trace("S-setdurtime!!!!!");
 						ansetdurtime();
 						ScrI++;
 						anIscript(arrS,ScrI);
 						return;
 					default :
-						trace(sstag + "in script");
+//						trace(sstag + "in script");
 						showtrace("in script "+txttemp);
 						ScrI++;
 						anIscript(arrS,ScrI);
@@ -1320,7 +1387,7 @@
 			}
 			else
 			{
-				trace("S文字"+arrS[i]+"//");
+//				trace("S文字"+arrS[i]+"//");
 				SaeDialog.Dialog(arrS[i],durtime);
 			}
 		}
@@ -1450,7 +1517,7 @@
 		}
 		//IMGloadError
 		function IMGloadError(event:Event):void {
-		   trace("ioErrorHandler: " + event);
+//		   trace("ioErrorHandler: " + event);
 		   showtrace("LOAD error"+event.toString()+event.currentTarget .toString());
 		}
 		
@@ -1459,7 +1526,7 @@
 		function goNext(event:Event)
 		{
 			
-			trace("goNext Sae xzxzxzzxzx"+gameStart+loadtxt+waiting+asking);
+//			trace("goNext Sae xzxzxzzxzx"+gameStart+loadtxt+waiting+asking);
 			if (! gameStart || ! loadtxt  )
 			{
 				trace("没开始，正在加载脚本");//||asking出现选项||waiting正在等待
@@ -1471,11 +1538,11 @@
 			}
 			if (!inscript )
 			{	
-				trace("auto t");
+//				trace("auto t");
 				ti++;
 				analysisscript(ti);
 			}else {					
-				trace("auto S   ScrI="+ScrI+" arrScrInd= "+arrScrInd);
+//				trace("auto S   ScrI="+ScrI+" arrScrInd= "+arrScrInd);
 				ScrI++;
 				anIscript(arrScript[arrScrInd],ScrI);
 			}
@@ -1516,7 +1583,7 @@
 		function anBG(tt:String)
 		{
 			var ArrT = tt.split("|");//ENGVER
-			trace("ANBG"+tt+"//"+ArrT);
+//			trace("ANBG"+tt+"//"+ArrT);
 			ArrT[0]=trimspace(replaceVar(ArrT[0]));
 			bgdurtime=durtime;
 			if(ArrT.length>1)
@@ -1696,7 +1763,7 @@
 			
 			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1, scenario.indexOf("]")));
 			scenario = trimspace(replaceVar(scenario));
-			trace("wait "+parseInt(scenario)+"~"+scenario);
+//			trace("wait "+parseInt(scenario)+"~"+scenario);
 			if(isNaN (parseInt(scenario)))
 			{
 				//如果wait没有参数
@@ -1725,7 +1792,7 @@
 			
 			var ArrT = scenario.split("|");//ENGVER
 			readScenario = trimspace(replaceVar( ArrT [0]));// 脚本文件
-			trace(("CALL readScenario==" + readScenario));
+//			trace(("CALL readScenario==" + readScenario));
 			req = new URLRequest(("scenario/" + readScenario));//加载路径
 			loader = new URLLoader  ;
 			loader.load(req);
@@ -1734,11 +1801,11 @@
 			{
 				//如果包含跳转标签
 				calllabel = trimspace(ArrT[1]);
-				trace("calllabel= " + calllabel);
+//				trace("calllabel= " + calllabel);
 			}else{
 				ti = 0;
 			}
-			trace("CALL=lastti" + lastti+" lastScenario="+lastScenario);
+//			trace("CALL=lastti" + lastti+" lastScenario="+lastScenario);
 		}
 
 		//返回跳转前脚本
@@ -1756,7 +1823,7 @@
 				loader.addEventListener(Event.COMPLETE, TXTcompleteHandler);
 				calllabel = "";
 				ti = lastti+1;
-				trace("return=ti" + lastti);
+//				trace("return=ti" + lastti);
 			}else{
 				if(gamedebug)
 				{
@@ -1781,7 +1848,6 @@
 		//音效
 		function anSOUND(scenario:String )
 		{
-			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			scenario = trimspace(replaceVar(scenario));
 			snd = new Sound  ;
 			snd.load(new URLRequest(("sound/" + scenario)));
@@ -1802,19 +1868,19 @@
 			}
 			catch (myError:Error)
 			{
-				trace("~~~~");
+//				trace("~~~~");
 			}
 			
 			scenario = trimspace(replaceVar(scenario));
 			if (scenario == "bgmstop")
 			{
-				trace ("bgmstop");
+//				trace ("bgmstop");
 				bgmurl = "";
 				return;
 			}
 			if(bgmurl == scenario)
 			{
-				return;			//如果和正在播放的相同							
+				return;			//如果和正在播放的相同						
 			}
 			
 			bgmurl = scenario;		
@@ -1836,8 +1902,6 @@
 			//变量赋值
 		function anEVAL(scenario:String )
 		{
-			
-			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			var ArrT;
 			var operator:String;
 			if(scenario.indexOf("=")>0)
@@ -1853,10 +1917,7 @@
 				 ArrT = scenario.split("-");
 				operator="-";
 			}
-			trace("anEVAL  1  "+ArrT[0]+"-"+ArrT[1]);
 			ArrT[0]=trimspace(replaceprefix(ArrT[0]));
-			//ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf(" ",ArrT[0].indexOf("@") + 1));
-			//trace(scenario+"///"+st);			
 			ArrT[1]=trimspace(replaceVar(ArrT[1]));//允许赋值为变量
 			trace("ArrT[1]= "+ArrT[1]);
 			var v ;//= evallist.elements(st);
@@ -1917,26 +1978,26 @@
 					t="<temp><temp>"+t+"</temp></temp>";
 					var tx:XML = new XML(t);
 					tempevallist=tx.temp;    
-					trace("tempppp"+tempevallist);
+//					trace("tempppp"+tempevallist);
 				}else if(tempevallist.children().length()==0){
 					
 					t="<temp><temp>"+t+"</temp></temp>";
 					var tx2:XML = new XML(t);
 					
 					tempevallist=tx2.temp;    
-					trace("2tempppp"+tempevallist);
+//					trace("2tempppp"+tempevallist);
 				}else{
 					while (i<=tempevallist.children().length())
 					{
 						//增加
-						trace("tempppp---"+tempevallist);
+//						trace("tempppp---"+tempevallist);
 						
 						if(i==tempevallist.children().length())
 						{
 							var txmls:XML = new XML(t);
 							
 							tempevallist.prependChild(txmls);    
-							trace("tempppp-add-"+tempevallist);
+//							trace("tempppp-add-"+tempevallist);
 							return;;
 						}
 						if(tempevallist.children()[i].name()==ArrT[0])
@@ -1945,7 +2006,7 @@
 							v = tempevallist.elements(ArrT[0]);
 							ci= tempevallist.elements(ArrT[0]).childIndex();
 							tempevallist.children()[ci] =analysiseval(v,operator,ArrT[1]);
-							trace("eval-tempevallist-"+i);
+//							trace("eval-tempevallist-"+i);
 							return;;
 						}
 						
@@ -1955,124 +2016,11 @@
 				}
 			}
 			
-			trace("evalll"+ArrT[1]);
+//			trace("evalll"+ArrT[1]);
 			
 			return;
 		}
 		
-//		//变量赋值
-//		function anEVAL(scenario:String )
-//		{
-//			
-//			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-//			var ArrT = tt.split("|");//ENGVER
-//			//var st = ArrT[0].substring(1,ArrT[0].length - 1);//
-//			var st=ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
-//			trace(tt+"///"+st);
-//			
-//			///ArrT[2]=replaceVar(ArrT[2]);
-//
-//			var v ;//= evallist.elements(st);
-//			var ci;// = evallist.elements(st).childIndex();
-//			
-//			var found=false;
-//			var i=0;
-//			while (i<sevallist.children().length() )
-//			{
-//				//遍历静态变量列表
-//				if(sevallist.children()[i].name()==st)
-//				{
-//					found=true;
-//					v = sevallist.elements(st);
-//					ci= sevallist.elements(st).childIndex();
-//					sevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
-//					
-//					//////////////////////////file写入存档
-//
-//					var file = FileP.resolvePath("Documents/staticvar.xml");
-//
-//					var stream:FileStream = new FileStream  ;
-//					stream.open(file,FileMode.WRITE);
-//
-//					stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-//					stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");
-//					//stream.writeUTFBytes(sevallist.toString());
-//					stream.close();
-//					trace("static  xmlsave");
-//					////////////////////file
-//					break;
-//				}
-//				i++;
-//			}
-//
-//			i=0;
-//			while (i<evallist.children().length())
-//			{
-//				//遍历变量列表
-//				if(evallist.children()[i].name()==st)
-//				{
-//					found=true;
-//					v = evallist.elements(st);
-//					ci= evallist.elements(st).childIndex();
-//					evallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
-//					break;
-//				}
-//				i++;
-//			}
-//			i=0;
-//			
-//			if(!found)
-//			{
-//				//变量不存在，建立临时变量
-//				var t="<"+st+">"+ArrT[2]+"</"+st+">";
-//				if(tempevallist==null)
-//				{					
-//					t="<temp><temp>"+t+"</temp></temp>";
-//					var tx:XML = new XML(t);
-//					tempevallist=tx.temp;    
-//					trace("tempppp"+tempevallist);
-//				}else if(tempevallist.children().length()==0){
-//					
-//					t="<temp><temp>"+t+"</temp></temp>";
-//					var tx2:XML = new XML(t);
-//					
-//					tempevallist=tx2.temp;    
-//					trace("2tempppp"+tempevallist);
-//				}else{
-//					while (i<=tempevallist.children().length())
-//					{
-//						//增加
-//						trace("tempppp---"+tempevallist);
-//						
-//						if(i==tempevallist.children().length())
-//						{
-//							var txmls:XML = new XML(t);
-//							
-//							tempevallist.prependChild(txmls);    
-//							trace("tempppp-add-"+tempevallist);
-//							return;;
-//						}
-//						if(tempevallist.children()[i].name()==st)
-//						{
-//							//更新变量值
-//							v = tempevallist.elements(st);
-//							ci= tempevallist.elements(st).childIndex();
-//							tempevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
-//							trace("eval-tempevallist-"+i);
-//							return;;
-//						}
-//						
-//						i++;
-//					}
-//					
-//				}
-//			}
-//			
-//			trace("evalll"+ArrT[2]);
-//			
-//			return;
-//		}
-//		
 
 
 		function analysiseval(st0:String ,st1:String,st2:String)
@@ -2080,12 +2028,12 @@
 
 			if( st1=="=" && (isNaN (parseInt(st0))||isNaN (parseInt(st2))))
 			{
-				trace("string--"+evallist);
+//				trace("string--"+evallist);
 				return st2.toString();
 			}
 			if( st1=="+" &&( isNaN (parseInt(st0))||isNaN (parseInt(st2))))
 			{
-				trace("string++"+evallist);
+//				trace("string++"+evallist);
 				st0+=st2.toString();
 				return st0;
 			}
@@ -2094,15 +2042,15 @@
 			switch (st1)
 			{
 				case "+" :
-					trace(" +");
+//					trace(" +");
 					v = parseInt(v) + parseInt(st2);
 					break;
 				case "-" :
-					trace("-");
+//					trace("-");
 					v = parseInt(v) - parseInt(st2);
 					break;
 				case "=" :
-					trace(" =");
+//					trace(" =");
 					v = parseInt(st2);
 					break;
 				default :
@@ -2119,9 +2067,9 @@
 			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			//tt = replaceVar(tt);
 			scenario =replaceVar(scenario);
-			trace("1IFFFFFFFF"+scenario);
+//			trace("1IFFFFFFFF"+scenario);
 			scenario=replacespace(scenario);
-			trace("2IFFFFFFFF"+scenario);
+//			trace("2IFFFFFFFF"+scenario);
 			if (analysisIF.analysis(scenario))
 			{
 				return index+1;
@@ -2134,7 +2082,7 @@
 				
 				while (replacespace(arr[i]) != "[endif]" && (i < arr.length))
 				{
-					trace(i+"⊕"+arr[i] +"⊕");
+//					trace(i+"⊕"+arr[i] +"⊕");
 					i++;
 				}
 				index = i + 1;
@@ -2147,9 +2095,9 @@
 			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			//tt = replaceVar(tt);
 			scenario = replaceVar(scenario);
-			trace("1sIFFFFFFFF"+scenario);
+//			trace("1sIFFFFFFFF"+scenario);
 			scenario=replacespace(scenario);
-			trace("2sIFFFFFFFF"+scenario);
+//			trace("2sIFFFFFFFF"+scenario);
 			if (analysisIF.analysis(scenario))
 			{
 				trace("yesssssssssss///");
@@ -2164,7 +2112,7 @@
 				
 				while (arrS[i] != "[end if]" && (i < arrS.length))
 				{
-					trace(i+"☆"+arrS[i] +"☆");
+//					trace(i+"☆"+arrS[i] +"☆");
 					i++;
 				}
 				index = i + 1;
@@ -2177,15 +2125,15 @@
 		function anGOTO(scenario:String, index:int):int
 		{
 			scenario=trimspace (replaceVar(scenario));
-			trace("GOTO-"+scenario);
+//			trace("GOTO-"+scenario);
 			//如果没找到,则返回当前序号index
 			for each (var item in gotoArr)
 			{				
 				if (item[0] == scenario)
 				{
-					trace("gooo!!item[0]" + item);	
+//					trace("gooo!!item[0]" + item);	
 					index= item[1];
-					trace("gooo!!" + index);					
+//					trace("gooo!!" + index);					
 					//showtrace("gooo!!" + index);					
 					return index;
 				}
@@ -2200,12 +2148,10 @@
 		{
 			var sp=parseInt(sevallist.elements("speed"));
 			//储存在静态变量存档中
-			trace("ansetdurtime"+sevallist.elements("speed"));
 			if(!isNaN(sp))
 			{
 				durtime=parseInt(initXML.durtime)*sp/10000;
 			}
-			trace("ansetdurtime-sp-"+sp+"//"+durtime);
 		}
 
 		//////////////////////////////////////////////////
@@ -2509,7 +2455,6 @@
 			//自动播放
 			if ((readScenario == firstScenario))
 			{
-				//trace("readScenario===" + readScenario + "//init=" + initXML.playingat.scenario);
 				showtrace("you can not use skip here");
 				return;
 			}
