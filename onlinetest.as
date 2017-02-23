@@ -85,6 +85,9 @@
 		var StrSave:String ="save.xml" ;//默认保存路径
 
 
+		/////读取share obj xml
+		var ShXML = new XML  ;
+
 		/////读取配置xml
 		var initXML = new XML  ;
 		var initLoader:URLLoader;//r = new URLLoader(initURL);
@@ -223,16 +226,13 @@
 			TFloader.load(TFurl,loaderContext);
 			
 			/////////////////////////////////////////////////
-			mySo = SharedObject.getLocal("application-name");
+			Shobjsave = SharedObject.getLocal("application-name");
 			 output.appendText("SharedObject loaded...\n");
 			//赋给对象的 data 属性 (property) 的属性 (attribute) 集合；可以共享和存储这些属性 (attribute)。 每个特性都可以是任何 ActionScript 或 JavaScript 类型的对象（数组、数字、布尔值、字节数组、XML，等等）。
-			 output.appendText("loaded value: " + mySo.data.savedValue + "\n\n");
-			 trace("mySo.data.savedValue"+mySo.data.savedValue);
-			 trace("mySo.data.savedValue"+mySo.data.savedValue.toString());
-//			 trace("mySo.data.savedValue"+mySo.data.savedValue.children()[0]);
-//			 trace("mySo.data.savedValue"+mySo.data.savedValue.children().length);
-//			 trace("mySo.data.savedValue"+mySo.data.savedValue.name);
-			 trace("mySo.data.savedValue"+mySo.data.savedValue.length);
+			 output.appendText("loaded value: " + Shobjsave.data.savedValue + "\n\n");
+			 trace("Shobjsave.data.savedValue"+Shobjsave.data.savedValue);
+			 var tt="<save><cgpanel/><svar/><staticVar/><playingat/></save>";
+			ShXML = XML(tt);
 
 
 			btnsaveT.addEventListener(MouseEvent.CLICK, saveValue);
@@ -241,49 +241,72 @@
 			////////////////////////////////////////////////////
 		}
 //////////////////////////////////////////////////////
-	 private var mySo:SharedObject;
-	 private function saveValue(event:MouseEvent):void {
-            output.appendText("saving value...\n");
-           
-	    var tt=cgXML.toString()+evallist.toString()+sevallist.toString()+playingat.toString();
-	    trace(tt);
-	     mySo.data.savedValue = tt//"防不胜防防不胜防防不胜防";
-            
-            var flushStatus:String = null;
-            try {
-                //将本地永久共享对象立即写入本地文件。 如果不使用此方法，则 Flash Player 会在共享对象会话结束时（也就是说，在 SWF 文件关闭时，在由于不再有对共享对象的任何引用而将其作为垃圾回收时，或者在调用 SharedObject.clear() 或 SharedObject.close() 时），将共享对象写入文件。 
-               //参数：minDiskSpace: (default = 0) — 必须分配给此对象的最小磁盘空间（以字节为单位）。 
-                flushStatus = mySo.flush(10000);
-            } catch (error:Error) {
-                output.appendText("Error...Could not write SharedObject to disk\n");
-            }
-            if (flushStatus != null) {
-                switch (flushStatus) {
-                    //指示在可以刷新之前，提示用户增加共享对象的磁盘空间。 
-                    case SharedObjectFlushStatus.PENDING:
-                        output.appendText("Requesting permission to save object...\n");
-                        mySo.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
-                        break;
-                    //指示成功完成了刷新。
-                    case SharedObjectFlushStatus.FLUSHED:
-                        output.appendText("Value flushed to disk.\n");
-                        break;
-                }
-            }
-            output.appendText("\n");
+	 private var Shobjsave:SharedObject;
+
+	 private function saveValue(event:MouseEvent):void 
+	 {
+		trace("saving value..");
+		output.appendText("saving value...\n");
+		playingat.readline = ti;
+		playingat.scenario = readScenario;
+		playingat.bgm = bgmurl;
+		playingat.bg = bgurl;
+		playingat.lastreadline=lastti;
+		playingat.lastScenario=lastScenario; 
+
+
+		ShXML.svar=evallist;
+		ShXML.playingat=playingat;
+		
+		Shobjsave.data.savedValue =ShXML;// tt;//
+
+		var flushStatus:String = null;
+		try {
+			//将本地永久共享对象立即写入本地文件。 如果不使用此方法，则 Flash Player 会在共享对象会话结束时（也就是说，在 SWF 文件关闭时，在由于不再有对共享对象的任何引用而将其作为垃圾回收时，或者在调用 SharedObject.clear() 或 SharedObject.close() 时），将共享对象写入文件。 
+			//参数：minDiskSpace: (default = 0) — 必须分配给此对象的最小磁盘空间（以字节为单位）。 
+			flushStatus = Shobjsave.flush(10000);
+		} catch (error:Error)
+		{
+			output.appendText("Error...Could not write SharedObject to disk\n");
+		}
+		if (flushStatus != null)
+		{
+			switch (flushStatus)
+			{
+				 //指示在可以刷新之前，提示用户增加共享对象的磁盘空间。 
+				case SharedObjectFlushStatus.PENDING:
+				output.appendText("Requesting permission to save object...\n");
+				Shobjsave.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+				break;
+				//指示成功完成了刷新。
+				case SharedObjectFlushStatus.FLUSHED:
+				output.appendText("Value flushed to disk.\n");
+				break;
+			}
+		}
+		output.appendText("\n");
         }
         
-	private function clearValue(event:MouseEvent):void {
-            output.appendText("Cleared saved value...Reload SWF and the value should be \"undefined\".\n\n");         
-	    trace("clearValue");
-            delete mySo.data.savedValue;
-        }
-	private function showValue(event:MouseEvent):void {
-	    trace("showValue");
-            output.text=mySo.data.savedValue.toString();            
+	private function clearValue(event:MouseEvent):void
+	{
+		output.text="Cleared saved value...Reload SWF and the value should be \"undefined\".\n\n";         
+		trace("clearValue");
+		delete Shobjsave.data.savedValue;
         }
 
-	private function onFlushStatus(event:NetStatusEvent):void {
+	private function showValue(event:MouseEvent):void 
+	{
+		trace("showValue xml");
+		trace( ShXML);
+		output.text=Shobjsave.data.savedValue.toString();          
+		//ShXML = XML(Shobjsave.data.savedValue.toString());
+		
+		trace("showValue share");
+		trace(Shobjsave.data.savedValue.toString());
+        }
+
+	private function onFlushStatus(event:NetStatusEvent):void
+	{
             output.appendText("User closed permission dialog...\n");
             //info:一个对象，具有描述对象的状态或错误情况的属性
             switch (event.info.code) {
@@ -296,7 +319,7 @@
             }
             output.appendText("\n");
 
-            mySo.removeEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+            Shobjsave.removeEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
         }
 ///////////////////////////////////////////////////////////////////////
 
@@ -312,7 +335,7 @@
 			var initURL:URLRequest = new URLRequest("setting/init.xml");
 			initLoader = new URLLoader(initURL);
 			initLoader.addEventListener(Event.COMPLETE,initxmlLoaded);	
-		}
+		}//字体swf加载完成,加载init
 		
 		
 
@@ -465,7 +488,7 @@
 			if (file.exists)
 			{
 				trace("存在存在");//文件存在
-				loadcgxml(); 
+				loadcgxml(); ////字体swf加载完成,init完成，加载cg
 				updatecgxml();
 				
 			}
@@ -486,7 +509,7 @@
 			{
 				trace("存在存在");//文件存在
 				updSateStatxml();
-				loadstaticvarxml();
+				loadstaticvarxml();////字体swf加载完成,init完成，加载staticvar
 			}
 			else
 			{
@@ -535,7 +558,7 @@
 			cgfileStream = new FileStream();
 			cgfileStream.addEventListener(Event.COMPLETE, readCgXMLfile);
 			cgfileStream.openAsync(file, FileMode.READ);
-		}
+		}////字体swf加载完成,init完成，加载cg
 
 		//固定变量
 		function loadstaticvarxml():void
@@ -545,16 +568,15 @@
 			svfileStream = new FileStream();
 			svfileStream.addEventListener(Event.COMPLETE, staticvarXMLfile);
 			svfileStream.openAsync(file, FileMode.READ);
-		}
+		}////字体swf加载完成,init完成，加载staticvar
 		//固定变量
 		function staticvarXMLfile(event:Event):void
 		{
-//			trace("svfileStreamsvfileStream" );
-//			trace("svfileStream.readUTFBytes==" +svfileStream.readUTFBytes);
-//			trace("svfileStream.bytesAvailable==="+svfileStream.bytesAvailable );
 			var svXML = XML(svfileStream.readUTFBytes(svfileStream.bytesAvailable));
 			svfileStream.close();
 			sevallist = svXML.staticVar;
+			//ShXML.svar=evallist;//***
+			Shobjsave.data.savedValue =ShXML;//***
 			ansetdurtime();//uodate speed
 		}
 		//cgxml
@@ -563,6 +585,8 @@
 			cgXML = XML(cgfileStream.readUTFBytes(cgfileStream.bytesAvailable));
 			cgfileStream.close();
 			SaeCg.readCGXML(cgXML);
+			ShXML.cgpanel=cgXML.cgpanel;//***
+			//Shobjsave.data.savedValue =ShXML;//***
 		}
 
 		//初始化
@@ -774,14 +798,15 @@
 
 			//////////变量
 			evallist = initXML.svar;
+			ShXML.svar=evallist;//***
 			//trace("evallist=" +evallist);
 			
-			//////////写入cg和存档，更新staticvar
+			//////////写入cg，更新staticvar
 			trace("☆init-03 加载cg和存档");
-			writeInitSavefile();//写入cg和存档
+			writeInitSavefile();//写入cg和更新staticvar
 
 			 stageInit();///////////
-		}
+		}////字体swf加载完成,init完成，//写入cg和更新staticvar
 
 		/////////////////txt 读取script完成
 		function SccompleteHandler(e:Event)
@@ -1420,6 +1445,9 @@
 			cgXML.cgpanel.children()[ci]. @ show = "true";
 			/////////////
 			SaeCg.getCG(ci,cgXML);
+
+			ShXML.cgpanel=cgXML.cgpanel;//***
+			Shobjsave.data.savedValue =ShXML;//***
 			//////////////////////////file
 			var file = FileP.resolvePath("Documents/cg.xml");
 			var stream:FileStream = new FileStream  ;
@@ -1934,17 +1962,15 @@
 					v = sevallist.elements(ArrT[0]);
 					ci= sevallist.elements(ArrT[0]).childIndex();
 					sevallist.children()[ci] =analysiseval(v,operator,ArrT[1]);//更新变量值
-					
+					ShXML.staticVar=sevallist;//***
+					Shobjsave.data.savedValue =ShXML;//***
 					//////////////////////////file写入存档
 
 					var file = FileP.resolvePath("Documents/staticvar.xml");
-
 					var stream:FileStream = new FileStream  ;
 					stream.open(file,FileMode.WRITE);
-
 					stream.addEventListener(Event.COMPLETE,savecompleteHandler);
 					stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");
-					//stream.writeUTFBytes(sevallist.toString());
 					stream.close();
 					trace("static  xmlsave");
 					////////////////////file
