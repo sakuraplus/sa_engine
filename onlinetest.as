@@ -13,14 +13,7 @@
 	import flash.utils.Timer;
 
 	import com.greensock.*;
-	import com.greensock.plugins.*;
-
-
-	
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
-	
+	import com.greensock.plugins.*;	
 
 	import flash.events.NetStatusEvent;
 	import flash.net.SharedObject;
@@ -37,7 +30,6 @@
 	import flash.system.LoaderContext;
 	////////////
 	import flash.system.Capabilities;
-	import flash.desktop.NativeApplication;
 	import flash.ui.Keyboard;
 
 
@@ -71,15 +63,12 @@
 
 		///////////////cg
 		var cgXML = new XML ;
-		var cgfileStream:FileStream;
+		var cgXMLlist:XMLList;//变量
 		var cgLoader:URLLoader;// 加载cg图片
-		var cgArray:Array;//loader数组
+		var cgArray:Array=new Array;//loader数组
 		var cgPage = 0;//翻页
 		//////////////cg
 
-		var svfileStream:FileStream;//固定变量xml
-
-		var savefileStream:FileStream;//存档
 		var loadXML:XML = new XML  ;//读取存档
 		var StrAutosave:String ="autosave.xml" ;
 		var StrSave:String ="save.xml" ;//默认保存路径
@@ -127,7 +116,6 @@
 
 		var snd:Sound;//音效
 		var sndchannel:SoundChannel;
-		///var iii = new initS  ;
 
 		public var btnsoundurl="";//按钮音效clicksound
 		var btnsnd:Sound;
@@ -147,7 +135,7 @@
 
 		var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain,null);//在ios中加载swf资源
 
-		var FileP:File;//存档文件系统位置
+//		var FileP:File;//存档文件系统位置
 		
 		var Tformat:TextFormat = new TextFormat();
 		
@@ -180,27 +168,6 @@
 			addEventListener("keyback",msgBack);
 
 
-			
-			if (Capabilities.os.toLowerCase().substring(0,6)=="iphone" ||Capabilities.os.toLowerCase().substring(0,3)=="mac")
-			{
-				showtrace("mac or ios  "+Capabilities.os+"//"+Capabilities.cpuArchitecture);
-				FileP = new File(File.applicationDirectory.nativePath);
-				FileP = FileP.resolvePath("..");
-			}
-			else if (Capabilities.os.toLowerCase().match("windows")!=null)
-			{
-				showtrace("win "+Capabilities.os+"//"+Capabilities.cpuArchitecture);
-				FileP = new File(File.applicationDirectory.nativePath);
-			}
-			else
-			{
-				showtrace("android or else,use back to escape "+Capabilities.os+"//"+Capabilities.cpuArchitecture);
-				FileP = new File(File.applicationStorageDirectory.nativePath);
-				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,handleDeactivate,false, 0, true);
-				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,onDeactivate);	//stage.addEventListener(Event.DEACTIVATE 也可以
-				NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,onActivate);	
-			}
-
 			waittimerBtn.addEventListener(TimerEvent.TIMER_COMPLETE,onTimerBtnComplete);
 			MCwaiting.alpha = 0;//();
 			
@@ -231,9 +198,22 @@
 			//赋给对象的 data 属性 (property) 的属性 (attribute) 集合；可以共享和存储这些属性 (attribute)。 每个特性都可以是任何 ActionScript 或 JavaScript 类型的对象（数组、数字、布尔值、字节数组、XML，等等）。
 			 output.appendText("loaded value: " + Shobjsave.data.savedValue + "\n\n");
 			 trace("Shobjsave.data.savedValue"+Shobjsave.data.savedValue);
-			 var tt="<save><cgpanel/><svar/><staticVar/><playingat/></save>";
+			 var tt="<save><cgpanel/><staticVar/><svar/><playingat/></save>";
 			ShXML = XML(tt);
+			if(Shobjsave.data.savedValue !=undefined)
+			{
+				output.appendText("111111111111111");
+				ShXML.staticVar=XML(Shobjsave.data.savedValue.toString()).staticVar; 
+				ShXML.cgpanel=XML(Shobjsave.data.savedValue.toString()).cgpanel; 
+				output.appendText("1222222222");
 
+			}
+				sevallist = ShXML.staticVar;
+				cgXML=XML("<cg>"+ShXML.cgpanel+"</cg>");
+				trace("----sevallist="+sevallist);
+				trace("----cgXML.cgpanel="+cgXML.cgpanel);
+				 trace("--Shobjsave.ShXML= "+ShXML);
+				output.mouseEnabled = false; 
 
 			btnsaveT.addEventListener(MouseEvent.CLICK, saveValue);
 			btnshowT.addEventListener(MouseEvent.CLICK, showValue);
@@ -259,7 +239,7 @@
 		ShXML.playingat=playingat;
 		
 		Shobjsave.data.savedValue =ShXML;// tt;//
-
+		trace("save so="+ShXML);
 		var flushStatus:String = null;
 		try {
 			//将本地永久共享对象立即写入本地文件。 如果不使用此方法，则 Flash Player 会在共享对象会话结束时（也就是说，在 SWF 文件关闭时，在由于不再有对共享对象的任何引用而将其作为垃圾回收时，或者在调用 SharedObject.clear() 或 SharedObject.close() 时），将共享对象写入文件。 
@@ -367,180 +347,24 @@
 
 		}
 
-		//按返回键退出，home键暂停音乐
-		function handleDeactivate(event:KeyboardEvent):void
-		{
-			if (event.keyCode == Keyboard.BACK)
-			{
-				//提示退出
-				event.preventDefault();//屏蔽默认事件  
-				showtrace("KEY BACK ");
-				askmsg = "keyback";
-				SaeMsgbox.showmsg (askmsg, "要退出了么？");
-				
-				//NativeApplication.nativeApplication.exit();
-			}
-			else if(event.keyCode== Keyboard.MENU)  
-			{  
-				 //menu 键
-				// showtrace("MENU");			
-			}  
-			else if(event.keyCode == Keyboard.SEARCH)  
-			{  
-			  //  showtrace("SERACHHHH ");
-			//search      
-			}  
-			else  if (event.keyCode == Keyboard.HOME) {  
-			//Handle Home button.  
-			}  
-		}
+		
 		
 		var BGMposition:Number=0;
-		function onDeactivate(event:Event):void
-		{
-			showtrace("on Deactivate ");
-			BGMposition=bgmchannel.position;
-			bgmchannel.stop();			
-		}
-
-
-		
-		function onActivate(event:Event):void
-		{
-			showtrace("onActivateeeeeeee ");
-			bgmchannel = soundBGM.play(BGMposition);
-		}
-
-
-		//初次写入存档
-		function updatecgxml():void
-		{
-			var UpdcgURL:URLRequest = new URLRequest("setting/cg.xml");
-			var Updcgloader:URLLoader = new URLLoader(UpdcgURL);
-			Updcgloader.addEventListener(Event.COMPLETE,UpdcgxmlLoaded);			
-		}
-
-		function UpdcgxmlLoaded(event:Event):void
-		{
-			trace ("UPDATE CG!!!!");
-			var UpdcgXML = XML(event.target.data) ;
-			var xi=cgXML.cgpanel.children().length();
-			if(UpdcgXML.cgpanel.children().length()>xi)
-			{
-				while (UpdcgXML.cgpanel.children().length() > cgXML.cgpanel.children().length())
-				{
-				var cx=UpdcgXML.cgpanel.children()[xi];
-				cgXML.cgpanel.appendChild(cx);
-				xi++;
-				}
-				var file = FileP.resolvePath("Documents/cg.xml");
-				var stream:FileStream = new FileStream  ;
-				stream.open(file,FileMode.WRITE);
-				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-				stream.writeUTFBytes(cgXML.toString());
-				stream.close();
-				trace("CG UpDATE  xmlsave");
-				needupdate ++;
-			}
-		}
-		
-		function updSateStatxml():void
-		{
-			var UpdStatURL:URLRequest = new URLRequest("setting/staticvar.xml");
-			var UpdStatloader:URLLoader = new URLLoader(UpdStatURL);
-			UpdStatloader.addEventListener(Event.COMPLETE,UpdStatxmlLoaded);
-			
-		}
-		function UpdStatxmlLoaded(event:Event):void
-		{
-			trace ("UPDATE STATIC!!!!");
-			//trace (event.target.data);
-			var UpdStatXML = XML(event.target.data) ;
-			var xi=sevallist.children().length();
-			
-			if(UpdStatXML.staticVar.children().length()>xi)
-			{
-				while (UpdStatXML.staticVar.children().length() >sevallist.children().length())
-				{
-				var cx=UpdStatXML.staticVar.children()[xi];
-				sevallist.appendChild(cx);
-				xi++;
-				}
-				
-				var file = FileP.resolvePath("Documents/staticvar.xml");
-				var stream:FileStream = new FileStream  ;
-				stream.open(file,FileMode.WRITE);
-				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-				stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");				
-				stream.close();
-				trace("static update xmlsave");
-				
-				needupdate ++;
-				//writeSavexml();
-			}
-			
-		}
 		
 		
-		function writeInitSavefile()
+		
+		function writeInitSavefile()//init complete,写入cg和更新staticvar
 		{
-			var file = FileP.resolvePath("Documents/cg.xml");
-			if (file.exists)
-			{
-				trace("存在存在");//文件存在
-				loadcgxml(); ////字体swf加载完成,init完成，加载cg
-				updatecgxml();
-				
-			}
-			else
-			{
-				////////////文件不存在则从包中拷贝
-				var original0:File = File.applicationDirectory.resolvePath("setting/cg.xml");
-				trace("save不存在   "+original0.nativePath);
-
-				var newFile0 = FileP.resolvePath("Documents/cg.xml");
-				original0.copyTo(newFile0, true);
-				loadcgxml();
-			}
-			
-
-			file = FileP.resolvePath("Documents/staticvar.xml");
-			if (file.exists)
-			{
-				trace("存在存在");//文件存在
-				updSateStatxml();
-				loadstaticvarxml();////字体swf加载完成,init完成，加载staticvar
-			}
-			else
-			{
-				////////////文件不存在则从包中拷贝
-				//showtrace("不存在不存在"+file.nativePath);
-				var original1:File = File.applicationDirectory.resolvePath("setting/staticvar.xml");
-				trace("staticvar不存在   "+original1.nativePath);
-
-				var newFile1 = FileP.resolvePath("Documents/staticvar.xml");
-				original1.copyTo(newFile1, true);
-				loadstaticvarxml();
-			}
+		trace("writeInitSavefile");
+			loadstaticvarxml();
+			loadcgxml();
 		}
 
 		//覆盖存档
 		function anInitSavefile()
 		{
-			var original:File = File.applicationDirectory.resolvePath("setting/cg.xml");
-			trace("cg覆盖   "+original.nativePath);
-			var newFile = FileP.resolvePath("Documents/cg.xml");
-			original.copyTo(newFile, true);
-
-
 			SaeCg.initCG();
 			loadcgxml();
-
-			var original1:File = File.applicationDirectory.resolvePath("setting/staticvar.xml");
-			trace("st 覆盖  "+original1.nativePath);
-			var newFile1 = FileP.resolvePath("Documents/staticvar.xml");
-			original1.copyTo(newFile1, true);
-
 			loadstaticvarxml();
 
 			ti++;
@@ -550,45 +374,79 @@
 		//读取cgxml
 		function loadcgxml():void
 		{
-			cgXML = new XML ;
-			cgArray=new Array;
 			cgPage = 0;
 			trace(" loadcgxml");
-			var file = FileP.resolvePath("Documents/cg.xml");
-			cgfileStream = new FileStream();
-			cgfileStream.addEventListener(Event.COMPLETE, readCgXMLfile);
-			cgfileStream.openAsync(file, FileMode.READ);
+	///////////////////////////////////****
+			var cgxmlLoader:URLLoader;
+			var cgURL:URLRequest = new URLRequest("setting/cg.xml");
+			cgxmlLoader = new URLLoader(cgURL);
+			cgxmlLoader.addEventListener(Event.COMPLETE,readCgXMLfile);	
+
 		}////字体swf加载完成,init完成，加载cg
+//cgxml
+		function readCgXMLfile(event:Event):void
+		{
+			var XMLcg = XML(event.target.data) ;
+			var xi=cgXML.cgpanel.children().length();
+			if(xi<1)
+			{	
+				cgXML = XMLcg;
+			}else	if(XMLcg.cgpanel.children().length()>xi)
+			{
+				while (XMLcg.cgpanel.children().length() >cgXML.cgpanel.children().length())
+				{
+				var cx=XMLcg.cgpanel.children()[xi];
+				cgXML.cgpanel.appendChild(cx);
+				xi++;
+				}
+				trace("cg xmlsave");
+			}
+			ShXML=XML(Shobjsave.data.savedValue) ;
+			ShXML.cgpanel=cgXML.cgpanel;//***
+			Shobjsave.data.savedValue =ShXML;//***
+		////////////****
+			SaeCg.readCGXML(cgXML);
+
+			trace ("readCgXMLfile"+Shobjsave.data.savedValue);
+		}
 
 		//固定变量
 		function loadstaticvarxml():void
 		{
-//			trace(" staticvarxml");
-			var file = FileP.resolvePath("Documents/staticvar.xml");
-			svfileStream = new FileStream();
-			svfileStream.addEventListener(Event.COMPLETE, staticvarXMLfile);
-			svfileStream.openAsync(file, FileMode.READ);
+		////////////////////////////****
+			var stxmlLoader:URLLoader;
+			var stURL:URLRequest = new URLRequest("setting/staticvar.xml");
+			stxmlLoader = new URLLoader(stURL);
+			stxmlLoader.addEventListener(Event.COMPLETE,readstatvarXMLfile);	
+
 		}////字体swf加载完成,init完成，加载staticvar
 		//固定变量
-		function staticvarXMLfile(event:Event):void
+		function readstatvarXMLfile(event:Event):void
 		{
-			var svXML = XML(svfileStream.readUTFBytes(svfileStream.bytesAvailable));
-			svfileStream.close();
-			sevallist = svXML.staticVar;
-			//ShXML.svar=evallist;//***
+		//load staticvarxml COMPLETE,read staticvarXMLfile
+		///////****
+			var XMLsv = XML(event.target.data) ;
+			var xi=sevallist.children().length();
+			if(xi<1)
+			{
+				sevallist = XMLsv.staticVar;
+			}else	if(XMLsv.staticVar.children().length()>xi)
+			{
+				while (XMLsv.staticVar.children().length() >sevallist.children().length())
+				{
+				var cx=XMLsv.staticVar.children()[xi];
+				sevallist.appendChild(cx);
+				xi++;
+				}
+				trace("static update xmlsave");
+			}
+				ShXML=XML(Shobjsave.data.savedValue) ;
+			ShXML.staticVar=sevallist;//***
 			Shobjsave.data.savedValue =ShXML;//***
 			ansetdurtime();//uodate speed
 		}
-		//cgxml
-		function readCgXMLfile(event:Event):void
-		{
-			cgXML = XML(cgfileStream.readUTFBytes(cgfileStream.bytesAvailable));
-			cgfileStream.close();
-			SaeCg.readCGXML(cgXML);
-			ShXML.cgpanel=cgXML.cgpanel;//***
-			//Shobjsave.data.savedValue =ShXML;//***
-		}
 
+		
 		//初始化
 		function initxmlLoaded(event:Event):void
 		{	
@@ -597,7 +455,6 @@
 			initXML = XML(initLoader.data);
 			firstScenario = initXML.playingat.scenario;
 			playingat = initXML.playingat;
-//			trace(("playingat.scenario" + playingat.scenario));
 			readScenario = playingat.scenario;
 			req = new URLRequest(("scenario/" + readScenario));//加载路径
 			ti = playingat.readline;
@@ -799,8 +656,8 @@
 			//////////变量
 			evallist = initXML.svar;
 			ShXML.svar=evallist;//***
-			//trace("evallist=" +evallist);
-			
+			trace("init-evallist=" +evallist);
+			trace("init-evallist=" +ShXML);
 			//////////写入cg，更新staticvar
 			trace("☆init-03 加载cg和存档");
 			writeInitSavefile();//写入cg和更新staticvar
@@ -1428,7 +1285,7 @@
 		{
 			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			scenario = trimspace(scenario);
-
+			trace("GETCG-cgXML= "+cgXML);
 			var ci = cgXML.cgpanel.elements(scenario).childIndex();
 			if (ci < 0)
 			{
@@ -1446,16 +1303,17 @@
 			/////////////
 			SaeCg.getCG(ci,cgXML);
 
+	ShXML=XML(Shobjsave.data.savedValue) ;
 			ShXML.cgpanel=cgXML.cgpanel;//***
 			Shobjsave.data.savedValue =ShXML;//***
 			//////////////////////////file
-			var file = FileP.resolvePath("Documents/cg.xml");
-			var stream:FileStream = new FileStream  ;
-			stream.open(file,FileMode.WRITE);
-			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-			stream.writeUTFBytes(cgXML.toString());
-			stream.close();
-			trace("CG  xmlsave");
+//			var file = FileP.resolvePath("Documents/cg.xml");
+//			var stream:FileStream = new FileStream  ;
+//			stream.open(file,FileMode.WRITE);
+//			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+//			stream.writeUTFBytes(cgXML.toString());
+//			stream.close();
+//			trace("CG  xmlsave");
 			////////////////////file
 		}
 		/////显示cg
@@ -1962,18 +1820,10 @@
 					v = sevallist.elements(ArrT[0]);
 					ci= sevallist.elements(ArrT[0]).childIndex();
 					sevallist.children()[ci] =analysiseval(v,operator,ArrT[1]);//更新变量值
+						ShXML=XML(Shobjsave.data.savedValue) ;
 					ShXML.staticVar=sevallist;//***
 					Shobjsave.data.savedValue =ShXML;//***
-					//////////////////////////file写入存档
 
-					var file = FileP.resolvePath("Documents/staticvar.xml");
-					var stream:FileStream = new FileStream  ;
-					stream.open(file,FileMode.WRITE);
-					stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-					stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");
-					stream.close();
-					trace("static  xmlsave");
-					////////////////////file
 					break;
 				}
 				i++;
@@ -2151,16 +2001,12 @@
 		function anGOTO(scenario:String, index:int):int
 		{
 			scenario=trimspace (replaceVar(scenario));
-//			trace("GOTO-"+scenario);
 			//如果没找到,则返回当前序号index
 			for each (var item in gotoArr)
 			{				
 				if (item[0] == scenario)
 				{
-//					trace("gooo!!item[0]" + item);	
 					index= item[1];
-//					trace("gooo!!" + index);					
-					//showtrace("gooo!!" + index);					
 					return index;
 				}
 			}
@@ -2196,7 +2042,9 @@
 				//如果包含临时变量
 				tlist+=tempevallist;
 			}
-
+			trace("rv-sevallist= "+sevallist);
+			trace("rv-evallist= "+evallist);
+			trace("rv-tlist= "+tlist);
 			sti = str.indexOf("@");
 			//edi = str.indexOf(" ",sti + 1);
 			trace("replaceVar  sti=  "+sti+"  edi= "+edi);
@@ -2212,7 +2060,7 @@
 				//变量名称
 				t = "@" + strT + " ";
 				trace("replaceVar   "+edi+"/"+t);
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////
 				var haselement=false;
 				var i=0;
 				while (i<tlist.children().length() &&i>=0 )
@@ -2467,7 +2315,7 @@
 					return;
 				case "keyback" :
 					
-					NativeApplication.nativeApplication.exit();
+//					NativeApplication.nativeApplication.exit();
 					return;
 				default :
 					trace((askmsg + "   xxx"));
@@ -2588,17 +2436,6 @@
 			var savexml = evallist + playingat;
 			trace(savexml.toString());
 
-			var file = FileP.resolvePath( "Documents/"+str);
-
-			var stream:FileStream = new FileStream  ;
-			stream.open(file,FileMode.WRITE);
-			stream.writeUTFBytes("");
-			stream.close();
-			stream.open(file,FileMode.WRITE);
-			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-			stream.writeUTFBytes((("<save>" + savexml.toString()) + "</save>"));
-			stream.close();
-			trace("save  xmlsave");
 		}
 
 		function savecompleteHandler(event:MouseEvent):void
@@ -2632,46 +2469,32 @@
 		}
 		function Load(str:String)
 		{
-			var file = FileP.resolvePath( "Documents/"+str);
-			if (! file.exists)
-			{
-				showtrace("file not exists");
-				return;
-			}
-			stageInit();
-			savefileStream = new FileStream();
-			savefileStream.addEventListener(Event.COMPLETE, savefileLoaded);
-			savefileStream.openAsync(file, FileMode.READ);
 
-			trace(file.nativePath);//ok
 			loadtxt = false;
-		}
-
-		function savefileLoaded(event:Event):void
-		{
+		
 			loadXML = new XML  ;
-			loadXML = XML(savefileStream.readUTFBytes(savefileStream.bytesAvailable));
-			savefileStream.close();
-
-			trace("读取存档2"+loadXML);
+			loadXML =XML(Shobjsave.data.savedValue.toString()); 
+			trace("读取存档2"+Shobjsave.data.savedValue);
 
 			//////////变量;
 			var i=0;
-			trace("//////load/////"+evallist);
+			trace("//////load/1////"+evallist);
 			while (i<loadXML.svar.children().length() )
 			{	
 				var ci= evallist.elements(loadXML.svar.children()[i].name()).childIndex()
 				evallist.children()[ci]=loadXML.svar.children()[i];
 				i++;
 			}
-			trace("//////load/////"+evallist);
+			trace("//////load/2////"+evallist);
 			//evallist = loadXML.svar;
 			//////////变量
 
 			/////////call;
 			loadtxt = false;
 			readScenario = loadXML.playingat.scenario;
+			trace("//////load/3////"+readScenario);
 			ti = loadXML.playingat.readline;
+			trace("//////load/4////"+ti);
 			lastti =loadXML.playingat.lastreadline;
 			lastScenario = loadXML.playingat.lastScenario;
 			ti++;

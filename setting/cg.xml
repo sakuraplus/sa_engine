@@ -2,6 +2,7 @@
 	<cgpanel>
 		<CG1 name="A red picture" show="false" img="red.jpg"/>
 		<CG2 name="A black picture" show="false" img="black.jpg"/>
+		<CG3 name="A black picture" show="false" img="black.jpg"/>
 	</cgpanel>
 </cg>
 
