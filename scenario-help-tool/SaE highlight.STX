@@ -13,7 +13,8 @@
 #SKIP_QUOTE=y
 #NUMBER_PATTERN=cpp
 
-
+				
+					
 
 #KEYWORD=Reserved words
 showtip
@@ -29,26 +30,31 @@ end if
 clr
 sound
 bgm
+bgmstop
 clearimg
 eval
 wait
 waitclick
 showcg
-
+msghide
+msgshow
+|
 
 #KEYWORD=Reserved words2
 goto 
 call
+return
 label
-
-
+script
+iscript
+endiscript
 
 #KEYWORD=text style
 clear
 add
 new
 auto
-,
+
 
 #KEYWORD=file
 background
@@ -57,5 +63,25 @@ img
 initsavefile
 autosave
 load
+enablesave
+disablesave
+setdurtime
+
+#KEYWORD=clip
+TEXT_CONTENT
+LABEL_NAME
+IMG_FILE
+SCRIPT_NAME
+CHARACTER_NAME
+LAYER_NAME
+BGM_FILE
+SOUND_FILE
+VARIABLE_NAME
+OPERATOR
+VALUE
+CG_name
+SAVE_FILE
+TXT_FILE
+TIME_IN_MILLISECOND
 
 #

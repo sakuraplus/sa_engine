@@ -18,6 +18,9 @@
 		var txt:TextField = new TextField();
 		var msglayer:Sprite =new Sprite ();
 		var msgtype:String;
+		var txtwidth=600;
+		var txtcenterX=400;
+		var txtcenterY=400;
 		public var evtB:Event = new Event("clickBack",true);
 		public var evtR:Event = new Event("clickReplay",true);
 		public var evtL:Event = new Event("clickLoad",true);
@@ -40,11 +43,13 @@
 			
 			var bgURLReq:URLRequest = new URLRequest(bgurl);
 			var bgLoader = new Loader  ;
+			bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
 			bgLoader.load(bgURLReq);
 			msglayer.addChild(bgLoader);
 			bgLoader.x=parseInt(PosImg[0]);
 			bgLoader.y=parseInt(PosImg[1]);
-						
+			txtcenterX	=bgLoader.x;
+
 			var yesURLReq:URLRequest = new URLRequest(btnimg1);
 			var btnYLoader = new Loader  ;
 			btnYLoader.load(yesURLReq);
@@ -64,9 +69,9 @@
 			
 			
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new SaEMagbox saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 30;
+			Tformat.align="center";
+			//Tformat.size = 30;
 			addChild(txt);			
 			txt.textColor =uint("0x"+colorT);
 			txt.autoSize =TextFieldAutoSize.CENTER;			
@@ -75,9 +80,12 @@
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;
 			txt.setTextFormat (Tformat);
-			txt.x=(960-txt.width )/2;
-			txt.y=parseInt(PosImg[6]);
-			//txt.htmlText="WWWxxx123[]-=";
+			txt.x=960/2;
+			txtcenterY=parseInt(PosImg[6]);
+			if (PosImg.length > 7) 
+			{
+				txtwidth=parseInt(PosImg[7]);
+			}
 
 			msglayer.addChild(txt);				
 			addChild(msglayer);
@@ -87,11 +95,24 @@
 		}
 		public function showmsg(type:String,str:String )
 		{
+			txt.scaleX=1;
+			txt.scaleY=1;	
 			msgtype=type;
 			txt.htmlText =str;
 			msglayer.visible=true;
 			msglayer.y=0;
 			msglayer.x=0;
+
+			txt.y=txtcenterY-txt.height/2;
+
+			if(txt.width>txtwidth)
+				{
+
+					var txtScale=txtwidth/txt.width;
+					txt.scaleX=txtScale;
+					txt.scaleY=txtScale;		
+					txt.x=txtcenterX-txt.width/2;					
+				}
 		}
 		
 		function clickyes(event:Event)
@@ -118,7 +139,6 @@
 					msglayer.dispatchEvent(evtK);
 					return;
 				default :
-					trace( "   msggggxxx");
 					break;
 			}
 		
@@ -128,6 +148,11 @@
 		{
 			msglayer.visible=false;
 			msglayer.y=900;
+		}
+		function BGloadComplete(event:Event)
+		{
+			txtcenterX+=event.currentTarget.width/2;
+			txt.x=txtcenterX;
 		}
 
 	}

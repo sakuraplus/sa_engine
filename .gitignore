@@ -57,3 +57,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /Adobe AIR
+/~$脚本说明.doc
+~$*.*
+/saE2.app
+/saE2.app/*
+Documents/*

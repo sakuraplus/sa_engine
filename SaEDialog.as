@@ -36,18 +36,20 @@
 	
 
 		
-		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat,Tsize:String)
+		//public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat,Tsize:String)
+		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat)
 		{
-			trace("new saemsg"+Tformat+"//"+Tformat.font);
+//			trace("new saemsg"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new saemsg saefontArray"+fontArray);
+//			trace("new saemsg saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
 			
 			msgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR ,IMGloadError);
+			msgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE ,IMGloadcomplete);
 			var msgURLReq:URLRequest = new URLRequest(url);
 			msgLoader.load(msgURLReq);
 
-			Tformat.size =parseInt(Tsize);// 36;
+			//Tformat.size =parseInt(Tsize);// 36;
 			
 			txtName.x=24;
 			txtName.y=6;
@@ -82,7 +84,7 @@
 		
 		public function init()
 		{
-			trace("DIALOG init");
+//			trace("DIALOG init");
 			txtTalk.htmlText = "";
 			txtName.htmlText = "";
 			container.alpha=0;
@@ -102,7 +104,7 @@
 		{
 			var replaytxt="";
 		
-			var ArrT = str.split(",");
+			var ArrT = str.split("|");//ENGVER
 			if (ArrT.length <2)
 			{
 				txtTalk.htmlText = ArrT[0];
@@ -156,7 +158,12 @@
 			container.visible=false;
 			container.dispatchEvent(evtC);
 		}
-		
+		//IMGloadok
+		function IMGloadcomplete(event:Event):void {
+//		    trace("dialog IMG load complete: " + event.currentTarget.width);
+			txtTalk.width=event.currentTarget.width-24;
+
+		}
 		//IMGloadError
 		function IMGloadError(event:IOErrorEvent):void {
 		    trace("ioErrorHandler: " + event);

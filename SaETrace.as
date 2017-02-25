@@ -32,17 +32,15 @@
 			txt.background =true;
 			addChild(txt);
 			tracetimer.addEventListener(TimerEvent.TIMER_COMPLETE,ontraceTimerComplete);
-			trace("saetrace-");
 		}
 	
 
 		//设定样式
 		public function init(colorB:String,colorT:String,dur:int,Tformat:TextFormat)
 		{
-			trace("new SaETrace"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size = 22;
+		//	Tformat.size = 22;
 			txt.defaultTextFormat = Tformat;
 			txt.embedFonts = true;
 			txt.textColor =uint("0x"+colorT);//#333366;
@@ -50,13 +48,10 @@
 			txt.alpha=0.5;
 			tracetimer = new Timer(dur,1);//显示提示信息的时间
 			tracetimer.addEventListener(TimerEvent.TIMER_COMPLETE,ontraceTimerComplete);
-			trace("saetrace init-"+dur);
-
 		}
 		//显示，开始计时
 		public function showText(scenario:String)
 		{
-			trace("showtxt-"+txt.text+">>"+scenario);
 			txt.visible = true;
 			if (txt.text == "")
 			{

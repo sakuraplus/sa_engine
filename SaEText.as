@@ -14,13 +14,11 @@
 		//var Tformat:TextFormat = new TextFormat();
 		public var evtC:Event = new Event("NEXT",true);
 
-		public function SaEText(color:String,Tformat:TextFormat,Tsize:String)
+		public function SaEText(color:String,Tformat:TextFormat)
 		{			
-			trace("new SaEText"+Tformat+"//"+Tformat.font);
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("new SaEText saefontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
-			Tformat.size =parseInt(Tsize);// 36;
+			//Tformat.size =parseInt(Tsize);// 36;
 			
 			
 			txt.textColor =uint("0x"+color);//ffcc66;
@@ -43,13 +41,11 @@
 				_txtlayer.y = 640;
 				txt.htmlText = "";
 				txt.visible = false;
-				trace("saetxt-init"+txt.x+"/"+txt.y);
-			
 		}
 		//返回文字用于回放记录
 		public function showText(scenario:String):String 
 		{
-			var ArrT = scenario.split(",");
+			var ArrT = scenario.split("|");//ENGVER
 			var replaytxt="";
 			_txtlayer.x = 0;// parseInt(ArrT[1]);
 			_txtlayer.y = 0;// parseInt( ArrT[2]);
