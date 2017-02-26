@@ -152,6 +152,7 @@
 		var gamedebug=false;
 		var SaeMsgbox:SaEMsgbox;
 		var SaeCg:SaECg;
+		var SaeSavepanel:SaESavepanel;//''''
 		
 		public function saE()
 		{
@@ -400,35 +401,7 @@
 			}
 			
 		}
-		
-//		function writeSavexml()
-//		{
-//			var file = FileP.resolvePath("Documents/cg.xml");
-//			file = FileP.resolvePath("Documents/"+StrSave);
-//			if (file.exists && needupdate<1)
-//			{
-//				trace("save存在存在"+needupdate);//文件存在
-//			}
-//			else
-//			{
-//				////////////文件不存在则从包中拷贝
-//				//showtrace("save不存在不存在"+file.nativePath);
-//				var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
-//				trace(needupdate+"save 不存在  "+original2.nativePath);
-//				var newFile2 = FileP.resolvePath("Documents/"+StrSave);
-////				original2.copyTo(newFile2, true);
-//				
-//			
-//				//showtrace("autosave不存在不存在"+file.nativePath);
-//				var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
-//				trace(needupdate+"autosave 不存在   "+original3.nativePath);
-//				var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
-//				//original3.copyTo(newFile3, true);
-//				needupdate = -2;
-//			}
-//			
-//		}
-		
+
 		function writeInitSavefile()
 		{
 			var file = FileP.resolvePath("Documents/cg.xml");
@@ -492,16 +465,6 @@
 			original1.copyTo(newFile1, true);
 
 			loadstaticvarxml();
-
-//			var original2:File = File.applicationDirectory.resolvePath("setting/"+StrSave);
-//			trace("save1 覆盖  "+original2.nativePath);
-//			var newFile2 = FileP.resolvePath("Documents/"+StrSave);
-//			original2.copyTo(newFile2, true);
-//
-//			var original3:File = File.applicationDirectory.resolvePath("setting/"+StrAutosave);
-//			trace("save2覆盖 "+original3.nativePath);
-//			var newFile3 = FileP.resolvePath("Documents/"+StrAutosave);
-//			original3.copyTo(newFile3, true);
 
 			ti++;
 			analysisscript(ti);
@@ -673,9 +636,6 @@
 				SaeDebug.scaleX=0.5;
 				SaeDebug.scaleY=0.5;
 
-			}else{
-			//Tformat.size=36;
-			//trace("imgplayback Tformat size default 36");
 			}
 			
 			
@@ -703,7 +663,14 @@
 			}
 			SaeCg=new SaECg(initXML.Sui.cgScreen.@img, initXML.Sui.cgScreen.@pos,initXML.Sui.cgScreen.@colortxt, initXML.Sui.cgScreen.@txtbg, initXML.Sui.cgScreen.@colorbg, Tformat);
 			cgSc.addChild(SaeCg);//cgScreen
-			
+
+
+
+			//初始化save''''
+			SaeSavepanel=new    SaESavepanel( initXML.Sui.msgbox. @ colorbg,initXML.Sui.msgbox. @ colortxt,initXML.Sui.msgbox. @ img,initXML.Sui.msgbox. @ pos, Tformat);
+			stage.addChild(SaeSavepanel);//
+
+
 			/////////sys菜单
 			var sysURLReq:URLRequest = new URLRequest(initXML.Sui.imgsystem. @ img);
 			sysLoader.load(sysURLReq);
@@ -758,7 +725,8 @@
 			btnSystem.btnSkip.y = initXML.Sui.imgskip. @ y;
 
 			btnSystem.btnsys.addEventListener(MouseEvent.CLICK,clickShowsys);
-			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSave);
+			//btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSave);
+			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSavePanel);//''''
 			btnSystem.btnLoad.addEventListener(MouseEvent.CLICK,clickLoad);
 			btnSystem.btnBack.addEventListener(MouseEvent.CLICK,clickBack);
 			btnSystem.btnReplay.addEventListener(MouseEvent.CLICK,clickReplay);
@@ -2018,120 +1986,6 @@
 			
 			return;
 		}
-		
-//		//变量赋值
-//		function anEVAL(scenario:String )
-//		{
-//			
-//			var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
-//			var ArrT = tt.split("|");//ENGVER
-//			//var st = ArrT[0].substring(1,ArrT[0].length - 1);//
-//			var st=ArrT[0].substring((ArrT[0].indexOf("@") + 1),ArrT[0].indexOf("@",ArrT[0].indexOf("@") + 1));
-//			trace(tt+"///"+st);
-//			
-//			///ArrT[2]=replaceVar(ArrT[2]);
-//
-//			var v ;//= evallist.elements(st);
-//			var ci;// = evallist.elements(st).childIndex();
-//			
-//			var found=false;
-//			var i=0;
-//			while (i<sevallist.children().length() )
-//			{
-//				//遍历静态变量列表
-//				if(sevallist.children()[i].name()==st)
-//				{
-//					found=true;
-//					v = sevallist.elements(st);
-//					ci= sevallist.elements(st).childIndex();
-//					sevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
-//					
-//					//////////////////////////file写入存档
-//
-//					var file = FileP.resolvePath("Documents/staticvar.xml");
-//
-//					var stream:FileStream = new FileStream  ;
-//					stream.open(file,FileMode.WRITE);
-//
-//					stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-//					stream.writeUTFBytes("<sv>" + sevallist.toString()+ "</sv>");
-//					//stream.writeUTFBytes(sevallist.toString());
-//					stream.close();
-//					trace("static  xmlsave");
-//					////////////////////file
-//					break;
-//				}
-//				i++;
-//			}
-//
-//			i=0;
-//			while (i<evallist.children().length())
-//			{
-//				//遍历变量列表
-//				if(evallist.children()[i].name()==st)
-//				{
-//					found=true;
-//					v = evallist.elements(st);
-//					ci= evallist.elements(st).childIndex();
-//					evallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);//更新变量值
-//					break;
-//				}
-//				i++;
-//			}
-//			i=0;
-//			
-//			if(!found)
-//			{
-//				//变量不存在，建立临时变量
-//				var t="<"+st+">"+ArrT[2]+"</"+st+">";
-//				if(tempevallist==null)
-//				{					
-//					t="<temp><temp>"+t+"</temp></temp>";
-//					var tx:XML = new XML(t);
-//					tempevallist=tx.temp;    
-//					trace("tempppp"+tempevallist);
-//				}else if(tempevallist.children().length()==0){
-//					
-//					t="<temp><temp>"+t+"</temp></temp>";
-//					var tx2:XML = new XML(t);
-//					
-//					tempevallist=tx2.temp;    
-//					trace("2tempppp"+tempevallist);
-//				}else{
-//					while (i<=tempevallist.children().length())
-//					{
-//						//增加
-//						trace("tempppp---"+tempevallist);
-//						
-//						if(i==tempevallist.children().length())
-//						{
-//							var txmls:XML = new XML(t);
-//							
-//							tempevallist.prependChild(txmls);    
-//							trace("tempppp-add-"+tempevallist);
-//							return;;
-//						}
-//						if(tempevallist.children()[i].name()==st)
-//						{
-//							//更新变量值
-//							v = tempevallist.elements(st);
-//							ci= tempevallist.elements(st).childIndex();
-//							tempevallist.children()[ci] =analysiseval(v,ArrT[1],ArrT[2]);
-//							trace("eval-tempevallist-"+i);
-//							return;;
-//						}
-//						
-//						i++;
-//					}
-//					
-//				}
-//			}
-//			
-//			trace("evalll"+ArrT[2]);
-//			
-//			return;
-//		}
-//		
 
 
 		function analysiseval(st0:String ,st1:String,st2:String)
@@ -2331,10 +2185,7 @@
 		{
 			var pattern:RegExp =/ /g;
 			str=str.replace(pattern, "");
-			//while(str.indexOf (" ")>=0)
-			//{
-			//	str=str.replace (" " , "");//ENGVER
-			//}
+
 				return str;
 			
 		}
@@ -2381,24 +2232,7 @@
 			str=str.replace(pattern, "");
 			return str;
 		}
-//
-//		function trimBack(str:String,char:String):String
-//		{
-//			char = stringToCharacter(char);
-//			while(str.charAt(str.length - 1) == char  && str.length>0)
-//			{
-//				str = trimBack(str.substring(0,str.length - 1),char);
-//			}
-//			return str;
-//		}
-//		function stringToCharacter(str:String):String
-//		{
-//			if (str.length == 1)
-//			{
-//				return str;
-//			}
-//			return str.slice(0,1);
-//		}
+
 		/////////////////////////////////////////////////////////////////////
 
 
@@ -2666,7 +2500,29 @@
 			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgreserve1. @ txt);
 			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
-
+		function clickSavePanel(event:MouseEvent):void
+		{
+			//存档''''
+			stopTimerSkip();
+			SaeSavepanel.showmsg(new XML);
+			if (readScenario == firstScenario || !saveable||inscript)
+			{
+				showtrace("you cannot save here");
+//				return;
+			}
+			if (! btnwaiting)
+			{
+				btnwaiting = true;
+				waittimerBtn.start();
+			}
+			else
+			{
+				return;
+			}
+			btnSOUND();
+//			Save(StrSave);
+//			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
+		}
 		function clickSave(event:MouseEvent):void
 		{
 			//存档
