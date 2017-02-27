@@ -22,13 +22,16 @@
 			this.addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
 			//loaderContext.allowCodeImport=false;//允许加载swf中脚本
 			
-			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.font = fontArray[0].fontName;
+//			var fontArray:Array = Font.enumerateFonts(false);
+//			Tformat.font = fontArray[0].fontName;
 			Tformat.size = 30;
 			addChild(txt);			
 			txt.textColor =0xffcc66;
 			txt.autoSize =TextFieldAutoSize.CENTER;			
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts=true;
+			}
 			txt.selectable =false;
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;

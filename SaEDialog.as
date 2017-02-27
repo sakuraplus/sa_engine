@@ -40,9 +40,10 @@
 		public function SaEDialog(url:String,colorN:String,colorD:String,Tformat:TextFormat)
 		{
 //			trace("new saemsg"+Tformat+"//"+Tformat.font);
-			var fontArray:Array = Font.enumerateFonts(false);
+//			var fontArray:Array = Font.enumerateFonts(false);
 //			trace("new saemsg saefontArray"+fontArray);
-			Tformat.font = fontArray[0].fontName;
+			trace("new saemsg saefontArray"+Tformat.font );
+//			Tformat.font = fontArray[0].fontName;
 			
 			msgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR ,IMGloadError);
 			msgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE ,IMGloadcomplete);
@@ -55,7 +56,11 @@
 			txtName.y=6;
 			txtName.width=900;
 			txtName.textColor =uint("0x"+colorN);
-			txtName.embedFonts=true;
+			if( Font.enumerateFonts(false).length>0)
+			{
+				txtName.embedFonts=true;
+				txtTalk.embedFonts=true;
+			}
 			txtName.selectable =false;			
 			txtName.defaultTextFormat = Tformat;
 			txtName.setTextFormat (Tformat);
@@ -67,7 +72,7 @@
 			
 			txtTalk.textColor =uint("0x"+colorD);
 			txtTalk.autoSize =TextFieldAutoSize.RIGHT;			
-			txtTalk.embedFonts=true;
+			
 			txtTalk.selectable =false;			
 			txtTalk.defaultTextFormat = Tformat;
 			txtTalk.wordWrap=true;

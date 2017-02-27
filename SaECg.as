@@ -74,15 +74,18 @@
 			
 //			trace("new SaEcg"+Tformat+"//"+Tformat.size);
 			//文字
-			var fontArray:Array = Font.enumerateFonts(false);
+//			var fontArray:Array = Font.enumerateFonts(false);
 //			trace("new SaEMagbox saefontArray"+fontArray);
-			Tformat.font = fontArray[0].fontName;
+//			Tformat.font = fontArray[0].fontName;
 			//Tformat.size = 26;
 			addChild(txt);			
 			txt.textColor =uint("0x"+colorT);
 			txt.backgroundColor=uint("0x"+colorTB);
-			txt.autoSize =TextFieldAutoSize.LEFT;			
+			txt.autoSize =TextFieldAutoSize.LEFT;
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts=true;
+			}
 			txt.selectable =false;
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;

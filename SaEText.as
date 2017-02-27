@@ -16,14 +16,17 @@
 
 		public function SaEText(color:String,Tformat:TextFormat)
 		{			
-			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.font = fontArray[0].fontName;
+//			var fontArray:Array = Font.enumerateFonts(false);
+//			Tformat.font = fontArray[0].fontName;
 			//Tformat.size =parseInt(Tsize);// 36;
 			
 			
 			txt.textColor =uint("0x"+color);//ffcc66;
-			txt.autoSize =TextFieldAutoSize.LEFT;			
+			txt.autoSize =TextFieldAutoSize.LEFT;	
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts=true;
+			}
 			txt.selectable =false;			
 			txt.defaultTextFormat = Tformat;
 			txt.wordWrap=true;

@@ -68,14 +68,18 @@
 			btnNLoader.addEventListener(MouseEvent.CLICK,clickno);
 			
 			
-			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.font = fontArray[0].fontName;
+//			var fontArray:Array = Font.enumerateFonts(false);
+//			Tformat.font = fontArray[0].fontName;
 			Tformat.align="center";
 			//Tformat.size = 30;
 			addChild(txt);			
 			txt.textColor =uint("0x"+colorT);
-			txt.autoSize =TextFieldAutoSize.CENTER;			
-			txt.embedFonts=true;
+			txt.autoSize =TextFieldAutoSize.CENTER;		
+			if( Font.enumerateFonts(false).length>0)
+			{
+				txt.embedFonts=true;
+			}
+		
 			txt.selectable =false;
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;

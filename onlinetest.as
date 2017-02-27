@@ -190,10 +190,11 @@
 			///////////////
 
 			//加载字体
-			var TFloader:Loader  = new Loader();
-			var TFurl:URLRequest = new URLRequest("setting/font.swf");//"fontfish.swf"
-			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
-			TFloader.load(TFurl,loaderContext);
+//			var TFloader:Loader  = new Loader();
+//			var TFurl:URLRequest = new URLRequest("setting/font.swf");//"fontfish.swf"
+//			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
+//			TFloader.load(TFurl,loaderContext);
+			TfComplete();
 			trace("\n load font " + new Date().milliseconds );
 			output.appendText("]]]load font"+new Date().milliseconds);
 			/////////////////////////////////////////////////
@@ -201,7 +202,7 @@
 			output.appendText("\nSharedObject loaded...\n");
 			//赋给对象的 data 属性 (property) 的属性 (attribute) 集合；可以共享和存储这些属性 (attribute)。 每个特性都可以是任何 ActionScript 或 JavaScript 类型的对象（数组、数字、布尔值、字节数组、XML，等等）。
 		//	 output.appendText("loaded value: " + Shobjsave.data.savedValue + "\n\n");
-			 trace("Shobjsave.data.savedValue"+Shobjsave.data.savedValue);
+//			 trace("Shobjsave.data.savedValue"+Shobjsave.data.savedValue);
 			 var tt="<save><cgpanel/><staticVar/><svar/><playingat/></save>";
 			ShXML = XML(tt);
 			if(Shobjsave.data.savedValue !=undefined)
@@ -285,12 +286,12 @@
 	private function showValue(event:MouseEvent):void 
 	{
 		trace("showValue xml");
-		trace( ShXML);
+//		trace( ShXML);
 //		output.text=Shobjsave.data.savedValue.toString();          
 		//ShXML = XML(Shobjsave.data.savedValue.toString());
 		
 		trace("showValue share");
-		trace(Shobjsave.data.savedValue.toString());
+//		trace(Shobjsave.data.savedValue.toString());
         }
 
 	private function onFlushStatus(event:NetStatusEvent):void
@@ -313,15 +314,25 @@
 
 
 		//字体swf加载完成
+		
+		function TfComplete():void
+		{
+		Tformat.font="Ya Hei";
+		trace("☆字体swf加载完成02fontArray"+Tformat.font );
+			//加载init
+			var initURL:URLRequest = new URLRequest("setting/init.xml");
+			initLoader = new URLLoader(initURL);
+			initLoader.addEventListener(Event.COMPLETE,initxmlLoaded);	
+		}
 		function TextformatComplete(event:Event):void
 		{
 //			SaeDebug.write("read font"+new Date().milliseconds);
 			 output.appendText("\n read font " + new Date().milliseconds + "\n\n");
 			 trace("\n read font " + new Date().milliseconds + "\n\n");
 			var fontArray:Array = Font.enumerateFonts(false);
-			trace("☆字体swf加载完成02fontArray"+fontArray);
+			trace("☆字体swf加载完成02fontArray"+fontArray.length);
 			Tformat.font = fontArray[0].fontName;
-			
+			trace("☆字体swf加载完成02fontArray"+Tformat.font );
 			//加载init
 			var initURL:URLRequest = new URLRequest("setting/init.xml");
 			initLoader = new URLLoader(initURL);

@@ -41,14 +41,17 @@
 //			btnYLoader.addEventListener(MouseEvent.CLICK,clickyes);
 
 			
-			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.font = fontArray[0].fontName;
+//			var fontArray:Array = Font.enumerateFonts(false);
+//			Tformat.font = fontArray[0].fontName;
 			Tformat.align="center";
 			Tformat.size = 20;
 		
 			txt.textColor =uint("0xff3399");
-//			txt.autoSize =TextFieldAutoSize.Left;			
+//			txt.autoSize =TextFieldAutoSize.Left;		
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts=true;
+			}
 			txt.selectable =false;
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;

@@ -38,11 +38,14 @@
 		//设定样式
 		public function init(colorB:String,colorT:String,dur:int,Tformat:TextFormat)
 		{
-			var fontArray:Array = Font.enumerateFonts(false);
-			Tformat.font = fontArray[0].fontName;
+//			var fontArray:Array = Font.enumerateFonts(false);
+//			Tformat.font = fontArray[0].fontName;
 		//	Tformat.size = 22;
 			txt.defaultTextFormat = Tformat;
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts = true;
+			}
 			txt.textColor =uint("0x"+colorT);//#333366;
 			txt.backgroundColor=uint("0x"+colorB);
 			txt.alpha=0.5;

@@ -18,11 +18,14 @@
 		{			
 			//文字样式
 
-			var fontArray:Array = Font.enumerateFonts(false);
+//			var fontArray:Array = Font.enumerateFonts(false);
 			Arraylength=arraylength;
 			//Tformat.size = 36;
-			txt.autoSize =TextFieldAutoSize.LEFT;			
+			txt.autoSize =TextFieldAutoSize.LEFT;	
+			if( Font.enumerateFonts(false).length>0)
+			{
 			txt.embedFonts=true;
+			}
 			txt.selectable =false;			
 			txt.defaultTextFormat = Tformat;
 			txt.wordWrap=true;
