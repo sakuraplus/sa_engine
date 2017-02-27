@@ -207,6 +207,8 @@
 				ShXML.cgpanel=XML(Shobjsave.data.savedValue.toString()).cgpanel; 
 				output.appendText("1222222222");
 
+			}else{
+				Shobjsave.data.savedValue =ShXML;
 			}
 				sevallist = ShXML.staticVar;
 				cgXML=XML("<cg>"+ShXML.cgpanel+"</cg>");
@@ -271,7 +273,9 @@
 	{
 		output.text="Cleared saved value...Reload SWF and the value should be \"undefined\".\n\n";         
 		trace("clearValue");
-		delete Shobjsave.data.savedValue;
+//		delete Shobjsave.data.savedValue;
+
+		 Shobjsave.data.savedValue = XML("<save><cgpanel/><staticVar/><svar/><playingat/></save>");
         }
 
 	private function showValue(event:MouseEvent):void 
@@ -401,6 +405,7 @@
 				}
 				trace("cg xmlsave");
 			}
+trace("cg xmlsave-ShXML="+ShXML);
 			ShXML=XML(Shobjsave.data.savedValue) ;
 			ShXML.cgpanel=cgXML.cgpanel;//***
 			Shobjsave.data.savedValue =ShXML;//***
@@ -440,7 +445,8 @@
 				}
 				trace("static update xmlsave");
 			}
-				ShXML=XML(Shobjsave.data.savedValue) ;
+			trace("static update xmlsave-ShXML="+ShXML);
+			ShXML=XML(Shobjsave.data.savedValue) ;
 			ShXML.staticVar=sevallist;//***
 			Shobjsave.data.savedValue =ShXML;//***
 			ansetdurtime();//uodate speed
