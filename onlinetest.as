@@ -149,7 +149,7 @@
 		var SaeMsgbox:SaEMsgbox;
 		var SaeCg:SaECg;
 		
-		var debugtime:Date = new Date(); 
+
 		
 		public function onlinetest()
 		{
@@ -194,8 +194,8 @@
 			var TFurl:URLRequest = new URLRequest("setting/font.swf");//"fontfish.swf"
 			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
 			TFloader.load(TFurl,loaderContext);
-			trace("\n load font " + debugtime.milliseconds );
-			output.appendText("]]]load font"+debugtime.milliseconds);
+			trace("\n load font " + new Date().milliseconds );
+			output.appendText("]]]load font"+new Date().milliseconds);
 			/////////////////////////////////////////////////
 			Shobjsave = SharedObject.getLocal("application-name");
 			output.appendText("\nSharedObject loaded...\n");
@@ -315,9 +315,9 @@
 		//字体swf加载完成
 		function TextformatComplete(event:Event):void
 		{
-//			SaeDebug.write("read font"+debugtime.milliseconds);
-			 output.appendText("\n read font " + debugtime.milliseconds + "\n\n");
-			 trace("\n read font " + debugtime.milliseconds + "\n\n");
+//			SaeDebug.write("read font"+new Date().milliseconds);
+			 output.appendText("\n read font " + new Date().milliseconds + "\n\n");
+			 trace("\n read font " + new Date().milliseconds + "\n\n");
 			var fontArray:Array = Font.enumerateFonts(false);
 			trace("☆字体swf加载完成02fontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
@@ -387,7 +387,7 @@
 		{
 			cgPage = 0;
 			trace(" loadcgxml");
-			 output.appendText("\n»load-CgXMLfile"+debugtime.milliseconds);
+			 output.appendText("\n»load-CgXMLfile"+new Date().milliseconds);
 	///////////////////////////////////****
 			var cgxmlLoader:URLLoader;
 			var cgURL:URLRequest = new URLRequest("setting/cg.xml");
@@ -398,7 +398,7 @@
 //cgxml
 		function readCgXMLfile(event:Event):void
 		{
-			 output.appendText("\n»read-CgXMLfile"+debugtime.milliseconds);
+			 output.appendText("\n»read-CgXMLfile"+new Date().milliseconds);
 			var XMLcg = XML(event.target.data) ;
 			var xi=cgXML.cgpanel.children().length();
 			if(xi<1)
@@ -428,7 +428,7 @@
 		function loadstaticvarxml():void
 		{
 		////////////////////////////****
-			 output.appendText("\nload-statvarXMLfile"+debugtime.milliseconds);
+			 output.appendText("\nload-statvarXMLfile"+new Date().milliseconds);
 			var stxmlLoader:URLLoader;
 			var stURL:URLRequest = new URLRequest("setting/staticvar.xml");
 			stxmlLoader = new URLLoader(stURL);
@@ -440,7 +440,7 @@
 		{
 		//load staticvarxml COMPLETE,read staticvarXMLfile
 		///////****
-			 output.appendText("\n»read-statvarXMLfile"+debugtime.milliseconds);
+			 output.appendText("\n»read-statvarXMLfile"+new Date().milliseconds);
 			var XMLsv = XML(event.target.data) ;
 			var xi=sevallist.children().length();
 			if(xi<1)
@@ -623,7 +623,7 @@
 			sysLoader.load(sysURLReq);
 			btnSystem.y = initXML.Sui.imgsystem. @ y;
 			btnSystem.x = initXML.Sui.imgsystem. @ x1;//)840;
-			 output.appendText("\nload-sysLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-sysLoader"+new Date().milliseconds);
 
 
 			//保存
@@ -636,7 +636,7 @@
 			{
 				StrSave=initXML.Sui.imgsave. @ file;
 			}
-			 output.appendText("load-btnSLoader"+debugtime.milliseconds);
+			 output.appendText("load-btnSLoader"+new Date().milliseconds);
 
 			//快速读取自动存档
 			sysURLReq = new URLRequest(initXML.Sui.imgload. @ img);
@@ -649,10 +649,10 @@
 				StrAutosave=initXML.Sui.imgload. @file;
 				trace("nulll");
 			}
-			 output.appendText("\nload-btnLLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-btnLLoader"+new Date().milliseconds);
 				
 			//返回/自定义按钮，自定义提示文字
-			 output.appendText("\nload-btnBLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-btnBLoader"+new Date().milliseconds);
 			sysURLReq = new URLRequest(initXML.Sui.imgreserve1. @ img);
 			btnBLoader.load(sysURLReq);
 			btnSystem.btnBack.x = initXML.Sui.imgreserve1. @ x;
@@ -663,21 +663,21 @@
 			btnRLoader.load(sysURLReq);
 			btnSystem.btnReplay.x = initXML.Sui.imgreserve2. @ x;
 			btnSystem.btnReplay.y = initXML.Sui.imgreserve2. @ y;
-			 output.appendText("\nload-btnRLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-btnRLoader"+new Date().milliseconds);
 
 			//回顾
 			sysURLReq = new URLRequest(initXML.Sui.imgplayback. @ img);
 			btnPLoader.load(sysURLReq);
 			btnSystem.btnPlayback.x = initXML.Sui.imgplayback. @ x;
 			btnSystem.btnPlayback.y = initXML.Sui.imgplayback. @ y;
-			 output.appendText("\nload-btnPLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-btnPLoader"+new Date().milliseconds);
 			
 			//自动播放
 			sysURLReq = new URLRequest(initXML.Sui.imgskip. @ img);
 			btnSkipLoader.load(sysURLReq);
 			btnSystem.btnSkip.x = initXML.Sui.imgskip. @ x;
 			btnSystem.btnSkip.y = initXML.Sui.imgskip. @ y;
-			 output.appendText("\nload-btnSkipLoader"+debugtime.milliseconds);
+			 output.appendText("\nload-btnSkipLoader"+new Date().milliseconds);
 
 			btnSystem.btnsys.addEventListener(MouseEvent.CLICK,clickShowsys);
 			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSave);
@@ -701,7 +701,7 @@
 
 		function sysBtnloadComplete(event:Event)
 		{
-			 output.appendText("\nload-"+event.currentTarget+"/"+debugtime.milliseconds);
+			 output.appendText("\nload-"+event.target+"/"+new Date().milliseconds);
 		}
 		/////////////////txt 读取script完成
 		function SccompleteHandler(e:Event)
