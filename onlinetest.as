@@ -149,6 +149,8 @@
 		var SaeMsgbox:SaEMsgbox;
 		var SaeCg:SaECg;
 		
+		var debugtime:Date = new Date(); 
+		
 		public function onlinetest()
 		{
 
@@ -184,19 +186,21 @@
 			btnSystem.btnSkip.addChildAt(btnSkipLoader,0);
 
 			//////////////////////
-			btnsound.addEventListener(MouseEvent.CLICK, clickBtnSound);			
-			
+			btnsound.addEventListener(MouseEvent.CLICK, clickBtnSound);	
+			///////////////
+
 			//加载字体
 			var TFloader:Loader  = new Loader();
 			var TFurl:URLRequest = new URLRequest("setting/font.swf");//"fontfish.swf"
 			TFloader.contentLoaderInfo.addEventListener(Event.COMPLETE, TextformatComplete);
 			TFloader.load(TFurl,loaderContext);
-			
+			trace("\n load font " + debugtime.milliseconds );
+			output.appendText("]]]load font"+debugtime.milliseconds);
 			/////////////////////////////////////////////////
 			Shobjsave = SharedObject.getLocal("application-name");
-			 output.appendText("SharedObject loaded...\n");
+			output.appendText("\nSharedObject loaded...\n");
 			//赋给对象的 data 属性 (property) 的属性 (attribute) 集合；可以共享和存储这些属性 (attribute)。 每个特性都可以是任何 ActionScript 或 JavaScript 类型的对象（数组、数字、布尔值、字节数组、XML，等等）。
-			 output.appendText("loaded value: " + Shobjsave.data.savedValue + "\n\n");
+		//	 output.appendText("loaded value: " + Shobjsave.data.savedValue + "\n\n");
 			 trace("Shobjsave.data.savedValue"+Shobjsave.data.savedValue);
 			 var tt="<save><cgpanel/><staticVar/><svar/><playingat/></save>";
 			ShXML = XML(tt);
@@ -214,7 +218,7 @@
 				cgXML=XML("<cg>"+ShXML.cgpanel+"</cg>");
 				trace("----sevallist="+sevallist);
 				trace("----cgXML.cgpanel="+cgXML.cgpanel);
-				 trace("--Shobjsave.ShXML= "+ShXML);
+				trace("--Shobjsave.ShXML= "+ShXML);
 				output.mouseEnabled = false; 
 
 			btnsaveT.addEventListener(MouseEvent.CLICK, saveValue);
@@ -282,7 +286,7 @@
 	{
 		trace("showValue xml");
 		trace( ShXML);
-		output.text=Shobjsave.data.savedValue.toString();          
+//		output.text=Shobjsave.data.savedValue.toString();          
 		//ShXML = XML(Shobjsave.data.savedValue.toString());
 		
 		trace("showValue share");
@@ -311,6 +315,9 @@
 		//字体swf加载完成
 		function TextformatComplete(event:Event):void
 		{
+//			SaeDebug.write("read font"+debugtime.milliseconds);
+			 output.appendText("\n read font " + debugtime.milliseconds + "\n\n");
+			 trace("\n read font " + debugtime.milliseconds + "\n\n");
 			var fontArray:Array = Font.enumerateFonts(false);
 			trace("☆字体swf加载完成02fontArray"+fontArray);
 			Tformat.font = fontArray[0].fontName;
@@ -380,6 +387,7 @@
 		{
 			cgPage = 0;
 			trace(" loadcgxml");
+			 output.appendText("\n»load-CgXMLfile"+debugtime.milliseconds);
 	///////////////////////////////////****
 			var cgxmlLoader:URLLoader;
 			var cgURL:URLRequest = new URLRequest("setting/cg.xml");
@@ -390,7 +398,7 @@
 //cgxml
 		function readCgXMLfile(event:Event):void
 		{
-			SaeDebug.write("»readCgXMLfile");
+			 output.appendText("\n»read-CgXMLfile"+debugtime.milliseconds);
 			var XMLcg = XML(event.target.data) ;
 			var xi=cgXML.cgpanel.children().length();
 			if(xi<1)
@@ -420,6 +428,7 @@
 		function loadstaticvarxml():void
 		{
 		////////////////////////////****
+			 output.appendText("\nload-statvarXMLfile"+debugtime.milliseconds);
 			var stxmlLoader:URLLoader;
 			var stURL:URLRequest = new URLRequest("setting/staticvar.xml");
 			stxmlLoader = new URLLoader(stURL);
@@ -431,7 +440,7 @@
 		{
 		//load staticvarxml COMPLETE,read staticvarXMLfile
 		///////****
-			SaeDebug.write("»readstatvarXMLfile");
+			 output.appendText("\n»read-statvarXMLfile"+debugtime.milliseconds);
 			var XMLsv = XML(event.target.data) ;
 			var xi=sevallist.children().length();
 			if(xi<1)
@@ -559,12 +568,12 @@
 			txtplayback.addChild(SaePlayback);
 
 			///初始化debug
-				//durtime = parseInt(initXML.durtime)/1000;
+			//durtime = parseInt(initXML.durtime)/1000;
 			if(initXML.debug==true)
 			{
 				gamedebug=true;
 				Tformat.size=30;
-				SaeDebug=new SaEPlayback("000000","ffffff",Tformat,5);
+				SaeDebug=new SaEPlayback("000000","ffffff",Tformat,10);
 				stage.addChild(SaeDebug);//txtdebug
 				SaeDebug.showText ();
 				SaeDebug.mouseEnabled = false; 
@@ -601,10 +610,21 @@
 			cgSc.addChild(SaeCg);//cgScreen
 			
 			/////////sys菜单
+			sysLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnSLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnLLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnBLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnRLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnPLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+			btnSkipLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sysBtnloadComplete);
+
+			//sys菜单
 			var sysURLReq:URLRequest = new URLRequest(initXML.Sui.imgsystem. @ img);
 			sysLoader.load(sysURLReq);
 			btnSystem.y = initXML.Sui.imgsystem. @ y;
 			btnSystem.x = initXML.Sui.imgsystem. @ x1;//)840;
+			 output.appendText("\nload-sysLoader"+debugtime.milliseconds);
+
 
 			//保存
 			sysURLReq = new URLRequest(initXML.Sui.imgsave. @ img);
@@ -616,6 +636,7 @@
 			{
 				StrSave=initXML.Sui.imgsave. @ file;
 			}
+			 output.appendText("load-btnSLoader"+debugtime.milliseconds);
 
 			//快速读取自动存档
 			sysURLReq = new URLRequest(initXML.Sui.imgload. @ img);
@@ -628,8 +649,10 @@
 				StrAutosave=initXML.Sui.imgload. @file;
 				trace("nulll");
 			}
+			 output.appendText("\nload-btnLLoader"+debugtime.milliseconds);
 				
 			//返回/自定义按钮，自定义提示文字
+			 output.appendText("\nload-btnBLoader"+debugtime.milliseconds);
 			sysURLReq = new URLRequest(initXML.Sui.imgreserve1. @ img);
 			btnBLoader.load(sysURLReq);
 			btnSystem.btnBack.x = initXML.Sui.imgreserve1. @ x;
@@ -640,18 +663,21 @@
 			btnRLoader.load(sysURLReq);
 			btnSystem.btnReplay.x = initXML.Sui.imgreserve2. @ x;
 			btnSystem.btnReplay.y = initXML.Sui.imgreserve2. @ y;
+			 output.appendText("\nload-btnRLoader"+debugtime.milliseconds);
 
 			//回顾
 			sysURLReq = new URLRequest(initXML.Sui.imgplayback. @ img);
 			btnPLoader.load(sysURLReq);
 			btnSystem.btnPlayback.x = initXML.Sui.imgplayback. @ x;
 			btnSystem.btnPlayback.y = initXML.Sui.imgplayback. @ y;
+			 output.appendText("\nload-btnPLoader"+debugtime.milliseconds);
 			
 			//自动播放
 			sysURLReq = new URLRequest(initXML.Sui.imgskip. @ img);
 			btnSkipLoader.load(sysURLReq);
 			btnSystem.btnSkip.x = initXML.Sui.imgskip. @ x;
 			btnSystem.btnSkip.y = initXML.Sui.imgskip. @ y;
+			 output.appendText("\nload-btnSkipLoader"+debugtime.milliseconds);
 
 			btnSystem.btnsys.addEventListener(MouseEvent.CLICK,clickShowsys);
 			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSave);
@@ -673,6 +699,10 @@
 			 stageInit();///////////
 		}////字体swf加载完成,init完成，//写入cg和更新staticvar
 
+		function sysBtnloadComplete(event:Event)
+		{
+			 output.appendText("\nload-"+event.currentTarget+"/"+debugtime.milliseconds);
+		}
 		/////////////////txt 读取script完成
 		function SccompleteHandler(e:Event)
 		{
