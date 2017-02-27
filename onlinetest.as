@@ -390,6 +390,7 @@
 //cgxml
 		function readCgXMLfile(event:Event):void
 		{
+			SaeDebug.write("»readCgXMLfile");
 			var XMLcg = XML(event.target.data) ;
 			var xi=cgXML.cgpanel.children().length();
 			if(xi<1)
@@ -405,7 +406,7 @@
 				}
 				trace("cg xmlsave");
 			}
-trace("cg xmlsave-ShXML="+ShXML);
+			trace("cg xmlsave-ShXML="+ShXML);
 			ShXML=XML(Shobjsave.data.savedValue) ;
 			ShXML.cgpanel=cgXML.cgpanel;//***
 			Shobjsave.data.savedValue =ShXML;//***
@@ -430,6 +431,7 @@ trace("cg xmlsave-ShXML="+ShXML);
 		{
 		//load staticvarxml COMPLETE,read staticvarXMLfile
 		///////****
+			SaeDebug.write("»readstatvarXMLfile");
 			var XMLsv = XML(event.target.data) ;
 			var xi=sevallist.children().length();
 			if(xi<1)
@@ -706,6 +708,7 @@ trace("cg xmlsave-ShXML="+ShXML);
 		}
 		function LoadErrorHandler(e:Event)
 		{
+			SaeDebug.write("»>>"+LoadErrorHandler);
 			showtrace("file load error");
 		}
 
