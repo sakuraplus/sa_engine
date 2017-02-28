@@ -31,13 +31,12 @@
 		public var evtL:Event = new Event("clickLoad",true);
 		public var evtK:Event = new Event("keyback",true);
 
-		var numslot = 4;
 		var strpos = "100,50,10,10,200,500";//x,y,x,y,w,h
-		var saveloaderArray:Array=new Array;//loader数组
+		public var saveloaderArray:Array=new Array;//loader数组
 		var savetxtArray:Array=new Array;//loader数组
 
 		//创建对话框
-		public function SaESavepanel(colorB:String,colorT:String,url:String,pos:String,Tformat:TextFormat)
+		public function SaESavepanel(colorB:String,colorT:String,url:String,pos:String,numslot:int,Tformat:TextFormat)
 		{
 			var ArrUrl = url.split(",");//背景，确定，取消按钮图片
 			var bgurl = ArrUrl[0];
@@ -60,7 +59,6 @@
 			bgLoader.y = parseInt(PosImg[1]);
 			txtcenterX = bgLoader.x;
 
-
 			/////////////////////////
 			var slotPos = strpos.split(",");//背景，确定，取消按钮位置x,y,x,y,w,h
 			var slotspaceY:int = parseInt(slotPos[5]) / numslot;
@@ -70,57 +68,19 @@
 			var txtleft:int = slotup * 3 + slotwidth;
 			for (var i = 0; i < numslot; i++)
 			{
-				var sstr="NM"+i+"MMccc";
+				var sstr="NM"+new Date().milliseconds+"MMccc";
 				var SaeSlot:SaESlot=new SaESlot(btnimg1,"20,50,100,50"  ,sstr,Tformat);//''''
 				savelayer.addChild(SaeSlot);
 				saveloaderArray.push(SaeSlot);
 				SaeSlot.x =parseInt( slotPos[2]);
 				SaeSlot.y = parseInt(slotPos[3]) + slotspaceY * i ;
 				
-//				var scURL:URLRequest = new URLRequest(btnimg1);
-//				var scLoader = new Loader  ;
-//				scLoader.load(scURL);
-//				savelayer.addChild(scLoader);
-//				saveloaderArray.push(scLoader);
-//				scLoader.x =parseInt( slotPos[2]) + slotup;
-//				scLoader.y = parseInt(slotPos[3]) + slotspaceY * i + slotup;
-//				var txt:TextField = new TextField  ;
-//				txt.x = parseInt(slotPos[2]) + slotwidth + slotup;
-//				txt.y = parseInt(slotPos[3]) + slotspaceY * i + slotup;
-//				txt.width = parseInt(slotPos[4]) - slotwidth - slotup * 2;
-//				savelayer.addChild(txt);
-//				savetxtArray.push(txt);
 				trace("save-SaeSlot"+SaeSlot.x+"/"+SaeSlot.y+"//"+btnimg1);
-				SaeSlot.addEventListener(MouseEvent.CLICK,clickslot);
+//				SaeSlot.addEventListener(MouseEvent.CLICK,clickslot);
 
 			}
 
-			//////////////////////////
-
-
-
-
-
-			//var fontArray:Array = Font.enumerateFonts(false);
-			//Tformat.font = fontArray[0].fontName;
-			//Tformat.align = "center";
-			////Tformat.size = 30;
-			//addChild(txt);
-			//txt.textColor = uint(("0x" + colorT));
-			//txt.autoSize = TextFieldAutoSize.CENTER;
-			//txt.embedFonts = true;
-			//txt.selectable = false;
-			//txt.multiline = true;
-			//txt.defaultTextFormat = Tformat;
-			//txt.setTextFormat(Tformat);
-			//txt.x = 960 / 2;
-			//txtcenterY = parseInt(PosImg[6]);
-			//if (PosImg.length > 7)
-			//{
-			//txtwidth = parseInt(PosImg[7]);
-			//}
-			//
-			//savelayer.addChild(txt);
+			
 			addChild(savelayer);
 			savelayer.visible = false;
 			savelayer.x = PosImg[0];
@@ -139,44 +99,14 @@
 		function clickslot(event:Event)
 		{
 			trace("clickslot1");
+			trace(event.currentTarget.parent);
+			
 			trace(event.currentTarget);
-			trace("clickslot2");
-			trace(event.currentTarget.nodename);
+			var i = 0;
+			i = saveloaderArray.indexOf(event.currentTarget);
+			trace("clickslot2==----"+i);
 		}
-		function clickyes(event:Event)
-		{
-			savelayer.visible = false;
-			savelayer.y = 900;
-
-			switch (msgtype)
-			{
-				case "clickBack" :
-					savelayer.dispatchEvent(evtB);
-					trace("MSG--B");
-					return;
-				case "clickReplay" :
-					trace("MSG--R");
-					savelayer.dispatchEvent(evtR);
-					return;
-				case "clickLoad" :
-					trace("MSG--L");
-					savelayer.dispatchEvent(evtL);
-					return;
-				case "keyback" :
-					trace("MSG--K");
-					savelayer.dispatchEvent(evtK);
-					return;
-				default :
-					break;
-			}
-
-
-		}
-		function clickno(event:Event)
-		{
-			savelayer.visible = false;
-			savelayer.y = 900;
-		}
+		
 		function BGloadComplete(event:Event)
 		{
 			txtcenterX +=  event.currentTarget.width / 2;

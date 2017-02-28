@@ -81,30 +81,7 @@
 		
 		function clickyes(event:Event)
 		{
-//				msglayer.visible=false;
-//				msglayer.y=900;
-//				
-//				switch (msgtype)
-//				{
-//					case "clickBack" :
-//						msglayer.dispatchEvent(evtB);
-//						trace("MSG--B");
-//						return;
-//					case "clickReplay" :
-//						trace("MSG--R");
-//						msglayer.dispatchEvent(evtR);
-//						return;
-//					case "clickLoad" :
-//						trace("MSG--L");
-//						msglayer.dispatchEvent(evtL);
-//						return;
-//					case "keyback" :
-//						trace("MSG--K");
-//						msglayer.dispatchEvent(evtK);
-//						return;
-//					default :
-//						break;
-//				}
+
 //			
 
 		}

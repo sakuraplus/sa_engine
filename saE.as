@@ -402,7 +402,7 @@
 			
 		}
 
-		function writeInitSavefile()
+		function writeInitSavefile(numslot:int)
 		{
 			var file = FileP.resolvePath("Documents/cg.xml");
 			if (file.exists)
@@ -443,6 +443,42 @@
 				loadstaticvarxml();
 			}
 			
+			file = FileP.resolvePath("Documents/save.xml");
+			if (file.exists)
+			{
+				trace("save存在存在");//文件存在
+				loadsavexml();
+
+			}
+			else
+			{
+				////////////文件不存在则生成
+				//showtrace("不存在不存在"+file.nativePath);
+				var savexml=new XML;
+				var slotxml=XML("<slot><name/><exist/><img/><txt/><svar/><playingat><scenario/><lastScenario/><lastreadline/><readline/><bgm/><bg/></playingat></slot>");
+				slotxml.exist=false;
+				var xmltemp="";//=slotxml;
+				trace("SLOTxml"+slotxml);
+				for (var i = 0; i < numslot; i++)
+				{					
+					slotxml.name=i;
+					xmltemp+=slotxml.toString();
+				}
+				savexml=XML("<save>" +xmltemp + "</save>");	
+				saveXML=savexml;
+				trace( "savexmlsavexml"+ savexml.children()[2].toString());
+
+				var stream:FileStream = new FileStream  ;
+				stream.open(file,FileMode.WRITE);
+				stream.writeUTFBytes("");
+				stream.close();
+				stream.open(file,FileMode.WRITE);
+				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+				stream.writeUTFBytes(savexml.toString());
+				stream.close();
+				trace("init save  xmlsave");
+			}			
+			
 //			writeSavexml();
 			
 		}
@@ -482,7 +518,25 @@
 			cgfileStream.addEventListener(Event.COMPLETE, readCgXMLfile);
 			cgfileStream.openAsync(file, FileMode.READ);
 		}
+		//save file''''
+		function loadsavexml():void
+		{
+			trace(" staticvarxml");
+			var file = FileP.resolvePath("Documents/save.xml");
+			savefileStream = new FileStream();
+			savefileStream.addEventListener(Event.COMPLETE, saveXMLfile);
+			savefileStream.openAsync(file, FileMode.READ);
 
+			loadtxt = false;
+		}
+		//save file''''
+		function saveXMLfile(event:Event):void
+		{
+			saveXML = new XML  ;
+			saveXML = XML(savefileStream.readUTFBytes(savefileStream.bytesAvailable));
+			savefileStream.close();
+			
+		}
 		//固定变量
 		function loadstaticvarxml():void
 		{
@@ -667,8 +721,13 @@
 
 
 			//初始化save''''
-			SaeSavepanel=new    SaESavepanel( initXML.Sui.msgbox. @ colorbg,initXML.Sui.msgbox. @ colortxt,initXML.Sui.msgbox. @ img,initXML.Sui.msgbox. @ pos, Tformat);
-			stage.addChild(SaeSavepanel);//
+			var numslot=4;
+			SaeSavepanel=new    SaESavepanel( initXML.Sui.msgbox. @ colorbg,initXML.Sui.msgbox. @ colortxt,initXML.Sui.msgbox. @ img,initXML.Sui.msgbox. @ pos, numslot,Tformat);
+			stage.addChild(SaeSavepanel);//			
+			for (i = 0; i < numslot; i++)
+			{
+				SaeSavepanel.saveloaderArray[i].addEventListener(MouseEvent.CLICK,clickslot);
+			}
 
 
 			/////////sys菜单
@@ -739,9 +798,42 @@
 			
 			//////////写入cg和存档，更新staticvar
 			trace("☆init-03 加载cg和存档");
-			writeInitSavefile();//写入cg和存档
+			writeInitSavefile(4);//写入cg和存档
 
 			 stageInit();///////////
+		}
+		var saveXML=new XML;
+		function clickslot(event:Event)
+		{//''''
+			trace("clickslot1");
+			trace(event.currentTarget.parent);
+			
+			trace(event.currentTarget);
+			var i = 0;
+			i = SaeSavepanel.saveloaderArray.indexOf(event.currentTarget);
+			trace("clickslot2==----"+i);
+			playingat.readline = ti;
+			playingat.scenario = readScenario;
+			playingat.bgm = bgmurl;
+			playingat.bg = bgurl;
+			playingat.lastreadline=lastti;
+			playingat.lastScenario=lastScenario; 
+
+
+			saveXML.children()[i].svar=evallist;
+			saveXML.children()[i].playingat=playingat;
+			trace("clickslot3"+saveXML);
+
+			var file = FileP.resolvePath("Documents/save.xml");
+			var stream:FileStream = new FileStream  ;
+			stream.open(file,FileMode.WRITE);
+			stream.writeUTFBytes("");
+			stream.close();
+			stream.open(file,FileMode.WRITE);
+			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+			stream.writeUTFBytes(saveXML.toString());
+			stream.close();
+			trace("init save  xmlsave");
 		}
 
 		/////////////////txt 读取script完成
@@ -2549,6 +2641,8 @@
 			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
 		/////////////////save
+
+		
 		function Save(str:String)
 		{
 			MCsaving.play();
