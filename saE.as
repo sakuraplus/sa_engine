@@ -722,11 +722,14 @@
 
 			//初始化save''''
 			var numslot=4;
-			SaeSavepanel=new    SaESavepanel( initXML.Sui.msgbox. @ colorbg,initXML.Sui.msgbox. @ colortxt,initXML.Sui.msgbox. @ img,initXML.Sui.msgbox. @ pos, numslot,Tformat);
+			SaeSavepanel = new SaESavepanel( initXML.Sui.msgbox. @ colorbg, initXML.Sui.msgbox. @ colortxt,
+			initXML.Sui.msgbox. @ img,
+			"300,100,320,150,300,400", numslot,Tformat);
+			// slotup + slotup + txtleft + slotup + txtwidth;
 			stage.addChild(SaeSavepanel);//			
 			for (i = 0; i < numslot; i++)
 			{
-				SaeSavepanel.saveloaderArray[i].addEventListener(MouseEvent.CLICK,clickslot);
+				SaeSavepanel.saveloaderArray[i].addEventListener(MouseEvent.CLICK,clicksaveslot);
 			}
 
 
@@ -803,12 +806,16 @@
 			 stageInit();///////////
 		}
 		var saveXML=new XML;
-		function clickslot(event:Event)
+		function clicksaveslot(event:Event)
 		{//''''
 			trace("clickslot1");
 			trace(event.currentTarget.parent);
 			
 			trace(event.currentTarget);
+
+			SaeSavepanel.savelayer.visible=false;
+			SaeSavepanel.savelayer.y=900;
+
 			var i = 0;
 			i = SaeSavepanel.saveloaderArray.indexOf(event.currentTarget);
 			trace("clickslot2==----"+i);
@@ -819,7 +826,9 @@
 			playingat.lastreadline=lastti;
 			playingat.lastScenario=lastScenario; 
 
-
+			saveXML.children()[i].exist = true;
+			saveXML.children()[i].img = bgurl;
+			saveXML.children()[i].txt=new Date().month+"/"+new Date().date+"-"+new Date().hours+":"+new Date().minutes+":"+new Date().seconds;
 			saveXML.children()[i].svar=evallist;
 			saveXML.children()[i].playingat=playingat;
 			trace("clickslot3"+saveXML);
@@ -2596,7 +2605,7 @@
 		{
 			//存档''''
 			stopTimerSkip();
-			SaeSavepanel.showmsg(new XML);
+			SaeSavepanel.showmsg(true, saveXML);//(true,evallist,playingat);
 			if (readScenario == firstScenario || !saveable||inscript)
 			{
 				showtrace("you cannot save here");

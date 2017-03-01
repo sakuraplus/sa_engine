@@ -26,28 +26,23 @@
 		public function SaESlot(bgurl:String  ,PosImg:String,str:String,Tformat:TextFormat)
 		{			
 			nodename=str;
-			var slotPos = PosImg.split(",");//背景，确定，取消按钮位置x,y,x,y,w,h
+			var slotPos = PosImg.split(",");//x,y,x,y,w,sc
 			var bgURLReq:URLRequest = new URLRequest(bgurl);			
 			bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
 			bgLoader.load(bgURLReq);
 			
 			bgLoader.x=parseInt(slotPos[0]);
 			bgLoader.y=parseInt(slotPos[1]);
+			bgLoader.scaleX =parseInt(slotPos[5]);
+			bgLoader.scaleY =parseInt(slotPos[5]);
+			
 			addChild(bgLoader);
-			//bgLoader.scaleX=txtScale;
-			//bgLoader.scaleY=txtScale;	
-			
-			
-//			btnYLoader.addEventListener(MouseEvent.CLICK,clickyes);
 
-			
-//			var fontArray:Array = Font.enumerateFonts(false);
-//			Tformat.font = fontArray[0].fontName;
 			Tformat.align="center";
 			Tformat.size = 20;
 		
 			txt.textColor =uint("0xff3399");
-//			txt.autoSize =TextFieldAutoSize.Left;		
+		
 			if( Font.enumerateFonts(false).length>0)
 			{
 			txt.embedFonts=true;
@@ -59,6 +54,7 @@
 
 			txt.x=parseInt(slotPos[2]);
 			txt.y=parseInt(slotPos[3]);
+			txt.width=parseInt(slotPos[4]);
 			txt.text=str;
 			
 			addChild(txt);
@@ -67,15 +63,12 @@
 //			addChild(msglayer);
 			
 		}
-		public function showmsg(type:String,str:String )
+		public function slotrefresh(savetxt:String,saveurl:String )
 		{
-//			txt.scaleX=1;
-//			txt.scaleY=1;	
-//			msgtype=type;
-//			txt.htmlText =str;
-//			msglayer.visible=true;
-//			msglayer.y=0;
-//			msglayer.x=0;
+//			
+			trace("slot refresh"+saveurl);
+			//bgLoader.load( new URLRequest(saveurl));//新图片
+			txt.text=savetxt;
 
 		}
 		
@@ -94,6 +87,7 @@
 		{
 //			txtcenterX+=event.currentTarget.width/2;
 //			txt.x=txtcenterX;
+
 		}
 
 	}
