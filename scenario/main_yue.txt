@@ -8,11 +8,11 @@
 [clearimg]
 
 [background black.jpg]
-[ask 新既开始,300,70,NEW,imgask.png]
-[ask 玩番之前既进度,300,200,load,imgask.png]
-[ask 睇番之前D靓相,300,330,cg,imgask.png]
-[ask 睇番之前D结局,300,460,review,imgask.png]
-[ask ,840,550,about,about.png]
+[ask 新既开始|300|70|NEW|imgask.png]
+[ask 玩番之前既进度|300|200|load|imgask.png]
+[ask 睇番之前D靓相|300|330|cg|imgask.png]
+[ask 睇番之前D结局|300|460|review|imgask.png]
+[ask |840|550|about|about.png]
 
 
 
@@ -38,16 +38,16 @@
 [background black.jpg]
 [wait 1000]
 
-[ask 重置存档,100,130,loadDEL,imgask3.png]
-[ask 调整速度,100,230,speed,imgask3.png]
-[ask 语      言,100,330,language,imgask3.png]
-[ask 返      回,100,430,info,imgask3.png]
+[ask 重置存档|100|130|loadDEL|imgask3.png]
+[ask 调整速度|100|230|speed|imgask3.png]
+[ask 语      言|100|330|language|imgask3.png]
+[ask 返      回|100|430|info|imgask3.png]
 [waitclick]
 [goto setting]
 ////////////////////////////////////
 [label language]
 
-[eval @language ,=,0]
+[eval @language |=|0]
 [call main.txt]
 
 //////////////////////////////////////////
@@ -55,16 +55,16 @@
 
 [background black.jpg]
 [wait 1000]
-[text new,90,120,800,<font  color="#ccff99">程序，主美术：saku</font>,auto]
-[text add,90,120,800,<font  color="#ccccff" SIZE="30">				引擎：SaE</font><font  color="#ffffff" SIZE="20">（Adobe Air）</font> <font  color="#ffcccc" SIZE="30">	by：saku</font>,auto]
+[text new|90|120|800|<font  color="#ccff99">程序，主美术：saku</font>|auto]
+[text add|90|120|800|<font  color="#ccccff" SIZE="30">				引擎：SaE</font><font  color="#ffffff" SIZE="20">（Adobe Air）</font> <font  color="#ffcccc" SIZE="30">	by：saku</font>|auto]
 
-[text add,90,120,800,<font  color="#ff9999">   	剧本：saku  步搖·亂  遥夏<br>			fsfsx   歌灵水魅</font>,auto]
-[text add,90,120,800,<font  color="#ff6666">      CG，场景： saku  饭团  紫菜  步搖·亂</font>,auto]
-[text add,90,120,800,<font  color="#ff9933">  音乐：saku  紫菜 歌灵水魅</font>,auto]
-[text add,90,120,800,<font  color="#ffcc00"><br>	感谢参与策划和测试的，龟爱的大家</font>,auto]
+[text add|90|120|800|<font  color="#ff9999">   	剧本：saku  步搖·亂  遥夏<br>			fsfsx   歌灵水魅</font>|auto]
+[text add|90|120|800|<font  color="#ff6666">      CG，场景： saku  饭团  紫菜  步搖·亂</font>|auto]
+[text add|90|120|800|<font  color="#ff9933">  音乐：saku  紫菜 歌灵水魅</font>|auto]
+[text add|90|120|800|<font  color="#ffcc00"><br>	感谢参与策划和测试的，龟爱的大家</font>|auto]
 
-[text add,90,120,800,<A HREF="http://hi.baidu.com/sakuraplus/item/93d6fa19bbb5f60fd1d66d74"><FONT SIZE="40" COLOR="#ffff66"><br>			MNTGG·实 公式页面</FONT></A>,auto]
-[text add,90,120,800,<A HREF="http://weibo.com/sakuraplus"><FONT SIZE="36" COLOR="#ffff99">							寻找作者</FONT></A>,auto]
+[text add|90|120|800|<A HREF="http://hi.baidu.com/sakuraplus/item/93d6fa19bbb5f60fd1d66d74"><FONT SIZE="40" COLOR="#ffff66"><br>			MNTGG·实 公式页面</FONT></A>|auto]
+[text add|90|120|800|<A HREF="http://weibo.com/sakuraplus"><FONT SIZE="36" COLOR="#ffff99">							寻找作者</FONT></A>|auto]
 [waitclick]
 
 
@@ -75,10 +75,10 @@
 //////////////////////////////////////////
 [label load]
 [clr]
-[ask 存档1,180,200,load1,imgask.png]
-[ask 自动存档,500,200,load2,imgask.png]
-//[ask 清除存档,180,400,loadDEL,imgask.png]
-[ask 返回,500,400,LL,imgask.png]
+[ask 存档1|180|200|load1|imgask.png]
+[ask 自动存档|500|200|load2|imgask.png]
+//[ask 清除存档|180|400|loadDEL|imgask.png]
+[ask 返回|500|400|LL|imgask.png]
 
 [waitclick]
 
@@ -93,14 +93,14 @@
 
 ///////////////////////////////////////////
 [label loadDEL]
-[img Clone07.png,500,140,LayerC]
-[dialog  ,全部存档和收集的cg将回到初始状态，你所经历过的记忆都没有了哦。]
-[ask 是,300,100,loadDELYes,imgask.png]
-[ask 还是算了,300,300,LL,imgask.png]
-[askdialog  ,真的要清除吗？]
+[img Clone07.png|500|140|LayerC]
+[dialog  |全部存档和收集的cg将回到初始状态，你所经历过的记忆都没有了哦。]
+[ask 是|300|100|loadDELYes|imgask.png]
+[ask 还是算了|300|300|LL|imgask.png]
+[askdialog  |真的要清除吗？]
 [label loadDELYes]
-[img Clone05.png,500,140,LayerC]
-[dialog  ,清除了哦ǒ△ǒ]
+[img Clone05.png|500|140|LayerC]
+[dialog  |清除了哦ǒ△ǒ]
 [initsavefile]
 [wait 500]
 [goto setting]
@@ -111,48 +111,48 @@
 
 [label speed]
 [background blackspeed.jpg]
-[ask ,150,250,sp1,check1.png]
-[ask ,290,250,sp2,check1.png]
-[ask ,430,250,sp3,check1.png]
-[ask ,570,250,sp4,check1.png]
-[ask ,710,250,sp5,check1.png]
-[askdialog  ,设置游戏中默认的淡入淡出时间，最低值为关闭淡入淡出特效，最高值为默认数值的两倍。 ]
+[ask |150|250|sp1|check1.png]
+[ask |290|250|sp2|check1.png]
+[ask |430|250|sp3|check1.png]
+[ask |570|250|sp4|check1.png]
+[ask |710|250|sp5|check1.png]
+[askdialog  |设置游戏中默认的淡入淡出时间，最低值为关闭淡入淡出特效，最高值为默认数值的两倍。 ]
 [goto setting]
 
 
 [label sp1]
-[eval @speed ,=,0]
+[eval @speed |=|0]
 [setdurtime]
-[dialog ,设置特效时间为@speed ，适合在手机等设备上使用。]
+[dialog |设置特效时间为@speed ，适合在手机等设备上使用。]
 [clr]
 
 [goto setting]
 
 [label sp2]
-[eval @speed ,=,5.6]
+[eval @speed |=|5.6]
 [setdurtime]
-[dialog ,设置特效时间为@speed ]
+[dialog |设置特效时间为@speed ]
 [clr]
 [goto setting]
 
 [label sp3]
-[eval @speed ,=,10]
+[eval @speed |=|10]
 [setdurtime]
-[dialog ,设置特效时间为默认值，@speed ]
+[dialog |设置特效时间为默认值，@speed ]
 [clr]
 [goto setting]
 
 [label sp4]
-[eval @speed ,=,15]
+[eval @speed |=|15]
 [setdurtime]
-[dialog ,设置特效时间为@speed ]
+[dialog |设置特效时间为@speed ]
 [clr]
 [goto setting]
 
 [label sp5]
-[eval @speed ,=,20]
+[eval @speed |=|20]
 [setdurtime]
-[dialog ,设置特效时间为@speed ]
+[dialog |设置特效时间为@speed ]
 [clr]
 [goto setting]
 

@@ -808,43 +808,67 @@
 		var saveXML=new XML;
 		function clicksaveslot(event:Event)
 		{//''''
+			//save
 			trace("clickslot1");
 			trace(event.currentTarget.parent);
-			
-			trace(event.currentTarget);
-
-			SaeSavepanel.savelayer.visible=false;
-			SaeSavepanel.savelayer.y=900;
-
+				
 			var i = 0;
 			i = SaeSavepanel.saveloaderArray.indexOf(event.currentTarget);
-			trace("clickslot2==----"+i);
-			playingat.readline = ti;
-			playingat.scenario = readScenario;
-			playingat.bgm = bgmurl;
-			playingat.bg = bgurl;
-			playingat.lastreadline=lastti;
-			playingat.lastScenario=lastScenario; 
+			var file;// = FileP.resolvePath("Documents/save.xml");
+			trace("clickslot2==----" + i);
+			if (savestate == true)
+			{
+				
+				playingat.readline = ti;
+				playingat.scenario = readScenario;
+				playingat.bgm = bgmurl;
+				playingat.bg = bgurl;
+				playingat.lastreadline=lastti;
+				playingat.lastScenario=lastScenario; 
 
-			saveXML.children()[i].exist = true;
-			saveXML.children()[i].img = bgurl;
-			saveXML.children()[i].txt=new Date().month+"/"+new Date().date+"-"+new Date().hours+":"+new Date().minutes+":"+new Date().seconds;
-			saveXML.children()[i].svar=evallist;
-			saveXML.children()[i].playingat=playingat;
-			trace("clickslot3"+saveXML);
+				saveXML.children()[i].exist = true;
+				saveXML.children()[i].img = bgurl;
+				saveXML.children()[i].txt=(1+new Date().month)+"/"+new Date().date+"-"+new Date().hours+":"+new Date().minutes+":"+new Date().seconds;
+				saveXML.children()[i].svar=evallist;
+				saveXML.children()[i].playingat=playingat;
+				trace("clickslot3"+saveXML);
 
-			var file = FileP.resolvePath("Documents/save.xml");
-			var stream:FileStream = new FileStream  ;
-			stream.open(file,FileMode.WRITE);
-			stream.writeUTFBytes("");
-			stream.close();
-			stream.open(file,FileMode.WRITE);
-			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-			stream.writeUTFBytes(saveXML.toString());
-			stream.close();
-			trace("init save  xmlsave");
+				file = FileP.resolvePath( "Documents/save.xml");
+				var stream:FileStream = new FileStream  ;
+				stream.open(file,FileMode.WRITE);
+				stream.writeUTFBytes("");
+				stream.close();
+				stream.open(file,FileMode.WRITE);
+				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+				stream.writeUTFBytes(saveXML.toString());
+				stream.close();
+				trace("init save  xmlsave");
+				
+				
+				SaeSavepanel.refreshslot (saveXML);
+			
+			}else {
+				
+				//load
+				loadindex = i;
+				file = FileP.resolvePath( "Documents/save.xml");
+				if (! file.exists)
+				{
+					showtrace("file not exists");
+					return;
+				}
+				stageInit();
+				savefileStream = new FileStream();
+				savefileStream.addEventListener(Event.COMPLETE, savefileLoaded);
+				savefileStream.openAsync(file, FileMode.READ);
+
+				trace(file.nativePath);//ok
+				loadtxt = false;	
+				
+			}
+			
 		}
-
+		var loadindex:int;
 		/////////////////txt 读取script完成
 		function SccompleteHandler(e:Event)
 		{
@@ -1965,6 +1989,10 @@
 		function anEVAL(scenario:String )
 		{
 			
+			var pattern:RegExp =/[|]/g;
+			scenario=scenario.replace(pattern, "");
+			
+
 			//var tt = scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]"));
 			var ArrT;
 			var operator:String;
@@ -2239,22 +2267,21 @@
 				tlist+=tempevallist;
 			}
 
-			sti = str.indexOf("@");
-			//edi = str.indexOf(" ",sti + 1);
-			trace("replaceVar  sti=  "+sti+"  edi= "+edi);
 			while (str.indexOf("@",sti) >= 0 && str.indexOf(" ",edi+1) > 0)
 			{
+				
 				//遍历 文字中包含的所有变量
-				sti = str.indexOf("@",edi);
-				edi = str.indexOf(" ",sti + 1);
+				sti = str.indexOf("@",sti+1);
+				edi = str.indexOf(" ",sti +1);
 				strT = str.substring((sti + 1),edi);
+				trace("sti/edi="+sti+"   "+edi+"="+strT);
 				sti++;
 				//strT=replaceprefix(strT);
 				
 				//变量名称
 				t = "@" + strT + " ";
 				trace("replaceVar   "+edi+"/"+t);
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////
 				var haselement=false;
 				var i=0;
 				while (i<tlist.children().length() &&i>=0 )
@@ -2273,7 +2300,10 @@
 				{
 					//没有匹配,不替换
 					trace("没有匹配,不替换");
-					//str = t;//str.replace(t,"error");
+					if(gamedebug)
+					{
+						SaeDebug.write("»»» replace error"+str);
+					}
 				}
 			}
 			
@@ -2604,8 +2634,9 @@
 		function clickSavePanel(event:MouseEvent):void
 		{
 			//存档''''
+			savestate = true;
 			stopTimerSkip();
-			SaeSavepanel.showmsg(true, saveXML);//(true,evallist,playingat);
+			SaeSavepanel.showslot(true, saveXML);//(true,evallist,playingat);
 			if (readScenario == firstScenario || !saveable||inscript)
 			{
 				showtrace("you cannot save here");
@@ -2626,66 +2657,70 @@
 		}
 		function clickSave(event:MouseEvent):void
 		{
-			//存档
-			stopTimerSkip();
-			
-			if (readScenario == firstScenario || !saveable||inscript)
-			{
+			////存档
+			//stopTimerSkip();
+			//
+			//if (readScenario == firstScenario || !saveable||inscript)
+			//{
 				//trace(((("readScenario===" + readScenario) + "//init=") + initXML.playingat.scenario));
-				showtrace("you cannot save here");
+				//showtrace("you cannot save here");
 				//"main.txt"
-				return;
-			}
-			if (! btnwaiting)
-			{
-				btnwaiting = true;
-				waittimerBtn.start();
-			}
-			else
-			{
-				return;
-			}
-			btnSOUND();
-			Save(StrSave);
-			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
+				//return;
+			//}
+			//if (! btnwaiting)
+			//{
+				//btnwaiting = true;
+				//waittimerBtn.start();
+			//}
+			//else
+			//{
+				//return;
+			//}
+			//btnSOUND();
+			//Save(StrSave);
+			//TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
 		/////////////////save
 
 		
 		function Save(str:String)
 		{
-			MCsaving.play();
-			var i = ti;
-			trace(((ti + "xxxsave") + i));
-			
-			playingat.readline = i;
-			playingat.scenario = readScenario;
-			playingat.bgm = bgmurl;
-			playingat.bg = bgurl;
-			playingat.lastreadline=lastti;
-			playingat.lastScenario=lastScenario;
-
-			var savexml = evallist + playingat;
-			trace(savexml.toString());
-
-			var file = FileP.resolvePath( "Documents/"+str);
-
-			var stream:FileStream = new FileStream  ;
-			stream.open(file,FileMode.WRITE);
-			stream.writeUTFBytes("");
-			stream.close();
-			stream.open(file,FileMode.WRITE);
-			stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-			stream.writeUTFBytes((("<save>" + savexml.toString()) + "</save>"));
-			stream.close();
-			trace("save  xmlsave");
+			//MCsaving.play();
+			//var i = ti;
+			//trace(((ti + "xxxsave") + i));
+			//
+			//playingat.readline = i;
+			//playingat.scenario = readScenario;
+			//playingat.bgm = bgmurl;
+			//playingat.bg = bgurl;
+			//playingat.lastreadline=lastti;
+			//playingat.lastScenario=lastScenario;
+//
+			//var savexml = evallist + playingat;
+			//trace(savexml.toString());
+//
+			//var file = FileP.resolvePath( "Documents/"+str);
+//
+			//var stream:FileStream = new FileStream  ;
+			//stream.open(file,FileMode.WRITE);
+			//stream.writeUTFBytes("");
+			//stream.close();
+			//stream.open(file,FileMode.WRITE);
+			//stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+			//stream.writeUTFBytes((("<save>" + savexml.toString()) + "</save>"));
+			//stream.close();
+			//trace("save  xmlsave");
+			//
+//
 		}
 
-		function savecompleteHandler(event:MouseEvent):void
+		function savecompleteHandler(event:Event):void
 		{
 			trace("stream=======================ok");
+			
 		}
 
+		var savestate = true;//save或load状态
 		
 		function clickLoad(event:MouseEvent):void
 		{
@@ -2702,9 +2737,11 @@
 				return;
 			}
 			btnSOUND();
-			askmsg = "clickLoad";
-			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgload. @ txt);
-			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
+			savestate = false;
+			SaeSavepanel.showslot(false , saveXML);//(true,evallist,playingat);
+			//askmsg = "clickLoad";
+			//SaeMsgbox.showmsg (askmsg, initXML.Sui.imgload. @ txt);
+			//TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
 		function Load(str:String)
 		{
@@ -2725,8 +2762,13 @@
 
 		function savefileLoaded(event:Event):void
 		{
-			loadXML = new XML  ;
-			loadXML = XML(savefileStream.readUTFBytes(savefileStream.bytesAvailable));
+			
+			saveXML = new XML  ;
+			saveXML = XML(savefileStream.readUTFBytes(savefileStream.bytesAvailable));
+			savefileStream.close();
+			
+			//loadXML = new XML  ;
+			loadXML = saveXML.children()[loadindex ];
 			savefileStream.close();
 
 			trace("读取存档2"+loadXML);

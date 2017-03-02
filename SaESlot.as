@@ -27,14 +27,24 @@
 		{			
 			nodename=str;
 			var slotPos = PosImg.split(",");//x,y,x,y,w,sc
-			var bgURLReq:URLRequest = new URLRequest(bgurl);			
+			if(bgurl=="")
+			{
+				bgurl="white.jpg";
+			}
+			var bgURLReq:URLRequest = new URLRequest("ui/"+bgurl);		
+				
 			bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
-			bgLoader.load(bgURLReq);
 			
+			trace("new slot"+bgurl+"scale="+slotPos[5]);
+
+			bgLoader.load(bgURLReq);
+
+
+			bgLoader.scaleX =parseInt(slotPos[5])/100;
+			bgLoader.scaleY =parseInt(slotPos[5])/100;
 			bgLoader.x=parseInt(slotPos[0]);
 			bgLoader.y=parseInt(slotPos[1]);
-			bgLoader.scaleX =parseInt(slotPos[5]);
-			bgLoader.scaleY =parseInt(slotPos[5]);
+
 			
 			addChild(bgLoader);
 
@@ -45,7 +55,7 @@
 		
 			if( Font.enumerateFonts(false).length>0)
 			{
-			txt.embedFonts=true;
+				txt.embedFonts=true;
 			}
 			txt.selectable =false;
 			txt.multiline=true;
@@ -67,7 +77,7 @@
 		{
 //			
 			trace("slot refresh"+saveurl);
-			//bgLoader.load( new URLRequest(saveurl));//新图片
+			bgLoader.load( new URLRequest("ui/"+saveurl));//新图片
 			txt.text=savetxt;
 
 		}
