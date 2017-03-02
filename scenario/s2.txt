@@ -10,7 +10,9 @@
 [dialog ǒ。ǒ|更换背景图1]
 [showtip 文字wwwww]
 [dialog ~~|更换背景图1]
+
 [background DLnote.jpg]
+[text new|90|440|800|<font  color="#ff9999">The first line</font>|auto]
 [dialog ǒ。ǒ|更换背景图2]
 [showtip 文sssssssssssssss字]
 [dialog ~~|更换背景图22]

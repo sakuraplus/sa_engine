@@ -19,13 +19,13 @@
 	public class SaESavepanel extends Sprite
 	{
 
-		var txt:TextField = new TextField  ;
+		//var txt:TextField = new TextField  ;
 		var savelayer:Sprite = new Sprite  ;
-		var msgtype:String;
-		var txtwidth = 600;
-		var txtcenterX = 400;
-		var txtcenterY = 400;
-		var firsttime = true;
+		//var msgtype:String;
+		//var txtwidth = 600;
+		//var txtcenterX = 400;
+		//var txtcenterY = 400;
+		//var firsttime = true;
 
 		
 		//var strpos = "100,50,10,10,200,500";//x,y,x,y,w,h
@@ -35,7 +35,7 @@
 		var saveXML:XML;
 
 		//创建对话框
-		public function SaESavepanel(colorB:String,colorT:String,bgurl:String,pos:String,numslot:int,Tformat:TextFormat)
+		public function SaESavepanel(colorB:String,colorT:String,bgurl:String,pos:String,numslot:String,Tformat:TextFormat)
 		{
 			saveXML = new XML();
 			var ArrUrl = bgurl.split(",");//背景//，取消按钮图片
@@ -55,36 +55,39 @@
 
 			var bgURLReq:URLRequest = new URLRequest(bgurl);
 			var bgLoader = new Loader  ;
-			bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
+			//bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
 			bgLoader.load(bgURLReq);
 			savelayer.addChild(bgLoader);
 			bgLoader.x = parseInt(PosImg[0]);
 			bgLoader.y = parseInt(PosImg[1]);
 			
 		
-			txtcenterX = bgLoader.x;
+			//txtcenterX = bgLoader.x;
 
 			/////////////////////////
 //			var slotPos = strpos.split(",");//背景，确定，取消按钮位置x,y,x,y,w,h
-			var slotspaceY:int = parseInt(PosImg[5]) / numslot;			
+			var slotspaceY:int = parseInt(PosImg[5]) /parseInt( numslot);			
 			var slotheight:int = 0.9 * slotspaceY;
 			var slotup:int = 0.05 * slotspaceY;
-			var slotwidth:int = slotheight * 2 / 3;
+			var slotwidth:int = slotheight * 3 / 2;
 			var txtleft:int = slotup * 5 + slotwidth;
 			var txtwidth:int =  parseInt(PosImg[4]) - slotup * 4 - slotwidth;
 			var imgscale:int =100* slotheight/640;
-			var strtemp = slotup +","+ slotup +","+ txtleft+"," + slotup +","+ txtwidth+","+imgscale;
-			for (var i = 0; i < numslot; i++)
+			//var posTemp = [slotup, txtleft, twidth];
+			//xy,tleft,twidth
+			// slotup +"," + slotup +"," + txtleft + "," + slotup +"," + txtwidth + "," + imgscale;
+			trace("背景位置  spy=" + slotspaceY + "  slup=" + slotup + " slotheight=" + slotheight +
+			"  slotwidth="+slotwidth+"  txtleft="+txtleft +" txtw="+txtwidth );
+			for (var i = 0; i < parseInt( numslot); i++)
 			{
-				var sstr="EMPTY SLOT";//"NM"+new Date().milliseconds+"MMccc";
-				var SaeSlot:SaESlot=new SaESlot("",strtemp ,sstr,Tformat);//''''x,y,x,y,W,sc"20,20,200,20,200" 
+				var SaeSlot:SaESlot=new SaESlot("" ,slotup,imgscale , txtleft, txtwidth ,colorT ,  "EMPTY SLOT", Tformat);//''''x,y,x,y,W,sc"20,20,200,20,200" 
 				savelayer.addChild(SaeSlot);
 				saveloaderArray.push(SaeSlot);
 				SaeSlot.x =parseInt( PosImg[2]);
 				SaeSlot.y = parseInt(PosImg[3]) + slotspaceY * i ;
 				
 				trace("save-SaeSlot"+SaeSlot.x+"/"+SaeSlot.y+"//");
-				SaeSlot.addEventListener(MouseEvent.CLICK,clickslot);
+				//SaeSlot.addEventListener(MouseEvent.CLICK,clickslot);
 
 			}
 
@@ -95,25 +98,33 @@
 			savelayer.y = PosImg[1];
 
 		}
-		public function showslot(save:Boolean,savexml:XML)
+		public function showslot(isSave:Boolean,savexml:XML)
 		{//(save:Boolean, evallist:XML, playingat:XML)
 			savelayer.visible = true;
 			savelayer.y = 0;
 			savelayer.x = 0;
-			if (!firsttime && save)
-			{
-				//保存则不需要刷新
-				return;
-			}
-			firsttime = false;
+			//if (!firsttime && isSave)
+			//{
+				//trace("no firsttime保存则不需要刷新");
+				//return;
+			//}
+			//firsttime = false;
 				trace("SHOWSAVE"+savexml);
 			for (var i = 0; i <  savexml.children().length(); i++)
 			{
 				refreshslot(savexml);
 
-				if( !save &&savexml.children()[i].exist==false )
-				{
-					saveloaderArray[i].visible=false;
+				if( isSave  )
+				{//
+					saveloaderArray[i].visible = true;
+					trace("刷新no exist+"+saveloaderArray[i].visible );
+					
+				}else {
+					if (savexml.children()[i].exist == false) {
+						trace("刷新no exist" + savexml.children()[i].exist);
+						saveloaderArray[i].visible = false;// Boolean ( savexml.children()[i].exist) ;//== false;// false;
+					}
+					
 				}
 
 			}
@@ -122,7 +133,7 @@
 		public function refreshslot(savexml:XML)
 		{//(save:Boolean, evallist:XML, playingat:XML)
 
-			trace("refreshslot"+savexml);
+			//trace("refreshslot"+savexml);
 			for (var i = 0; i <  savexml.children().length(); i++)
 			{
 				if (savexml.children()[i].exist==true)
@@ -147,22 +158,22 @@
 			savelayer.y=900;
 		}
 
-		function clickslot(event:Event)
-		{
-			trace("clickslot1");
-			trace(event.currentTarget.parent);
-			
-			trace(event.currentTarget);
-			var i = 0;
-			i = saveloaderArray.indexOf(event.currentTarget);
-			trace("clickslot2==----"+i);
-		}
-		
-		function BGloadComplete(event:Event)
-		{
-			txtcenterX +=  event.currentTarget.width / 2;
-			txt.x = txtcenterX;
-		}
+		//function clickslot(event:Event)
+		//{
+			//trace("clickslot1");
+			//trace(event.currentTarget.parent);
+			//
+			//trace(event.currentTarget);
+			//var i = 0;
+			//i = saveloaderArray.indexOf(event.currentTarget);
+			//trace("clickslot2==----"+i);
+		//}
+		//
+		//function BGloadComplete(event:Event)
+		//{
+			//txtcenterX +=  event.currentTarget.width / 2;
+			//txt.x = txtcenterX;
+		//}
 
 	}
 

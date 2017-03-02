@@ -23,10 +23,10 @@
 
 		
 		//创建对话框
-		public function SaESlot(bgurl:String  ,PosImg:String,str:String,Tformat:TextFormat)
+		public function SaESlot(bgurl:String  ,PosXY:int,ImgScale:int,TextLeft:int,TextWidth:int,Tcolor:String,str:String,Tformat:TextFormat)
 		{			
-			nodename=str;
-			var slotPos = PosImg.split(",");//x,y,x,y,w,sc
+//			nodename=str;
+//			var slotPos = PosImg.split(",");//x,y,x,y,w,sc
 			if(bgurl=="")
 			{
 				bgurl="white.jpg";
@@ -35,15 +35,15 @@
 				
 			bgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,BGloadComplete);
 			
-			trace("new slot"+bgurl+"scale="+slotPos[5]);
+			//trace("new slot"+bgurl+"scale="+slotPos[5]);
 
 			bgLoader.load(bgURLReq);
 
 
-			bgLoader.scaleX =parseInt(slotPos[5])/100;
-			bgLoader.scaleY =parseInt(slotPos[5])/100;
-			bgLoader.x=parseInt(slotPos[0]);
-			bgLoader.y=parseInt(slotPos[1]);
+			bgLoader.scaleX =ImgScale/100;//parseInt(slotPos[5])/100;
+			bgLoader.scaleY =ImgScale/100;//parseInt(slotPos[5])/100;
+			bgLoader.x=PosXY;//parseInt(slotPos[0]);
+			bgLoader.y=PosXY;//parseInt(slotPos[1]);
 
 			
 			addChild(bgLoader);
@@ -51,7 +51,7 @@
 			Tformat.align="center";
 			Tformat.size = 20;
 		
-			txt.textColor =uint("0xff3399");
+			txt.textColor =uint("0x"+Tcolor);
 		
 			if( Font.enumerateFonts(false).length>0)
 			{
@@ -61,10 +61,11 @@
 			txt.multiline=true;
 			txt.defaultTextFormat = Tformat;
 			txt.setTextFormat (Tformat);
+			txt.wordWrap=true;
 
-			txt.x=parseInt(slotPos[2]);
-			txt.y=parseInt(slotPos[3]);
-			txt.width=parseInt(slotPos[4]);
+			txt.x=TextLeft;//parseInt(slotPos[2]);
+			txt.y=PosXY;//parseInt(slotPos[3]);
+			txt.width=TextWidth;//parseInt(slotPos[4]);
 			txt.text=str;
 			
 			addChild(txt);

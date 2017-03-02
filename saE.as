@@ -721,12 +721,12 @@
 
 
 			//初始化save''''
-			var numslot=4;
-			SaeSavepanel = new SaESavepanel( initXML.Sui.msgbox. @ colorbg, initXML.Sui.msgbox. @ colortxt,
-			initXML.Sui.msgbox. @ img,
-			"300,100,320,150,300,400", numslot,Tformat);
+			var numslot=initXML.Sui.savepanel. @ numslot;
+			SaeSavepanel = new SaESavepanel( initXML.Sui.savepanel. @ colorbg, initXML.Sui.savepanel. @ colortxt,
+			initXML.Sui.savepanel. @ img,
+			initXML.Sui.savepanel. @ pos, numslot,Tformat);
 			// slotup + slotup + txtleft + slotup + txtwidth;
-			stage.addChild(SaeSavepanel);//			
+			savelayer.addChild(SaeSavepanel);//			
 			for (i = 0; i < numslot; i++)
 			{
 				SaeSavepanel.saveloaderArray[i].addEventListener(MouseEvent.CLICK,clicksaveslot);
@@ -788,8 +788,8 @@
 
 			btnSystem.btnsys.addEventListener(MouseEvent.CLICK,clickShowsys);
 			//btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSave);
-			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSavePanel);//''''
-			btnSystem.btnLoad.addEventListener(MouseEvent.CLICK,clickLoad);
+			btnSystem.btnSave.addEventListener(MouseEvent.CLICK,clickSaveBtn);//''''
+			btnSystem.btnLoad.addEventListener(MouseEvent.CLICK,clickLoadBtn);
 			btnSystem.btnBack.addEventListener(MouseEvent.CLICK,clickBack);
 			btnSystem.btnReplay.addEventListener(MouseEvent.CLICK,clickReplay);
 			btnSystem.btnPlayback.addEventListener(MouseEvent.CLICK,clickPlayback);
@@ -801,7 +801,7 @@
 			
 			//////////写入cg和存档，更新staticvar
 			trace("☆init-03 加载cg和存档");
-			writeInitSavefile(4);//写入cg和存档
+			writeInitSavefile(numslot);//写入cg和存档
 
 			 stageInit();///////////
 		}
@@ -814,56 +814,22 @@
 				
 			var i = 0;
 			i = SaeSavepanel.saveloaderArray.indexOf(event.currentTarget);
-			var file;// = FileP.resolvePath("Documents/save.xml");
+			//var file;// = FileP.resolvePath("Documents/save.xml");
 			trace("clickslot2==----" + i);
 			if (savestate == true)
 			{
-				
-				playingat.readline = ti;
-				playingat.scenario = readScenario;
-				playingat.bgm = bgmurl;
-				playingat.bg = bgurl;
-				playingat.lastreadline=lastti;
-				playingat.lastScenario=lastScenario; 
-
-				saveXML.children()[i].exist = true;
-				saveXML.children()[i].img = bgurl;
-				saveXML.children()[i].txt=(1+new Date().month)+"/"+new Date().date+"-"+new Date().hours+":"+new Date().minutes+":"+new Date().seconds;
-				saveXML.children()[i].svar=evallist;
-				saveXML.children()[i].playingat=playingat;
-				trace("clickslot3"+saveXML);
-
-				file = FileP.resolvePath( "Documents/save.xml");
-				var stream:FileStream = new FileStream  ;
-				stream.open(file,FileMode.WRITE);
-				stream.writeUTFBytes("");
-				stream.close();
-				stream.open(file,FileMode.WRITE);
-				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-				stream.writeUTFBytes(saveXML.toString());
-				stream.close();
-				trace("init save  xmlsave");
-				
-				
-				SaeSavepanel.refreshslot (saveXML);
+				//save
+				saveSlot(i);
 			
 			}else {
 				
 				//load
+				
+				askmsg = "clickLoad";
+				SaeMsgbox.showmsg (askmsg, initXML.Sui.imgload. @ txt);
+				
 				loadindex = i;
-				file = FileP.resolvePath( "Documents/save.xml");
-				if (! file.exists)
-				{
-					showtrace("file not exists");
-					return;
-				}
-				stageInit();
-				savefileStream = new FileStream();
-				savefileStream.addEventListener(Event.COMPLETE, savefileLoaded);
-				savefileStream.openAsync(file, FileMode.READ);
-
-				trace(file.nativePath);//ok
-				loadtxt = false;	
+				
 				
 			}
 			
@@ -1065,7 +1031,7 @@
 		
 
 		///////////////////////////////
-
+		var saveTempIndex=-1;
 		//解析脚本
 		function analysisscript(i:int):void
 		{
@@ -1108,7 +1074,7 @@
 						analysisscript(ti);
 						return;
 					case "autosave" :
-						Save(StrAutosave);
+						saveSlot(0);
 						ti++;
 						analysisscript(ti);
 						return;
@@ -1167,6 +1133,7 @@
 						
 					case "ask" :
 						stopTimerSkip();
+						
 						ti = anASK(i);
 						analysisscript(ti);
 						return;
@@ -1531,7 +1498,7 @@
 		{
 			scenario = trimspace(scenario);
 			//var tt = trimspace(scenario.substring(scenario.indexOf(" ") + 1,scenario.indexOf("]")));
-			Load(scenario);
+			loadSlot(parseInt(scenario));
 		}
 
 		//显示文字
@@ -1698,6 +1665,10 @@
 		//选项
 		function anBTN(index:int ):int
 		{
+			if (saveTempIndex == -1)
+			{
+				saveTempIndex = index-1;
+				}
 			linebreak.play();
 			linebreak.visible = true;
 			var i = 0;
@@ -1735,7 +1706,10 @@
 		}
 		//清除btn和ask
 		function anBTNremove()
-		{			
+		{		
+			
+				saveTempIndex = -1;
+			
 			linebreak.stop();
 			linebreak.visible = false;
 
@@ -1754,6 +1728,10 @@
 		}
 		function anASK(index:int ):int
 		{
+			if (saveTempIndex == -1)
+			{
+				saveTempIndex = index-1;
+				}
 			linebreak.play();
 			linebreak.visible = true;
 			var i = 0;
@@ -1964,6 +1942,7 @@
 				bgmurl = "";
 				return;
 			}
+			trace("播放1"+bgmurl);
 			if(bgmurl == scenario)
 			{
 				return;			//如果和正在播放的相同							
@@ -1973,7 +1952,7 @@
 
 			bgm = new URLRequest("sound/" + scenario);
 			soundBGM = new Sound  ;
-		
+		trace("播放"+bgm);
 			soundBGM.load(bgm);
 			bgmchannel = soundBGM.play();
 			if(BGtransform!=null){
@@ -2540,7 +2519,7 @@
 					return;
 				case "clickLoad" :
 					trace("clickLoad");
-					Load(StrAutosave);
+					loadSlot(loadindex );
 					return;
 				case "keyback" :
 					
@@ -2631,7 +2610,7 @@
 			SaeMsgbox.showmsg (askmsg, initXML.Sui.imgreserve1. @ txt);
 			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
-		function clickSavePanel(event:MouseEvent):void
+		function clickSaveBtn(event:MouseEvent):void
 		{
 			//存档''''
 			savestate = true;
@@ -2655,62 +2634,47 @@
 //			Save(StrSave);
 //			TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
-		function clickSave(event:MouseEvent):void
-		{
-			////存档
-			//stopTimerSkip();
-			//
-			//if (readScenario == firstScenario || !saveable||inscript)
-			//{
-				//trace(((("readScenario===" + readScenario) + "//init=") + initXML.playingat.scenario));
-				//showtrace("you cannot save here");
-				//"main.txt"
-				//return;
-			//}
-			//if (! btnwaiting)
-			//{
-				//btnwaiting = true;
-				//waittimerBtn.start();
-			//}
-			//else
-			//{
-				//return;
-			//}
-			//btnSOUND();
-			//Save(StrSave);
-			//TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
-		}
-		/////////////////save
+	
 
 		
-		function Save(str:String)
+		function saveSlot(index:int)
 		{
-			//MCsaving.play();
-			//var i = ti;
-			//trace(((ti + "xxxsave") + i));
-			//
-			//playingat.readline = i;
-			//playingat.scenario = readScenario;
-			//playingat.bgm = bgmurl;
-			//playingat.bg = bgurl;
-			//playingat.lastreadline=lastti;
-			//playingat.lastScenario=lastScenario;
-//
-			//var savexml = evallist + playingat;
-			//trace(savexml.toString());
-//
-			//var file = FileP.resolvePath( "Documents/"+str);
-//
-			//var stream:FileStream = new FileStream  ;
-			//stream.open(file,FileMode.WRITE);
-			//stream.writeUTFBytes("");
-			//stream.close();
-			//stream.open(file,FileMode.WRITE);
-			//stream.addEventListener(Event.COMPLETE,savecompleteHandler);
-			//stream.writeUTFBytes((("<save>" + savexml.toString()) + "</save>"));
-			//stream.close();
-			//trace("save  xmlsave");
-			//
+			if (saveTempIndex > 0)
+				{
+					playingat.readline = saveTempIndex;
+				}else {
+					playingat.readline = ti;
+				}
+				
+				playingat.scenario = readScenario;
+				playingat.bgm = bgmurl;
+				playingat.bg = bgurl;
+				playingat.lastreadline=lastti;
+				playingat.lastScenario=lastScenario; 
+
+				saveXML.children()[index].exist = true;
+				saveXML.children()[index].img = bgurl;
+				saveXML.children()[index].txt=(1+new Date().month)+"/"+new Date().date+"-"+new Date().hours+":"+new Date().minutes+":"+new Date().seconds;
+				if (index == 0) {
+					saveXML.children()[index].txt+="\n AUTO"
+				}
+				saveXML.children()[index].svar=evallist;
+				saveXML.children()[index].playingat=playingat;
+				trace("clickslot3"+saveXML);
+
+				var file = FileP.resolvePath( "Documents/save.xml");
+				var stream:FileStream = new FileStream  ;
+				stream.open(file,FileMode.WRITE);
+				stream.writeUTFBytes("");
+				stream.close();
+				stream.open(file,FileMode.WRITE);
+				stream.addEventListener(Event.COMPLETE,savecompleteHandler);
+				stream.writeUTFBytes(saveXML.toString());
+				stream.close();
+				trace("init save  xmlsave");
+				
+				
+				SaeSavepanel.refreshslot (saveXML);
 //
 		}
 
@@ -2722,7 +2686,7 @@
 
 		var savestate = true;//save或load状态
 		
-		function clickLoad(event:MouseEvent):void
+		function clickLoadBtn(event:MouseEvent):void
 		{
 			//读取设定的存档文件
 			stopTimerSkip();
@@ -2743,9 +2707,10 @@
 			//SaeMsgbox.showmsg (askmsg, initXML.Sui.imgload. @ txt);
 			//TweenLite.to(btnSystem,durtime,{x:parseInt(initXML.Sui.imgsystem. @ x1)});
 		}
-		function Load(str:String)
+		function loadSlot(index:int)
 		{
-			var file = FileP.resolvePath( "Documents/"+str);
+			loadindex = index;
+			var file = FileP.resolvePath( "Documents/save.xml");
 			if (! file.exists)
 			{
 				showtrace("file not exists");
@@ -2757,7 +2722,7 @@
 			savefileStream.openAsync(file, FileMode.READ);
 
 			trace(file.nativePath);//ok
-			loadtxt = false;
+			loadtxt = false;	
 		}
 
 		function savefileLoaded(event:Event):void
@@ -2766,6 +2731,9 @@
 			saveXML = new XML  ;
 			saveXML = XML(savefileStream.readUTFBytes(savefileStream.bytesAvailable));
 			savefileStream.close();
+			
+			SaeSavepanel.savelayer.visible=false;
+			SaeSavepanel.savelayer.y=900;
 			
 			//loadXML = new XML  ;
 			loadXML = saveXML.children()[loadindex ];
@@ -2805,11 +2773,11 @@
 				anBG("clear");
 			}
 
-			bgmurl = loadXML.playingat.bgm;
-			if ((bgmurl != ""))
+			//bgmurl = loadXML.playingat.bgm;
+			if (loadXML.playingat.bgm != "")
 			{
-				trace("有"+bgmurl);
-				anBGM(bgmurl);
+				trace("有-old="+bgmurl+" new= "+loadXML.playingat.bgm);
+				anBGM(loadXML.playingat.bgm);
 			}
 			else
 			{
