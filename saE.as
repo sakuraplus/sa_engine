@@ -681,7 +681,7 @@
 			{
 				gamedebug=true;
 				Tformat.size=30;
-				SaeDebug=new SaEPlayback("000000","ffffff",Tformat,5);
+				SaeDebug=new SaEPlayback("000000","ffffff",Tformat,10);
 				stage.addChild(SaeDebug);//txtdebug
 				SaeDebug.showText ();
 				SaeDebug.mouseEnabled = false; 
@@ -878,6 +878,14 @@
 		////////////////txt脚本读取完成
 		function TXTcompleteHandler(e:Event)
 		{
+			TweenLite.to(MCwaiting,0.5,{alpha:0});
+			MCwaiting.stop();
+			waittimer.reset();
+			waiting = false;
+			linebreak.play();//显示提示
+			linebreak.visible = true;
+			//停止wait
+			
 			trace("☆txt脚本读取完成04");
 			arr = new Array  ;
 			loadtxt = true;//读取完成
@@ -1046,10 +1054,12 @@
 			
 			if (arr[i].indexOf("[") == 0)
 			{
+				trace(">>>>>"+arr[i]);
 				var stag = arr[i].substring(1,arr[i].indexOf(" "));
 				if(gamedebug)
 				{
-					SaeDebug.write("»"+arr[i]);
+					SaeDebug.write("»" + arr[i]);
+					
 				}
 				if (arr[i].indexOf(" ") < 0)
 				{
@@ -1067,6 +1077,7 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
+						stopTimerSkip();
 						return;
 					case "getcg" :
 						anGETCG(txttemp);
@@ -1118,12 +1129,15 @@
 						return;
 					case "clr" :
 						anCLR();
+						//ti++;
+						//analysisscript(ti);
 						return;						
 					case "msghide" :
 						anMSGhide();
 						return;						
 					case "msgshow" :
 						anMSGshow();
+						
 						return;						
 					case "background" :
 						anBG(txttemp);
@@ -1302,6 +1316,7 @@
 						return;
 					case "showcg" :
 						anSHOWCG();
+						stopTimerSkip();
 						return;
 					case "getcg" :
 						anGETCG(txttemp);
@@ -1344,6 +1359,8 @@
 						return;
 					case "clr" :
 						anCLR();
+						//ScrI++;
+						//anIscript(arrS,ScrI);
 						return;						
 					case "msghide" :
 						anMSGhide();
@@ -1771,12 +1788,13 @@
 
 		//点击选项
 		function clickbtn(event:MouseEvent):void
-		{
-			if (waiting)
-			{
-				return;
-			}
-			stopTimerSkip()
+		{	
+			trace("btn");
+//			if (waiting)
+//			{
+//				return;
+//			}
+			stopTimerSkip();
 			if (! btnwaiting)
 			{
 				btnwaiting = true;
@@ -1784,6 +1802,7 @@
 			}
 			else
 			{
+				trace("btnwaiting");
 				return;
 			}
 			
@@ -2197,6 +2216,13 @@
 		//跳转
 		function anGOTO(scenario:String, index:int):int
 		{
+			TweenLite.to(MCwaiting,0.5,{alpha:0});
+			MCwaiting.stop();
+			waiting = false;
+			waittimer.reset();
+			linebreak.play();//显示提示
+			linebreak.visible = true;
+			//停止wait
 			scenario=trimspace (replaceVar(scenario));
 			trace("GOTO-"+scenario);
 			//如果没找到,则返回当前序号index
