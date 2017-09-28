@@ -22,8 +22,7 @@
 	{
 		var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain,null);//在ios中加载swf资源
 
-		public var imgUrl:String="" ;
-		var container:Sprite = new Sprite();		
+//		var container:Sprite = new Sprite();		
 		var msgLoader:Loader = new Loader  ;
 		
 		var txtTalk:TextField=new TextField;
